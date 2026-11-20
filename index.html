@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作ったもの</title>
+<meta name="description" content="個人で作ったアプリ・道具・構想の一覧">
+<meta name="color-scheme" content="light dark">
+<style>
+:root{--bg:#f6f5f1;--card:#fff;--sunk:#efede6;--ink:#1d1c19;--mute:#6b6860;--line:#dcd8cc;--acc:#0e6b5c;--acc2:#e6f2ef}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151513;--card:#1e1e1b;--sunk:#262622;--ink:#ecebe6;--mute:#a19d93;--line:#38372f;--acc:#55c2ad;--acc2:#1d302c}}
+:root[data-theme="dark"]{--bg:#151513;--card:#1e1e1b;--sunk:#262622;--ink:#ecebe6;--mute:#a19d93;--line:#38372f;--acc:#55c2ad;--acc2:#1d302c}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.7 system-ui,-apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
+.wrap{max-width:960px;margin:0 auto;padding:40px 16px 56px}
+header{margin-bottom:22px}
+h1{font-family:"Hiragino Mincho ProN","Noto Serif JP",serif;font-size:clamp(26px,5vw,36px);letter-spacing:.06em;margin:0;line-height:1.3}
+.lead{color:var(--mute);margin:8px 0 0}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0 18px}
+.chips button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 14px;min-height:38px;cursor:pointer}
+.chips button[aria-pressed="true"]{background:var(--acc2);border-color:var(--acc);color:var(--acc);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.card{background:var(--card);border-radius:18px;padding:18px;display:grid;grid-template-rows:auto 1fr auto;gap:12px;box-shadow:0 1px 0 var(--line)}
+.top{display:flex;gap:14px;align-items:center}
+.mark{width:52px;height:52px;border-radius:14px;display:grid;place-items:center;color:#fff;font-weight:700;font-size:22px;flex:none;font-family:"Hiragino Mincho ProN","Noto Serif JP",serif}
+.card h2{font-size:17px;margin:0;line-height:1.35}
+.meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.pill{font-size:11px;padding:2px 9px;border-radius:999px;background:var(--sunk);color:var(--mute);white-space:nowrap}
+.pill.live{background:var(--acc2);color:var(--acc);font-weight:700}
+.card p{margin:0;font-size:14px;color:var(--mute)}
+.links{display:flex;gap:8px}
+.links a{flex:1;text-align:center;text-decoration:none;font-size:14px;font-weight:600;border-radius:12px;padding:9px 12px;min-height:42px;border:1px solid var(--line);color:var(--ink);background:var(--card)}
+.links a.open{background:var(--acc);border-color:var(--acc);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .links a.open{color:#0d1d1a}}
+.links a:focus-visible,.chips button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+.empty{color:var(--mute)}
+footer{margin-top:36px;font-size:13px;color:var(--mute);text-align:center}
+footer a{color:var(--acc)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><h1 id="title"></h1><p class="lead" id="lead"></p></header>
+  <div class="chips" id="chips" role="group"></div>
+  <main class="grid" id="grid"></main>
+  <footer id="foot"></footer>
+</div>
+<script src="apps.js"></script>
+<script>
+"use strict";
+// 言葉：端末の言語が日本語なら日本語、それ以外は英語（#en / #ja で切り替えて確かめられる）
+const L = /#en\b/.test(location.hash) ? "en" : /#ja\b/.test(location.hash) ? "ja" : /^ja\b/i.test(navigator.language || "ja") ? "ja" : "en";
+const W = {
+  ja: {title: "作ったもの", lead: "個人で作ったアプリ・道具・構想です。", all: "すべて", open: "開く", code: "GitHub",
+       status: {live: "公開中", trial: "試験版", building: "作っているところ", idea: "構想"}, kind: {app: "アプリ", tool: "道具", site: "サイト", idea: "構想"},
+       none: "まだありません", foot: '感想や気づきは、<a href="https://nndahedeyo.github.io/sougo-review/">相互レビュー</a>でも受け付けています。'},
+  en: {title: "Things I made", lead: "Apps, tools and concepts made by one indie developer.", all: "All", open: "Open", code: "GitHub",
+       status: {live: "Live", trial: "Trial", building: "In progress", idea: "Concept"}, kind: {app: "App", tool: "Tool", site: "Site", idea: "Concept"},
+       none: "Nothing here yet", foot: 'Feedback is welcome on <a href="https://nndahedeyo.github.io/sougo-review/">Mutual Review</a>.'},
+}[L];
+document.documentElement.lang = L; document.title = W.title;
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const safe = u => /^https:\/\//.test(u || "") ? u : "";
+const apps = (window.APPS || []).slice().sort((a, b) => String(b.date).localeCompare(String(a.date)));
+const pick = v => v && typeof v === "object" ? (v[L] || v.ja || v.en || "") : (v || "");
+let filter = "all";
+try { filter = sessionStorage.getItem("apps.filter") || "all"; } catch (e) {}
+const GROUPS = [["all", W.all], ["live", W.status.live], ["trial", W.status.trial + "・" + W.status.building], ["idea", W.status.idea]];
+const inGroup = a => filter === "all" || (filter === "trial" ? ["trial", "building"].includes(a.status) : a.status === filter);
+function render() {
+  document.getElementById("title").textContent = W.title;
+  document.getElementById("lead").textContent = W.lead;
+  document.getElementById("foot").innerHTML = W.foot;
+  document.getElementById("chips").innerHTML = GROUPS.filter(([k]) => k === "all" || apps.some(a => k === "trial" ? ["trial", "building"].includes(a.status) : a.status === k))
+    .map(([k, l]) => `<button type="button" data-f="${k}" aria-pressed="${filter === k}">${esc(l)}</button>`).join("");
+  const list = apps.filter(inGroup);
+  document.getElementById("grid").innerHTML = list.length ? list.map(a => `<article class="card">
+      <div class="top"><div class="mark" style="background:${esc(/^#[0-9a-f]{3,6}$/i.test(a.color) ? a.color : "#6b6860")}">${esc(a.mark || pick(a.name).slice(0, 1))}</div>
+        <div><h2>${esc(pick(a.name))}</h2><div class="meta"><span class="pill ${a.status === "live" ? "live" : ""}">${esc(W.status[a.status] || a.status)}</span>${a.kind === a.status ? "" : `<span class="pill">${esc(W.kind[a.kind] || a.kind)}</span>`}</div></div></div>
+      <p>${esc(pick(a.desc))}</p>
+      <div class="links">${safe(a.url) ? `<a class="open" href="${esc(a.url)}" target="_blank" rel="noopener">${W.open}</a>` : ""}${safe(a.repo) ? `<a href="${esc(a.repo)}" target="_blank" rel="noopener">${W.code}</a>` : ""}</div>
+    </article>`).join("") : `<p class="empty">${W.none}</p>`;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-f]"); if (!b) return; filter = b.dataset.f; try { sessionStorage.setItem("apps.filter", filter); } catch (x) {} render(); });
+render();
+</script>
+</body>
+</html>
