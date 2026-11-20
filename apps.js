@@ -13,13 +13,6 @@ window.APPS = [
     url: "https://nndahedeyo.github.io/sougo-review/", repo: "https://github.com/nndahedeyo/sougo-review",
   },
   {
-    mark: "市", color: "#3b5ba5", date: "2026-11-16", status: "building", kind: "app",
-    name: {ja: "仮想市場 試験所", en: "Kasou Shijo (Market Lab)"},
-    desc: {ja: "理想の取引所を、値打ちのないテストのネットワークで試す。資産を預からず、注文はまとめて全員同じ値段で約定。",
-           en: "An ideal exchange, tried on a valueless test network. No custody; orders settle together at one shared price."},
-    url: "https://nndahedeyo.github.io/kasou-shijo/", repo: "https://github.com/nndahedeyo/kasou-shijo",
-  },
-  {
     mark: "練", color: "#b0702a", date: "2026-11-15", status: "live", kind: "app",
     name: {ja: "仮想資産 練習所", en: "Kasou Shisan Practice Hall"},
     desc: {ja: "暗号資産に初めて触れる人が、お金を使わずに基本の考え方と操作を一から学ぶ練習所。",
