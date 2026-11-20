@@ -40,11 +40,4 @@ window.APPS = [
            en: "Enter your crypto holdings and see their value now. Lives on your home screen. Never touches keys or addresses."},
     url: "https://nndahedeyo.github.io/zandaka/", repo: "https://github.com/nndahedeyo/zandaka",
   },
-  {
-    mark: "が", color: "#6b6860", date: "2026-09-16", status: "idea", kind: "idea",
-    name: {ja: "がま口ウォレット", en: "Gama Wallet"},
-    desc: {ja: "子どもでも使えるくらい簡単で、安全な、自分で持つウォレットの構想。",
-           en: "A concept for a self-custody wallet simple enough for a child, and safe."},
-    url: "", repo: "https://github.com/nndahedeyo/gama-wallet-concept",
-  },
 ];
