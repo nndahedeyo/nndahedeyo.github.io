@@ -468,6 +468,9 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 .done{display:grid;justify-items:center;gap:6px;text-align:center;padding-top:16px}
 .done .coin{width:84px;height:80px;transform-origin:50% 90%;animation:nup 1.1s cubic-bezier(.34,1.3,.5,1) both, shine 3.6s ease-in-out 1.2s infinite}
 /* ぬっぽり：下からふくらみ、少しつぶれて、ゆっくり落ち着く */
+.coin.idle{opacity:.38;filter:none;animation:breathe 4.8s ease-in-out infinite}@keyframes breathe{0%,100%{transform:scale(.97)}50%{transform:scale(1)}}
+.story{display:grid;justify-items:center;gap:10px;text-align:center;padding-top:12px}.story .coin{width:96px;height:92px}.story .sl{font-size:20px;font-weight:700;margin:6px 0 0;min-height:2.6em;display:grid;align-content:center;text-wrap:balance}.story .ss{font-size:14px;color:var(--mute);margin:0;min-height:1.6em}
+.dots{display:flex;gap:6px;justify-content:center}.dots i{width:6px;height:6px;border-radius:50%;background:var(--line)}.dots i.on{background:var(--ink)}
 @keyframes nup{0%{transform:translateY(14px) scale(.2,.15);opacity:0}45%{transform:translateY(-4px) scale(1.12,.9);opacity:1}70%{transform:translateY(0) scale(.95,1.06)}100%{transform:none}}
 @keyframes shine{0%,100%{filter:drop-shadow(0 0 2px rgba(226,182,78,.35))}50%{filter:drop-shadow(0 0 10px rgba(226,182,78,.9))}}
 .rules{margin:0;padding:0;list-style:none;counter-reset:r;display:grid;gap:8px}
@@ -645,7 +648,7 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 .jc2 .ctalk{position:absolute;right:4.4cqw;top:3.6cqw;display:flex;align-items:center;gap:1cqw;border:0;background:rgba(0,0,0,.32);color:#fff;border-radius:99cqw;padding:1.2cqw 2.4cqw;font-size:3cqw;min-height:9cqw}
 .jc2 .ctalk svg.i{width:4.4cqw;height:4.4cqw}
 .jc2 .ctalk span:empty{display:none}
-@media (prefers-reduced-motion: reduce){.done .coin{animation:none}.lp.pressing i{transition:none}.jc2 .in,.jc2 .ln,.ring rect{transition:none}.jc2.held .mark svg,.pmark,.done .coin{animation:none}.toast{transition:none}}
+@media (prefers-reduced-motion: reduce){.done .coin,.coin.idle{animation:none}.lp.pressing i{transition:none}.jc2 .in,.jc2 .ln,.ring rect{transition:none}.jc2.held .mark svg,.pmark,.done .coin{animation:none}.toast{transition:none}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -673,7 +676,6 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6.5 11 12 16.5 17.5 11M5 20h14"/></symbol>
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20V8M6.5 13 12 7.5 17.5 13M5 4h14"/></symbol>
   <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="1.5"/><path d="M3 7h18v3H3zM12 7v13M12 7c-1.5-3-5-3.5-5-1.2C7 7 9 7 12 7Zm0 0c1.5-3 5-3.5 5-1.2C17 7 15 7 12 7Z"/></symbol>
-  <symbol id="i-set" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></symbol>
   <symbol id="i-app" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M10 18h4"/></symbol>
   <symbol id="i-sale" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2"/></symbol>
@@ -1488,8 +1490,8 @@ function home() {
     <section class="me" aria-label="プロフィール">
       <div class="me-top"><div class="av" ${PICS[me] ? `style="background:url('${PICS[me]}') center/cover"` : ""}>${PICS[me] ? "" : esc(nameOf(me).slice(0, 1))}</div>
         <div><div class="me-name">${esc(nameOf(me))}</div><div class="me-line">${u.member ? esc((S.users[me] && S.users[me].line) || p.line) : "まだ参加していません"}</div></div>
-        <div class="me-r"><button type="button" class="bal" data-rules title="jeni のきまり">${coin()}<span id="balv">${u.bal.toLocaleString("ja-JP")}</span><small>jeni</small></button>
-          <div class="comm">${FX.filter(f => u.member || f.k === "set").map(f => { const n = f.dot(); return `<button type="button" class="cb" data-fx="${f.k}" aria-label="${f.l}${n ? "（新しい知らせあり）" : ""}" title="${f.l}">${icon(f.i)}${n ? `<b aria-hidden="true"></b>` : ""}</button>`; }).join("")}</div></div></div>
+        <div class="me-r"><button type="button" class="bal" data-rules title="jeni のきまり">${coin(u.member ? "" : "idle")}<span id="balv">${u.bal.toLocaleString("ja-JP")}</span><small>jeni</small></button>
+          ${u.member ? `<div class="comm">${FX.map(f => { const n = f.dot(); return `<button type="button" class="cb" data-fx="${f.k}" aria-label="${f.l}${n ? "（新しい知らせあり）" : ""}" title="${f.l}">${icon(f.i)}${n ? `<b aria-hidden="true"></b>` : ""}</button>`; }).join("")}</div>` : ""}</div></div>
       <div class="me-mid"><div class="mods" role="group" aria-label="しぼり（いくつでも重ねられます）">${[["mine", "hold", "持っている"], ["fav", "fav", "お気に入り"], ["near", "near", "近く"]].map(([k, i, l]) => `<button type="button" data-mod="${k}" aria-pressed="${MOD[k]}">${icon(i)}<span>${l}</span></button>`).join("")}</div><button type="button" class="pmark" data-me aria-label="わたしのカード（QR）${LIVE && LV.me && !keySaved() ? "・鍵の控えがまだです" : ""}">${gmark(56, {halo: true})}${LIVE && LV.me && !keySaved() ? `<b class="kdot" aria-hidden="true"></b>` : ""}</button></div>
       <div class="mcap" aria-live="polite">${FIELDS.find(f => f[0] === field)[1]}${MOD.mine ? "・持っている" : ""}${MOD.fav ? "・お気に入り" : ""}${MOD.near ? "・近い順" : ""}・${list.length}枚${field === "circle" ? "・輪の人だけ" : ""}</div>
       <div class="menu-w"><nav class="menu" aria-label="表示するカード">${FIELDS.map(([k, l]) => `<button type="button" data-f="${k}" aria-pressed="${field === k}" aria-label="${l}" title="${l}">${icon(k)}</button>`).join("")}</nav><button type="button" class="make" data-make aria-label="カードを作る・その場で売る" title="カードを作る・その場で売る">${icon("plus")}</button></div>
@@ -1801,20 +1803,8 @@ const FX = [
   {k: "chats", i: "talk", l: "話す", dot: () => unreadChat(), open: () => chatList()},
   {k: "gifts", i: "gift", l: "贈る", dot: () => 0, open: () => giftList()},
   {k: "news", i: "bell", l: "お知らせ", dot: () => news().filter(n => n.at > (NSEEN[me] || 0)).length, open: () => newsList()},
-  {k: "set", i: "set", l: "設定", dot: () => 0, open: () => setSheet()},
 ];
 const NSEEN = {};
-// 設定：色（端末に合わせる・明るい・暗い）。この端末の中だけ
-const THEMES = [["auto", "端末に合わせる"], ["light", "明るい"], ["dark", "暗い"]];
-const themeNow = () => { try { return localStorage.getItem("jeni.theme") || "auto"; } catch (x) { return "auto"; } };
-function themeSet(v) { try { localStorage.setItem("jeni.theme", v); } catch (x) {} if (v === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.dataset.theme = v; }
-themeSet(themeNow());
-function setSheet() {
-  const t = themeNow();
-  openSheet(`<button type="button" class="back" data-close>${icon("back")}一覧へ</button><h2 class="rh">設定</h2>
-    <section class="box"><h3>色</h3><div class="seg" role="group" aria-label="色">${THEMES.map(([k, l]) => `<button type="button" data-theme-set="${k}" aria-pressed="${t === k}">${l}</button>`).join("")}</div></section>
-    ${LIVE ? `<section class="box"><h3>${icon("lock")} 鍵</h3><div class="who-row"><span>${pkOn() ? "Face ID で守っています" : keySaved() ? "控えを取っています" : "まだ守っていません"}</span><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵を守る</button></div></section>` : ""}`);
-}
 function news() {
   const out = [];
   for (const b of Object.values(S.cards)) {
@@ -2362,7 +2352,7 @@ const GUIDE = [
   ["輪の写真・音・動画", "仲間の輪のカードの写真・音・動画は、輪の人だけが開ける鍵で封をしてから置き場に置きます。見せる相手は、写真などを選ぶ前に決めます。", () => { me = AS("kenji"); MK.mode = "picture"; make(); }],
   ["長い動画・音", "動画も音も2時間まで（音は MP3 の 256〜320kbps と同じくらいの音質）。端末の中で軽くして、長いものは分けて置き、続けて1本として流れます。下の線を押すと、その所へ。", () => { me = AS("kenji"); detail(cardBy("畑の一日").id); }],
   ["動画・音を作る", "＋ → データ → 動画。選ぶと、その場で軽くして（進み具合が出ます）、そのまま出せます。リンク（YouTube など）も入れられます。", () => { me = AS("kenji"); MK.mode = "video"; make(); }],
-  ["はじめて開いたとき", "運用版の最初の流れ：大事な3つ（名前は見える・消せない・鍵の控え）→ 名前 → 始める → すぐ鍵の控え。iPhone では先にホーム画面に追加する案内も出ます。", () => startSheet()],
+  ["はじめて開いたとき", "運用版の最初の流れ：jeni とは（3枚・貝はまだ待っている）→ 大事な3つと名前 → 始める → 鍵を守る。参加して jeni が届くと、貝が動き出します。", () => startSheet()],
   ["招待する（身内に）", "わたしのカードの「招待する」。一度きりのリンクとQRを LINE などで送ります（7日間・1人・認められる3人に数える）。", () => { me = AS("kenji"); meCard(); }],
   ["直す・取り下げる", "自分のカードのページから。値段・数・種類は直せません。取り下げると、だれも持っていなければ消え、持っている人がいれば受付を終えます。", () => { me = AS("farmer"); detail(cardBy("朝採り大根 3本セット").id); }],
   ["作るはすぐ入力から", "＋で入力の画面。上の4つ（もの・体験／データ／つなぐ／その場で売る）と種類で欄が切り替わります。どのカードにも画像をつけられます。", () => { me = AS("kenji"); MK.mode = "event"; make(); }],
@@ -2416,7 +2406,6 @@ document.addEventListener("click", e => {
   }
   if ((b = q("[data-mod]"))) { const k = b.dataset.mod; MOD[k] = !MOD[k]; home(); if (MOD[k] && k === "near") toast("近い順（見本の現在地：東京駅のあたり。本物では端末の位置をどこにも送りません）"); return; }
   if ((b = q("[data-fx]"))) return FX.find(f => f.k === b.dataset.fx).open();
-  if ((b = q("[data-theme-set]"))) { themeSet(b.dataset.themeSet); return setSheet(); }
   if (q("[data-make]")) { if (!U().member) return toast("参加すると作れます"); MK.mode = "make"; return make(); }
   if ((b = q("[data-mk]"))) { readMK(); MK.mode = b.dataset.mk;  return make(); }
   if ((b = q("[data-mappick]"))) { readMK(); const r = b.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
@@ -2521,6 +2510,7 @@ document.addEventListener("click", e => {
   if (q("[data-scantext]")) { const t = ($("scan-t").value || "").trim(); scanStop(); closeOver(); return /^[0-9a-f]{16}$/.test(t) && sel && S.cards[sel] && S.cards[sel].by === me ? useCode(sel, t) : onScan(t); }
   if ((b = q("[data-vouch]"))) { const pk = b.dataset.vouch; emit(me, {t: "vouch", who: pk}); closeOver(); return toast(S.users[pk] && S.users[pk].member ? `${nameOf(pk)} さんが参加しました` : "認められませんでした（3人まで・もう参加している人は認められません）"); }
   if (q("[data-firstrun]")) return startSheet();
+  if ((b = q("[data-story]"))) return startSheet(+b.dataset.story);
   if (!LIVE && q("[data-start]")) { if (!($("st-name").value || "").trim()) return toast("名前を入れてください"); return keySheet(true); }
   if (!LIVE && q("[data-keysaved]")) { closeSheet(); return toast("見本：本物では、控えたことがこの端末に残り、赤い印が消えます"); }
   if (!LIVE && (q("[data-keycopy]") || q("[data-startkey]") || q("[data-install]") || q("[data-pkrestore]"))) return toast("見本：本物で動きます");
@@ -2919,10 +2909,22 @@ function joinWith(inviteId, code) {
   return toast("この招待は使えません（期限切れか、もう使われています）");
 }
 // はじめて開いた人：名前を決めて、この端末にかぎを作る（前のかぎで続けることもできる）
-function startSheet() {
+// はじまり：jeni とは何かを3枚で（貝はまだ待っている）→ 名前を決めて始める。参加して jeni が届くと、貝が動き出す
+const STORY = [["jeni は、貝のしるし", "お金とは交換できません"], ["つくったものを、カードに", "音楽・写真・パン・体験…なんでも"], ["カードを持つと、jeni が作った人へ", "人から人へ、めぐります"]];
+let storyAt = 0;
+function startSheet(step = 0) {
+  storyAt = step;
+  const close = LIVE ? "" : `<button type="button" class="back" data-close>${icon("back")}見本を閉じる</button>`;
+  if (step < STORY.length) {
+    const [l, sub] = STORY[step];
+    return openSheet(`${close}<div class="story">${coin("idle")}<p class="sl">${l}</p><p class="ss">${sub}</p>
+      <div class="dots" aria-hidden="true">${STORY.map((_, i) => `<i class="${i === step ? "on" : ""}"></i>`).join("")}</div></div>
+      <button type="button" class="big" data-story="${step + 1}">${step === STORY.length - 1 ? "はじめる" : "次へ"}</button>
+      ${step < STORY.length - 1 ? `<button type="button" class="link" data-story="${STORY.length}" style="justify-self:center">とばす</button>` : ""}`);
+  }
   const sougo = LIVE ? LV.store.get("sougo.me", null) : null;
   const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  openSheet(`${LIVE ? "" : `<button type="button" class="back" data-close>${icon("back")}見本を閉じる</button>`}<div class="done">${gmark(64, {halo: true})}<h2 class="rh">jeni</h2></div>
+  openSheet(`${close}<div class="story">${coin("idle")}</div>
     ${!STANDALONE() ? `<p class="sub warnc" style="font-size:13px;margin:0">${ios ? "先に、共有ボタン →「ホーム画面に追加」。そのアイコンから始めます。" : "ホーム画面に置いてから始めると、アプリのように使えます。"}</p>${INSTALL ? `<button type="button" class="pill go" data-install style="justify-self:start">ホーム画面に置く</button>` : ""}` : ""}
     <ul class="ess"><li>名前は、みんなに見えます</li><li>記録は、消せません</li><li>鍵は、Face ID で守ります</li></ul>
     <label class="fl">名前<input id="st-name" maxlength="40" placeholder="呼び名"></label>
