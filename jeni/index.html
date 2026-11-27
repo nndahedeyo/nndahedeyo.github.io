@@ -1975,6 +1975,7 @@ const tsOf = m => m.ts || (LIVE ? m.at : Date.now() / 1000 - (clock - m.at) * 60
 const hm = d => `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
 function dayLabel(d) {
   const t = new Date(); t.setHours(0, 0, 0, 0); const x = new Date(d); x.setHours(0, 0, 0, 0); const n = Math.round((t - x) / 864e5);
+  if (window.JeniI18n && JeniI18n.lang !== "ja" && n > 1) return x.toLocaleDateString("en-US", {weekday: "short", month: "short", day: "numeric", ...(x.getFullYear() !== t.getFullYear() ? {year: "numeric"} : {})});
   return n === 0 ? "今日" : n === 1 ? "昨日" : `${x.getFullYear() !== t.getFullYear() ? x.getFullYear() + "年" : ""}${x.getMonth() + 1}月${x.getDate()}日（${"日月火水木金土"[x.getDay()]}）`;
 }
 const sizeOf = n => n >= 1048576 ? (n / 1048576).toFixed(1) + "MB" : Math.max(1, Math.round(n / 1024)) + "KB";
