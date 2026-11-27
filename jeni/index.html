@@ -529,7 +529,16 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 .jc2 .cplay svg.i{width:6cqw;height:6cqw;fill:currentColor;stroke:none}
 .jc2 .cplay.on{background:rgba(226,182,78,.85);color:#1a1608}
 .jc2 .cview{position:absolute;inset:0 30% 30% 0;border:0;background:none;padding:0}
-.jc2 .cbar{position:absolute;left:0;right:0;bottom:0;height:.9cqw;background:rgba(255,255,255,.15)}
+.jc2 .cbar{position:absolute;left:0;right:0;bottom:0;height:.9cqw;background:rgba(255,255,255,.15);transition:height .2s,opacity .25s}
+/* 再生中は、ふつうの動画アプリのように：絵だけを見せ、押すと操作（止める・線・時間）が出て、少しすると消える */
+.jc2 .face :is(.cplay,.jno,.cfav,.ctalk,.txt,.excerpt,.gfield,.ctime){transition:opacity .25s}
+.jc2 .face.pl :is(.jno,.cfav,.ctalk,.excerpt,.gfield,.mark){opacity:0!important;pointer-events:none!important}
+.jc2 .face.pl:not(.ui) :is(.cplay,.txt,.cbar){opacity:0;pointer-events:none}
+.jc2 .face.pl.ui .cbar{height:2cqw}
+.jc2 .ctime{position:absolute;right:4cqw;bottom:3.4cqw;font-size:2.6cqw;font-variant-numeric:tabular-nums;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.8);opacity:0;pointer-events:none}
+.jc2 .face.pl.ui .ctime{opacity:1}
+.jc2 .cplay .i-pz{display:none}.jc2 .cplay.on .i-pl{display:none}.jc2 .cplay.on .i-pz{display:block}
+.sheet.imm:has(.face.pl:not(.ui)) .ftop{opacity:0;pointer-events:none}.sheet.imm .ftop{transition:opacity .25s}
 .jc2 .cbar i{display:block;height:100%;width:0;background:#e2b64e}
 .jc2 video.inplay{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 /* 下から出る記録 */
@@ -635,7 +644,7 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 .jc2 .k{font-size:3cqw;letter-spacing:.08em;opacity:.85}
 .jc2 .t{font-size:6cqw;font-weight:700;line-height:1.3;white-space:normal;overflow:visible;text-wrap:balance}
 .jc2 .by{font-size:3.4cqw;opacity:.85}
-.jc2 .jno{position:absolute;left:6cqw;top:5cqw;font-size:2.8cqw;letter-spacing:.14em;opacity:.8}
+.jc2 .jno{position:absolute;left:6cqw;top:5cqw;right:30cqw;font-size:2.8cqw;letter-spacing:.14em;opacity:.8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .jc2 .excerpt{position:absolute;left:6cqw;right:8cqw;top:13cqw;margin:0;font-size:3.6cqw;line-height:1.75;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;opacity:.85}
 .jc2 .mark{position:absolute;right:5.4cqw;bottom:5cqw;width:15cqw;border:0;background:none;padding:0;color:var(--ink);opacity:0;pointer-events:none;transition:opacity .2s}
 .jc2.held .mark{opacity:1;pointer-events:auto}
@@ -1462,7 +1471,8 @@ const mine = c => c.copies.filter(x => x.owner === me && !x.used);
 const canSee = c => !c.circle || S.circles[c.circle].members.includes(me);
 const capOf = c => c.price ? RULE.capPaid : RULE.capFree;
 const leftOf = c => c.supply == null ? Infinity : c.left;
-const cardNo = id => String(id).replace(/^0+/, "").padStart(4, "0");
+// カードの番号：見本は通し番号。本物は記録の番号（長い16進）の頭8文字だけ（同じカードならどの端末でも同じ）
+const cardNo = id => /^[0-9a-f]{64}$/.test(String(id)) ? String(id).slice(0, 8).toUpperCase() : String(id).replace(/^0+/, "").padStart(4, "0");
 const kindIcon = k => k === "other" ? "other" : k;
 let field = "all", opened = -1, playing = "", sel = null, keepScroll = false;
 
@@ -1558,8 +1568,8 @@ function cardHtml(c, held) {
       <button type="button" class="ctalk" data-talk="${c.id}" aria-label="会話">${icon("talk")}<span>${(c.talk || []).filter(x => !S.comments[x].hidden).length || ""}</span></button>
       ${c.kind === "text" && !bg ? `<p class="excerpt">${esc(c.body)}</p>` : ""}
       <div class="txt"><div class="k">${KIND[c.kind]}${album ? `・${m.pics.length}枚` : ""}</div><div class="t">${esc(c.title || "その場のカード")}</div><div class="by">${esc(nameOf(c.by))}</div></div>
-      ${(c.kind === "music" || c.kind === "video") && m.src ? `<button type="button" class="cplay${playing === c.id ? " on" : ""}" data-cplay="${c.id}" aria-label="再生・止める">${icon("play")}</button>` : m.img ? `<button type="button" class="cview" data-cplay="${c.id}" aria-label="写真を大きく"></button>` : ""}
-      ${(c.kind === "music" || c.kind === "video") && m.src && !JeniMedia.linkOf(m.src) ? `<div class="cbar" data-seek="${c.id}"><i id="cbar-${c.id}"></i></div>` : ""}
+      ${(c.kind === "music" || c.kind === "video") && m.src ? `<button type="button" class="cplay${playing === c.id ? " on" : ""}" data-cplay="${c.id}" aria-label="再生・止める"><span class="i-pl">${icon("play")}</span><span class="i-pz">${icon("pause")}</span></button>` : m.img ? `<button type="button" class="cview" data-cplay="${c.id}" aria-label="写真を大きく"></button>` : ""}
+      ${(c.kind === "music" || c.kind === "video") && m.src && !JeniMedia.linkOf(m.src) ? `<div class="cbar" data-seek="${c.id}"><i id="cbar-${c.id}"></i></div><div class="ctime" id="ct-${c.id}"></div>` : ""}
       <button type="button" class="mark" data-flip aria-label="このカードの裏（QR）">${gmark(100, {line: true, halo: true})}</button></div>`;
   const back = `<div class="face back" data-ink="d"><div class="paper" style="background:radial-gradient(120% 90% at 85% 10%,#fffdf7,#efe7d6)"></div>${gfield(.6)}
       <div class="qr">${qrSvg(`${BASE}#card=${c.id}`)}</div>
@@ -2101,7 +2111,7 @@ function cplay(id) {
     if (!ch) {
       const v = face.querySelector("video.inplay") || vidEl(face, m);
       ch = VCH[id] = new Chain(v, partsOf(m), {
-        tick: f => { const b = $("cbar-" + id); if (b) b.style.width = (f * 100) + "%"; },
+        tick: f => { const b = $("cbar-" + id); if (b) b.style.width = (f * 100) + "%"; ctime(id, f); },
         end: () => { const b = pg.querySelector("[data-cplay]"); if (b) b.classList.remove("on"); },
         fail: () => toast("再生できませんでした（置き場につながりません）")});
     }
@@ -2527,7 +2537,16 @@ class Chain {
 }
 const player = $("player");
 let chain = null;   // いま流している音（1つだけ）
-function musicBars(id, f) { const k = (f * 100) + "%"; const b = $("bar" + id); if (b) b.style.width = k; const cb = $("cbar-" + id); if (cb) cb.style.width = k; }
+function musicBars(id, f) { const k = (f * 100) + "%"; const b = $("bar" + id); if (b) b.style.width = k; const cb = $("cbar-" + id); if (cb) cb.style.width = k; ctime(id, f); }
+const durOf = id => { const m = MEDIA[id] || {}; return m.dur || (m.parts || []).reduce((a, p) => a + (+p.d || 0), 0) || 0; };
+function ctime(id, f) { const el = $("ct-" + id), d = durOf(id); if (!el || !d) return; const t = s => { s = Math.max(0, Math.round(s)); const h = Math.floor(s / 3600), mm = Math.floor(s % 3600 / 60), ss = String(s % 60).padStart(2, "0"); return h ? `${h}:${String(mm).padStart(2, "0")}:${ss}` : `${mm}:${ss}`; }; el.textContent = `${t(f * d)} / ${t(d)}`; }
+// 操作を出して、少しすると隠す（止めているあいだは隠さない）
+function faceUI(f) { f.classList.add("ui"); clearTimeout(f._ui); f._ui = setTimeout(() => { if (f.classList.contains("pl")) f.classList.remove("ui"); }, 2800); }
+function plSync(b) { const f = b.closest(".face"); if (!f) return; if (b.classList.contains("on")) { if (!f.classList.contains("pl")) { f.classList.add("pl"); faceUI(f); } } else f.classList.remove("pl", "ui"); }
+new MutationObserver(ms => { for (const m of ms) {
+  if (m.type === "attributes") { if (m.target.classList && m.target.classList.contains("cplay")) plSync(m.target); }
+  else m.addedNodes.forEach(n => { if (n.nodeType === 1) n.querySelectorAll(".cplay.on").forEach(plSync); });
+} }).observe(document.documentElement, {subtree: true, childList: true, attributes: true, attributeFilter: ["class"]});
 function pauseMusic() { if (chain) chain.pause(); playing = ""; document.querySelectorAll("[data-cplay]").forEach(b => { const c = S.cards[b.dataset.cplay]; if (c && c.kind === "music") b.classList.remove("on"); }); }
 function play(id, inCard = false) {
   const m = MEDIA[id];
@@ -2603,6 +2622,8 @@ document.addEventListener("change", e => {
 });
 document.addEventListener("input", e => { if (e.target.id === "pq") { PQ = e.target.value; pqApply(); } });
 document.addEventListener("click", e => {
+  { const pf = e.target.closest && e.target.closest(".jc2 .face.pl"); if (pf && !e.target.closest("button,[data-seek],a,iframe,input")) { if (pf.classList.contains("ui")) { pf.classList.remove("ui"); clearTimeout(pf._ui); } else faceUI(pf); return; } }
+  { const pf = e.target.closest && e.target.closest(".jc2 .face.pl.ui"); if (pf) faceUI(pf); }
   { const pg = e.target.closest && e.target.closest(".pg"); if (pg) sel = pg.dataset.pg; }
   const q = s => e.target.closest(s);
   let b;
