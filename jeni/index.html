@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#f3ecdd"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true;</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true;</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
 // 公式の試験ベクトル（tests/sig.test.js）で正しさを確かめている。
 "use strict";
 (function (root) {
@@ -143,7 +143,7 @@
   const Rules = () => root.JeniRules;   // きまりはあとで読み込まれる
   const TAG = "jeni-trial-1";
   // 出来事の種類：決まり（だれでも読める）・カードの中身（画像など）・2人だけの会話・通話のつなぎ・輪のかぎ
-  const K = {rule: 7740, media: 7741, dm: 7742, call: 7743, ckey: 7744};
+  const K = {rule: 7740, media: 7741, dm: 7742, call: 7743, ckey: 7744, kbak: 7745};   // kbak：パスキーで封をした鍵の控え（本人のパスキーでしか開けない）
   const RELAYS = ["wss://relay.damus.io", "wss://nos.lol", "wss://relay.primal.net", "wss://relay.nostr.band"];
   const store = {
     get(k, d) { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : d; } catch (e) { return d; } },
@@ -241,10 +241,61 @@
   const sealWith = (keyHex, obj, ad) => Seal.seal(Sig.unhex(keyHex), obj, ad);
   const openWith = (keyHex, str, ad) => Seal.open(Sig.unhex(keyHex), str, ad);
 
+  // ---- パスキー（Face ID・指紋など）で鍵を守る ----
+  // パスキーは iCloud キーチェーン・Google パスワード マネージャーなどに入り、機種を変えても同じ人のまま使える。
+  // パスキーの「PRF」でこの人だけの秘密を取り出し、それで鍵に封をして中継に置く。パスキーがないと、だれにも開けない
+  const SALT = new TextEncoder().encode("jeni/kbak/1");
+  const b64u = u8 => btoa(String.fromCharCode(...u8)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  const ub64u = s => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/")), c => c.charCodeAt(0));
+  async function prfKey(prf) {
+    const base = await crypto.subtle.importKey("raw", prf, "HKDF", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({name: "HKDF", hash: "SHA-256", salt: SALT, info: new TextEncoder().encode("key")}, base, {name: "AES-GCM", length: 256}, false, ["encrypt", "decrypt"]);
+  }
+  const passkeyOK = () => !!(root.PublicKeyCredential && navigator.credentials && root.isSecureContext);
+  async function prfGet(allow) {
+    const cred = await navigator.credentials.get({publicKey: {challenge: crypto.getRandomValues(new Uint8Array(32)), rpId: location.hostname, userVerification: "required",
+      allowCredentials: allow ? [{type: "public-key", id: allow}] : [], extensions: {prf: {eval: {first: SALT}}}}});
+    const r = cred.getClientExtensionResults().prf; const out = r && r.results && r.results.first;
+    return {cred, prf: out ? new Uint8Array(out) : null};
+  }
+  async function passkeySave(name) {
+    if (!me) throw new Error("鍵がありません");
+    if (!passkeyOK()) throw new Error("この端末・ブラウザはパスキーに対応していません");
+    const cred = await navigator.credentials.create({publicKey: {rp: {name: "jeni", id: location.hostname}, challenge: crypto.getRandomValues(new Uint8Array(32)),
+      user: {id: Sig.unhex(me.pk), name: "jeni・" + (name || me.pk.slice(0, 8)), displayName: "jeni・" + (name || me.pk.slice(0, 8))},
+      pubKeyCredParams: [{type: "public-key", alg: -7}, {type: "public-key", alg: -257}],
+      authenticatorSelection: {residentKey: "required", requireResidentKey: true, userVerification: "required"}, extensions: {prf: {eval: {first: SALT}}}}});
+    const ex = cred.getClientExtensionResults().prf || {};
+    let prf = ex.results && ex.results.first ? new Uint8Array(ex.results.first) : null;
+    if (!prf) { if (ex.enabled === false) throw new Error("このパスキーでは鍵を守れません（この端末は未対応）"); prf = (await prfGet(new Uint8Array(cred.rawId))).prf; }
+    if (!prf) throw new Error("このパスキーでは鍵を守れません（この端末は未対応）");
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const ct = new Uint8Array(await crypto.subtle.encrypt({name: "AES-GCM", iv}, await prfKey(prf), Sig.unhex(me.sk)));
+    const blob = {v: 1, iv: b64u(iv), ct: b64u(ct)};
+    store.set("jeni.kbak", blob); publish(K.kbak, blob); return true;
+  }
+  // 中継から自分の控え（封）を探す。見つからなければ、この端末の写しを置き直す（無料の中継は古いものを消すことがあるので）
+  const myBackup = pk => events.filter(e => e.kind === K.kbak && e.pubkey === pk).sort((a, b) => b.created_at - a.created_at)[0];
+  function backupKeep() { const b = store.get("jeni.kbak", null); if (me && b && !myBackup(me.pk) && online()) publish(K.kbak, b); }
+  async function passkeyRestore(wait = 8000) {
+    if (!passkeyOK()) throw new Error("この端末・ブラウザはパスキーに対応していません");
+    const {cred, prf} = await prfGet(null);
+    if (!prf) throw new Error("このパスキーでは戻せません（この端末は未対応）");
+    const pk = Sig.hex(new Uint8Array(cred.response.userHandle));
+    if (!/^[0-9a-f]{64}$/.test(pk)) throw new Error("jeni のパスキーではありません");
+    const t0 = Date.now(); let ev; while (!(ev = myBackup(pk)) && Date.now() - t0 < wait) await new Promise(r => setTimeout(r, 300));
+    if (!ev) throw new Error("控えが中継に見つかりません（つながる場所で、もう一度）");
+    const b = JSON.parse(ev.content);
+    const sk = Sig.hex(new Uint8Array(await crypto.subtle.decrypt({name: "AES-GCM", iv: ub64u(b.iv)}, await prfKey(prf), ub64u(b.ct))));
+    if (pkOf(sk) !== pk) throw new Error("鍵が合いません");
+    me = {sk, pk}; store.set("jeni.me", me); store.set("jeni.kbak", b); return me;
+  }
+
   root.JeniLive = {
     K, TAG, RELAYS, store, now,
     get me() { return me; }, newMe, importKey,
     get events() { return events; }, get pending() { return outbox.length; }, publish, sign, start, online, flush,
+    passkeyOK, passkeySave, passkeyRestore, backupKeep,
     sealTo, openFrom, sealWith, openWith, randHex: n => Sig.hex(crypto.getRandomValues(new Uint8Array(n))),
   };
 })(typeof globalThis !== "undefined" ? globalThis : this);
@@ -1430,7 +1481,7 @@ function home() {
   $("home").innerHTML = `
     ${LIVE ? `<div class="tbar"><span class="tag" title="出来事は署名して、複数の中継に置きます">試験運用</span><button type="button" class="reset" data-scan>QRを読む</button></div>` : `<div class="tbar"><span class="tag" title="ここでの出来事はこの端末の中だけで、どこにも送りません">テスト版（どこにも送らない）</span>
       <label>見ている人 <select id="who">${Object.values(P).map(x => `<option value="${x.pk}" ${x.pk === me ? "selected" : ""}>${esc(x.name)}${S.users[x.pk] && S.users[x.pk].member ? "" : "（まだ参加していない）"}</option>`).join("")}</select></label>
-      <button type="button" class="reset" data-reset>最初に戻す</button></div>`}
+      <button type="button" class="reset" data-reset>最初に戻す</button><button type="button" class="reset" data-firstrun>はじめての画面</button></div>`}
     <section class="me" aria-label="プロフィール">
       <div class="me-top"><div class="av" ${PICS[me] ? `style="background:url('${PICS[me]}') center/cover"` : ""}>${PICS[me] ? "" : esc(nameOf(me).slice(0, 1))}</div>
         <div><div class="me-name">${esc(nameOf(me))}</div><div class="me-line">${u.member ? esc((S.users[me] && S.users[me].line) || p.line) : "まだ参加していません"}</div></div>
@@ -1916,10 +1967,10 @@ function meCard(edit = false) {
       <div class="who-row"><span>あなたの記録 ${EV.filter(e => e.pubkey === me).length}件・写真など ${Object.values(S.cards).filter(c => c.by === me && MEDIA[c.id] && (MEDIA[c.id].img || MEDIA[c.id].src)).length}件</span><button type="button" class="pill" data-export>書き出す</button></div>
       ${LIVE ? `<div class="who-row"><span>ビットコインに刻んだ日 ${STAMPS ? Object.keys(STAMPS).length + "日分" : "（読み込み中・まだなし）"}</span></div>` : `<div class="who-row"><span>刻んだ要約 ${ANCHORS.length}日分${ANCHORS.length ? `（最後：${ANCHORS[ANCHORS.length - 1].root.slice(0, 8)}…・${ANCHORS[ANCHORS.length - 1].ids.length}件）` : ""}</span><button type="button" class="pill" data-anchor>いま刻む（見本）</button></div>`}
       <p class="sub" style="font-size:11px;margin:4px 0 0">書き出すと、記録と写真などを端末に保存できます（無料の置き場が消しても、自分で戻せるように）。毎日1回、ビットコインに刻みます。記録の中身（名前・カード・会話）はビットコインには書きません。刻むのは、その日までの記録すべての番号をまとめて計算した「指紋」のような64文字1つだけです。指紋から中身は分かりませんが、記録が1文字でも変わると指紋が合わなくなるので、「この記録はこの日にはもうあった」と、だれでも確かめられます。${LIVE ? "刻むのは GitHub の決まった仕事で、OpenTimestamps という無料の仕組みを通します。" : ""}</p></section>
-    ${LIVE ? `<section class="box"><h3>${icon("lock")} あなたの鍵</h3>${keySaved() ? "" : `<p class="sub warnc" style="margin:0 0 6px;font-size:12px">まだ鍵の控えを取っていません。</p>`}<p class="sub" style="margin:0;font-size:12px;line-height:1.7">鍵はこの端末の中だけにあります。端末をなくしたり、ブラウザの記録を消したりすると、控えがない限り戻せません。jeni の人が鍵をたずねることはありません。</p>
-      <div class="row2"><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵の控えを取る</button><button type="button" class="pill" data-scan>QRを読む</button></div></section>` : ""}
     ${(() => { const cs = Object.values(S.circles).filter(ci => ci.members.includes(me)); return cs.length ? `<section class="box"><h3>入っている仲間の輪</h3>${cs.map(ci => `<div class="who-row"><span>${esc(ci.name)}（${ci.members.length}人）${ci.by === me ? "・作った輪" : ""}</span>${ci.by === me ? "" : `<button type="button" class="pill" data-cleave="${ci.id}">抜ける</button>`}</div>${ci.by === me ? ci.members.filter(x => x !== me).map(x => `<div class="who-row" style="padding-left:12px">${whoTag(x)}<button type="button" class="link" data-cremove="${ci.id}:${x}">外す</button></div>`).join("") : ""}`).join("")}</section>` : ""; })()}
 ` : ""}
+    ${LIVE ? `<section class="box"><h3>${icon("lock")} あなたの鍵</h3>${pkOn() ? `<p class="sub" style="margin:0 0 6px;font-size:12px;color:var(--leaf);font-weight:700">パスキーで守っています</p>` : keySaved() ? "" : `<p class="sub warnc" style="margin:0 0 6px;font-size:12px">まだ鍵を守っていません。</p>`}<p class="sub" style="margin:0;font-size:12px;line-height:1.7">鍵はこの端末の中だけにあります。端末をなくしたり、ブラウザの記録を消したりすると、控えがない限り戻せません。jeni の人が鍵をたずねることはありません。</p>
+      <div class="row2"><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵を守る</button><button type="button" class="pill" data-scan>QRを読む</button></div></section>` : ""}
     ${u.member && edit ? `<section class="box form"><label class="fl">名前<input id="p-name" maxlength="40" value="${esc(nameOf(me))}"></label>
       <label class="fl">ひとこと<input id="p-line" maxlength="60" value="${esc(line)}"></label>
       <div class="row2"><label class="fl">プロフィールアイコン<input id="p-pic" type="file" accept="image/*"></label><label class="fl">カードの背景<input id="p-bg" type="file" accept="image/*"></label></div>
@@ -2453,9 +2504,13 @@ document.addEventListener("click", e => {
   if (q("[data-scan]")) return scanSheet();
   if (q("[data-scantext]")) { const t = ($("scan-t").value || "").trim(); scanStop(); closeOver(); return /^[0-9a-f]{16}$/.test(t) && sel && S.cards[sel] && S.cards[sel].by === me ? useCode(sel, t) : onScan(t); }
   if ((b = q("[data-vouch]"))) { const pk = b.dataset.vouch; emit(me, {t: "vouch", who: pk}); closeOver(); return toast(S.users[pk] && S.users[pk].member ? `${nameOf(pk)} さんが参加しました` : "認められませんでした（3人まで・もう参加している人は認められません）"); }
+  if (q("[data-firstrun]")) return startSheet();
   if (!LIVE && q("[data-start]")) { if (!($("st-name").value || "").trim()) return toast("名前を入れてください"); return keySheet(true); }
   if (!LIVE && q("[data-keysaved]")) { closeSheet(); return toast("見本：本物では、控えたことがこの端末に残り、赤い印が消えます"); }
-  if (!LIVE && (q("[data-keycopy]") || q("[data-startkey]") || q("[data-install]"))) return toast("見本：本物で動きます");
+  if (!LIVE && (q("[data-keycopy]") || q("[data-startkey]") || q("[data-install]") || q("[data-pkrestore]"))) return toast("見本：本物で動きます");
+  if (!LIVE && q("[data-pksave]")) { closeSheet(); return toast("見本：本物では Face ID などで確かめて、鍵をパスキーで守ります"); }
+  if (q("[data-pksave]")) { const b0 = q("[data-pksave]"); b0.disabled = true; LV.passkeySave(nameOf(me)).then(() => { closeSheet(); toast("パスキーで守りました"); }, e => { b0.disabled = false; toast(String((e && e.name === "NotAllowedError") ? "取りやめました" : (e && e.message) || "守れませんでした")); }); return; }
+  if (q("[data-pkrestore]")) { LV.passkeyRestore().then(() => { LV.store.set("jeni.keysaved", true); afterStart(); toast("戻しました"); }, e => toast(String((e && e.name === "NotAllowedError") ? "取りやめました" : (e && e.message) || "戻せませんでした"))); return; }
   if (q("[data-start]")) { const name = ($("st-name").value || "").trim().slice(0, 40); if (!name) return toast("名前を入れてください"); LV.newMe(); LV.store.set("jeni.keysaved", false); emit(me = LV.me.pk, {t: "profile", name, line: ""}); return afterStart(true); }
   if (q("[data-startsougo]")) { const sm = LV.store.get("sougo.me", null); if (!sm || !LV.importKey(sm.sk)) return toast("鍵を読めませんでした"); me = LV.me.pk; if (!(S.users[me] && S.users[me].name)) emit(me, {t: "profile", name: sm.name || "なまえ", line: ""}); return afterStart(); }
   if (q("[data-startkey]")) { if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); LV.store.set("jeni.keysaved", true); return afterStart(); }
@@ -2855,24 +2910,30 @@ function startSheet() {
     ${!STANDALONE() ? `<p class="sub warnc" style="font-size:12px;margin:0">${ios ? "iPhone・iPad は、先に Safari の共有ボタン →「ホーム画面に追加」をして、そのアイコンから始めてください。Safari のままだと、しばらく開かないうちに端末の中の鍵が消えることがあり、あとから追加したアイコンとは別の人になります。" : "ホーム画面に置くと、アプリのように使えます（つながらない場所でも開けます）。置くなら、始める前に。"}</p>${INSTALL ? `<button type="button" class="pill go" data-install style="justify-self:start">ホーム画面に置く</button>` : ""}` : ""}
     <ol class="ess"><li><b>名前はみんなに見えます。</b>本名ではなく、ふだんの呼び名がおすすめです（あとで変えられます）。</li>
       <li><b>出したカードや記録は消せません。</b>試験運用でも本番に引き継ぎます（毎日、記録の指紋をビットコインに刻むので、あとから書き換えもできません）。</li>
-      <li><b>鍵はこの端末の中だけ。</b>始めたらすぐ、控えを取ります（なくすと、だれにも戻せません）。</li></ol>
+      <li><b>鍵はこの端末の中だけ。</b>始めたらすぐ、Face ID などのパスキーで守ります（守らずに端末をなくすと、だれにも戻せません）。</li></ol>
     <label class="fl">名前<input id="st-name" maxlength="40" placeholder="例：はなこ"></label>
     <button type="button" class="big" data-start>始める</button>
-    <details class="more"><summary>前の鍵で続ける（別の端末から・ほかのアプリの鍵）</summary><label class="fl">控えた鍵<input id="st-key" autocomplete="off" spellcheck="false" placeholder="64文字"></label><button type="button" class="pill go" data-startkey>この鍵で続ける</button>
+    <details class="more"><summary>前に使っていた人（パスキー・控えた鍵で戻す）</summary>
+      <button type="button" class="big ghost" data-pkrestore>Face ID・パスキーで戻す</button><label class="fl">控えた鍵<input id="st-key" autocomplete="off" spellcheck="false" placeholder="64文字"></label><button type="button" class="pill go" data-startkey>この鍵で続ける</button>
       ${sougo && sougo.sk ? `<button type="button" class="pill" data-startsougo style="justify-self:start">相互レビューと同じ鍵で始める</button>` : ""}
       <p class="sub" style="font-size:11px">${icon("lock")} 鍵を入れるのは、自分で控えた鍵だけにしてください。jeni の人がたずねることはありません。</p></details>`);
 }
 // 鍵の控え：始めたらすぐ。取るまでは、わたしのカードの印に小さな赤い印
-const keySaved = () => !!(LIVE && LV.store.get("jeni.keysaved", false));
+const keySaved = () => !!(LIVE && (LV.store.get("jeni.keysaved", false) || LV.store.get("jeni.kbak", null)));
 const SAMPLE_SK = "5a1e".repeat(16);   // 見本の画面で見せる鍵（本物ではない）
+const pkOn = () => !!(LIVE && LV.store.get("jeni.kbak", null));
 function keySheet(first) {
-  const sk = LIVE ? LV.me.sk : SAMPLE_SK;
-  openSheet(`${first ? "" : `<button type="button" class="back" data-close>${icon("back")}戻る</button>`}<h2 class="rh">${first ? "はじめに：鍵の控え" : "鍵の控え"}</h2>
-    <p class="sub" style="line-height:1.8">この64文字が、jeni でのあなた自身です。端末をなくしたり、ブラウザの記録を消したりしたときは、これがないと戻せません。紙に書くか、パスワード管理アプリに保存してください。</p>
-    <p class="keyv">${sk}</p>${LIVE ? "" : `<p class="sub" style="font-size:11px;margin:0">（見本の鍵です。本物では、あなただけの鍵がここに出ます）</p>`}
-    <p class="sub warnc" style="font-size:12px;margin:0">${icon("lock")} これを知った人は、だれでもあなたとして使えます。人に見せたり、送ったり、写真に撮ってだれかと共有したりしないでください。jeni の人がたずねることはありません。</p>
-    <div class="row2"><button type="button" class="big ghost" data-keycopy>写す</button><button type="button" class="big" data-keysaved>控えました</button></div>
-    ${first ? `<button type="button" class="link" data-close style="justify-self:center">あとで（印が残ります）</button>` : ""}`);
+  const sk = LIVE ? LV.me.sk : SAMPLE_SK, on = pkOn();
+  openSheet(`${first ? "" : `<button type="button" class="back" data-close>${icon("back")}戻る</button>`}<h2 class="rh">${first ? "はじめに：鍵を守る" : "鍵を守る"}</h2>
+    <p class="sub" style="line-height:1.8">jeni でのあなた自身は、この端末の中の「鍵」です。端末をなくしたり、ブラウザの記録を消したりしても戻せるように、守っておきます。</p>
+    ${on ? `<p class="sub" style="color:var(--leaf);font-weight:700;margin:0">${icon("lock")} パスキーで守っています。機種を変えても、同じパスキー（Face ID など）で戻せます。</p>`
+      : `<button type="button" class="big" data-pksave>Face ID・パスキーで守る（おすすめ）</button>
+    <p class="sub" style="font-size:12px;margin:-4px 0 0;line-height:1.7">パスキーは、iPhone なら iCloud キーチェーン、Android なら Google パスワード マネージャーに入ります。機種を変えても、同じアカウントなら Face ID などで戻せます。そのアカウントに入れなくなると戻せないので、心配なら下の控えも。</p>`}
+    <details class="more"><summary>64文字の控えも取る（紙・パスワード管理アプリ）</summary>
+      <p class="keyv">${sk}</p>${LIVE ? "" : `<p class="sub" style="font-size:11px;margin:0">（見本の鍵です。本物では、あなただけの鍵がここに出ます）</p>`}
+      <p class="sub warnc" style="font-size:12px;margin:0">${icon("lock")} これを知った人は、だれでもあなたとして使えます。人に見せたり、送ったり、写真に撮ってだれかと共有したりしないでください。jeni の人がたずねることはありません。</p>
+      <div class="row2"><button type="button" class="big ghost" data-keycopy>写す</button><button type="button" class="big" data-keysaved>控えました</button></div></details>
+    ${first ? `<button type="button" class="link" data-close style="justify-self:center">あとで（守るまで、わたしのカードの印に赤い点）</button>` : ""}`);
 }
 function afterStart(fresh = false) {
   me = LV.me.pk; READ_LOADED = false; liveRecompute(); closeSheet(); home();
@@ -2888,7 +2949,7 @@ function liveBoot() {
   $("guide").hidden = true; document.title = "jeni 試験運用";
   document.addEventListener("click", () => setTimeout(liveSaveLocal, 0));
   LV.start(() => { liveRecompute(); if (PENDING && LV.me) { const [k, v] = PENDING; if (["join", "pay", "card", "tip", "hold"].includes(k)) { PENDING = null; handleLink(k, v); } } liveRefresh(); });
-  liveRecompute(); home(); netBadge(); loadStamps(); setInterval(netBadge, 3000); setInterval(() => { if (LV.me) liveRefresh(); }, 30000);
+  liveRecompute(); home(); netBadge(); loadStamps(); setInterval(netBadge, 3000); setInterval(() => LV.backupKeep(), 60000); setInterval(() => { if (LV.me) liveRefresh(); }, 30000);
   const h = location.hash.match(/#(me|card|pay|used|join|genesis|tip|hold)=([0-9a-zA-Z.]+)/);
   if (h) { history.replaceState(null, "", location.pathname); if (!LV.me) { PENDING = [h[1], h[2]]; return startSheet(); } setTimeout(() => handleLink(h[1], h[2]), 600); }
   else if (!LV.me) startSheet();
