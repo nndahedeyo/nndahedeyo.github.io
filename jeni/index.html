@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true;</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#f3ecdd"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true;</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
 // 公式の試験ベクトル（tests/sig.test.js）で正しさを確かめている。
 "use strict";
 (function (root) {
@@ -205,6 +205,7 @@
     return ev;
   }
   function flush() {
+    if (root.navigator && root.navigator.onLine === false) return;   // つながっていないあいだは控えておく
     const os = sockets.filter(s => s.readyState === 1); if (!os.length) return;
     const ready = outbox.filter(e => e.sig);
     for (const ev of ready) for (const s of os) { try { s.send(JSON.stringify(["EVENT", ev])); } catch (e) {} }
@@ -224,6 +225,7 @@
     ws.onerror = () => {};
     sockets.push(ws);
   }
+  try { root.addEventListener && root.addEventListener("online", () => { for (const s of sockets.slice()) try { s.close(); } catch (e) {} }); } catch (e) {}
   function start(cb) {
     onChange = cb || onChange;
     for (const e of events) if (e.pubkey === (me && me.pk)) lastAt = Math.max(lastAt, e.created_at);
@@ -242,7 +244,7 @@
   root.JeniLive = {
     K, TAG, RELAYS, store, now,
     get me() { return me; }, newMe, importKey,
-    get events() { return events; }, publish, sign, start, online, flush,
+    get events() { return events; }, get pending() { return outbox.length; }, publish, sign, start, online, flush,
     sealTo, openFrom, sealWith, openWith, randHex: n => Sig.hex(crypto.getRandomValues(new Uint8Array(n))),
   };
 })(typeof globalThis !== "undefined" ? globalThis : this);
@@ -293,7 +295,7 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 .bal{margin-left:auto;display:flex;align-items:center;gap:6px;border:0;background:none;padding:4px 0;color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;font-size:17px}
 .bal small{font-size:12px;color:var(--mute);font-weight:600}
 .me-mid{display:flex;justify-content:flex-end;align-items:center;gap:8px;min-height:0}
-.pmark{border:0;background:none;padding:4px;color:var(--gold);border-radius:10px;animation:glow2 3.6s ease-in-out infinite}
+.pmark{position:relative;border:0;background:none;padding:4px;color:var(--gold);border-radius:10px;animation:glow2 3.6s ease-in-out infinite}
 .pmark svg{display:block;overflow:visible}
 .pmark .halo{stroke:transparent}
 @keyframes glow2{0%,100%{filter:drop-shadow(0 0 1px rgba(226,182,78,.3))}50%{filter:drop-shadow(0 0 6px rgba(226,182,78,.9))}}
@@ -308,6 +310,9 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 .me-r .bal{margin-left:0}
 .comm{display:flex;gap:4px}
 .cb{position:relative;width:30px;height:30px;border:0;border-radius:999px;background:transparent;color:var(--mute);display:grid;place-items:center;padding:0}.cb svg.i{width:17px;height:17px}
+.pmark .kdot{position:absolute;top:2px;right:2px;width:7px;height:7px;border-radius:50%;background:#e0604f;animation:none}
+.ess{margin:0;padding:12px 14px 12px 30px;border-radius:14px;background:var(--sunk);font-size:13px;line-height:1.75;text-align:left}.ess li+li{margin-top:4px}
+.keyv{font:600 13px/1.6 ui-monospace,monospace;word-break:break-all;user-select:all;background:var(--sunk);padding:10px;border-radius:10px;margin:0}
 .cb b{position:absolute;top:5px;right:5px;width:5px;height:5px;border-radius:50%;background:#e0604f}
 .menu button{aspect-ratio:1;border:0;border-radius:12px;background:transparent;color:var(--mute);display:grid;place-items:center;padding:0}
 .menu button[aria-pressed="true"]{background:var(--leaf);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18)}
@@ -1431,7 +1436,7 @@ function home() {
         <div><div class="me-name">${esc(nameOf(me))}</div><div class="me-line">${u.member ? esc((S.users[me] && S.users[me].line) || p.line) : "まだ参加していません"}</div></div>
         <div class="me-r"><button type="button" class="bal" data-rules title="jeni のきまり">${coin()}<span id="balv">${u.bal.toLocaleString("ja-JP")}</span><small>jeni</small></button>
           ${u.member ? `<div class="comm">${FX.map(f => { const n = f.dot(); return `<button type="button" class="cb" data-fx="${f.k}" aria-label="${f.l}${n ? "（新しい知らせあり）" : ""}" title="${f.l}">${icon(f.i)}${n ? `<b aria-hidden="true"></b>` : ""}</button>`; }).join("")}</div>` : ""}</div></div>
-      <div class="me-mid"><div class="mods" role="group" aria-label="しぼり（いくつでも重ねられます）">${[["mine", "hold", "持っている"], ["fav", "fav", "お気に入り"], ["near", "near", "近く"]].map(([k, i, l]) => `<button type="button" data-mod="${k}" aria-pressed="${MOD[k]}">${icon(i)}<span>${l}</span></button>`).join("")}</div><button type="button" class="pmark" data-me aria-label="わたしのカード（QR）">${gmark(56, {halo: true})}</button></div>
+      <div class="me-mid"><div class="mods" role="group" aria-label="しぼり（いくつでも重ねられます）">${[["mine", "hold", "持っている"], ["fav", "fav", "お気に入り"], ["near", "near", "近く"]].map(([k, i, l]) => `<button type="button" data-mod="${k}" aria-pressed="${MOD[k]}">${icon(i)}<span>${l}</span></button>`).join("")}</div><button type="button" class="pmark" data-me aria-label="わたしのカード（QR）${LIVE && LV.me && !keySaved() ? "・鍵の控えがまだです" : ""}">${gmark(56, {halo: true})}${LIVE && LV.me && !keySaved() ? `<b class="kdot" aria-hidden="true"></b>` : ""}</button></div>
       <div class="mcap" aria-live="polite">${FIELDS.find(f => f[0] === field)[1]}${MOD.mine ? "・持っている" : ""}${MOD.fav ? "・お気に入り" : ""}${MOD.near ? "・近い順" : ""}・${list.length}枚${field === "circle" ? "・輪の人だけ" : ""}</div>
       <div class="menu-w"><nav class="menu" aria-label="表示するカード">${FIELDS.map(([k, l]) => `<button type="button" data-f="${k}" aria-pressed="${field === k}" aria-label="${l}" title="${l}">${icon(k)}</button>`).join("")}</nav><button type="button" class="make" data-make aria-label="カードを作る・その場で売る" title="カードを作る・その場で売る">${icon("plus")}</button></div>
     </section>
@@ -1540,7 +1545,9 @@ function openSheet(html, keep = false) {
 function closeSheet() {
   $("sheet").querySelectorAll("video,audio").forEach(m => m.pause()); for (const k in VCH) { VCH[k].dispose(); delete VCH[k]; }
   clearInterval(saleTimer); $("sheet").classList.remove("feed"); $("sheet").hidden = true; $("sheet").innerHTML = ""; document.body.style.overflow = ""; sel = null; home();
+  if (KEYNEXT) { KEYNEXT = false; if (LIVE && LV.me && !keySaved()) setTimeout(() => keySheet(true), 250); }   // 参加の知らせを閉じたら、鍵の控え
 }
+let KEYNEXT = false;
 let tt;
 const toast = m => { const t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(tt); tt = setTimeout(() => t.classList.remove("on"), 2200); };
 
@@ -1909,8 +1916,8 @@ function meCard(edit = false) {
       <div class="who-row"><span>あなたの記録 ${EV.filter(e => e.pubkey === me).length}件・写真など ${Object.values(S.cards).filter(c => c.by === me && MEDIA[c.id] && (MEDIA[c.id].img || MEDIA[c.id].src)).length}件</span><button type="button" class="pill" data-export>書き出す</button></div>
       ${LIVE ? `<div class="who-row"><span>ビットコインに刻んだ日 ${STAMPS ? Object.keys(STAMPS).length + "日分" : "（読み込み中・まだなし）"}</span></div>` : `<div class="who-row"><span>刻んだ要約 ${ANCHORS.length}日分${ANCHORS.length ? `（最後：${ANCHORS[ANCHORS.length - 1].root.slice(0, 8)}…・${ANCHORS[ANCHORS.length - 1].ids.length}件）` : ""}</span><button type="button" class="pill" data-anchor>いま刻む（見本）</button></div>`}
       <p class="sub" style="font-size:11px;margin:4px 0 0">書き出すと、記録と写真などを端末に保存できます（無料の置き場が消しても、自分で戻せるように）。${LIVE ? "記録は毎日1回、GitHub の決まった仕事が中継から集め、OpenTimestamps を通してビットコインに刻みます（費用なし・だれでも確かめられます）。" : "要約は1日1回、その日までの記録をまとめた1つの数字をビットコインに刻みます（費用なし）。"}どのカードも、刻んだ記録に入っていることを示せるので、日付をさかのぼった書き換えができません。</p></section>
-    ${LIVE ? `<section class="box"><h3>${icon("lock")} あなたの鍵</h3><p class="sub" style="margin:0;font-size:12px;line-height:1.7">鍵はこの端末の中だけにあります。端末をなくしたり、ブラウザの記録を消したりすると戻せません。書き出して、紙やパスワード管理アプリなど、人に見られない所に保管してください。jeni の人が鍵をたずねることはありません。</p>
-      <div class="row2"><button type="button" class="pill" data-keyexp>鍵を書き出す</button><button type="button" class="pill" data-scan>QRを読む</button></div><div id="keybox"></div></section>` : ""}
+    ${LIVE ? `<section class="box"><h3>${icon("lock")} あなたの鍵</h3>${keySaved() ? "" : `<p class="sub warnc" style="margin:0 0 6px;font-size:12px">まだ鍵の控えを取っていません。</p>`}<p class="sub" style="margin:0;font-size:12px;line-height:1.7">鍵はこの端末の中だけにあります。端末をなくしたり、ブラウザの記録を消したりすると、控えがない限り戻せません。jeni の人が鍵をたずねることはありません。</p>
+      <div class="row2"><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵の控えを取る</button><button type="button" class="pill" data-scan>QRを読む</button></div></section>` : ""}
     ${(() => { const cs = Object.values(S.circles).filter(ci => ci.members.includes(me)); return cs.length ? `<section class="box"><h3>入っている仲間の輪</h3>${cs.map(ci => `<div class="who-row"><span>${esc(ci.name)}（${ci.members.length}人）${ci.by === me ? "・作った輪" : ""}</span>${ci.by === me ? "" : `<button type="button" class="pill" data-cleave="${ci.id}">抜ける</button>`}</div>${ci.by === me ? ci.members.filter(x => x !== me).map(x => `<div class="who-row" style="padding-left:12px">${whoTag(x)}<button type="button" class="link" data-cremove="${ci.id}:${x}">外す</button></div>`).join("") : ""}`).join("")}</section>` : ""; })()}
 ` : ""}
     ${u.member && edit ? `<section class="box form"><label class="fl">名前<input id="p-name" maxlength="40" value="${esc(nameOf(me))}"></label>
@@ -2445,10 +2452,13 @@ document.addEventListener("click", e => {
   if (q("[data-scan]")) return scanSheet();
   if (q("[data-scantext]")) { const t = ($("scan-t").value || "").trim(); scanStop(); closeOver(); return /^[0-9a-f]{16}$/.test(t) && sel && S.cards[sel] && S.cards[sel].by === me ? useCode(sel, t) : onScan(t); }
   if ((b = q("[data-vouch]"))) { const pk = b.dataset.vouch; emit(me, {t: "vouch", who: pk}); closeOver(); return toast(S.users[pk] && S.users[pk].member ? `${nameOf(pk)} さんが参加しました` : "認められませんでした（3人まで・もう参加している人は認められません）"); }
-  if (q("[data-start]")) { const name = ($("st-name").value || "").trim().slice(0, 40); if (!name) return toast("名前を入れてください"); LV.newMe(); emit(me = LV.me.pk, {t: "profile", name, line: ""}); return afterStart(); }
+  if (q("[data-start]")) { const name = ($("st-name").value || "").trim().slice(0, 40); if (!name) return toast("名前を入れてください"); LV.newMe(); LV.store.set("jeni.keysaved", false); emit(me = LV.me.pk, {t: "profile", name, line: ""}); return afterStart(true); }
   if (q("[data-startsougo]")) { const sm = LV.store.get("sougo.me", null); if (!sm || !LV.importKey(sm.sk)) return toast("鍵を読めませんでした"); me = LV.me.pk; if (!(S.users[me] && S.users[me].name)) emit(me, {t: "profile", name: sm.name || "なまえ", line: ""}); return afterStart(); }
-  if (q("[data-startkey]")) { if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); return afterStart(); }
-  if (q("[data-keyexp]")) { const kb = $("keybox"); kb.innerHTML = `<p class="sub warnc" style="font-size:12px">この64文字があれば、だれでもあなたとして使えます。人に見せたり、送ったりしないでください。</p><p style="font:600 13px/1.6 ui-monospace,monospace;word-break:break-all;user-select:all;background:var(--sunk);padding:8px;border-radius:8px">${LV.me.sk}</p>`; return; }
+  if (q("[data-startkey]")) { if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); LV.store.set("jeni.keysaved", true); return afterStart(); }
+  if (q("[data-keyexp]")) return keySheet(false);
+  if (q("[data-keycopy]")) { try { navigator.clipboard.writeText(LV.me.sk).then(() => toast("写しました。パスワード管理アプリなどに貼って保存してください"), () => toast("写せませんでした。長押しで選んで写してください")); } catch (x) { toast("長押しで選んで写してください"); } return; }
+  if (q("[data-keysaved]")) { LV.store.set("jeni.keysaved", true); closeSheet(); home(); return toast("控えを取りました。大切に保管してください"); }
+  if (q("[data-install]")) { if (INSTALL) { INSTALL.prompt(); INSTALL = null; } return; }
   if ((b = q("[data-copy]"))) { try { navigator.clipboard.writeText(b.dataset.copy).then(() => toast("コピーしました"), () => toast("長押しで選んでコピーしてください")); } catch (x) { toast("長押しで選んでコピーしてください"); } return; }
   if ((b = q("[data-joinas]"))) { const id = b.dataset.joinas, by = me; closeOver(); me = AS("yuzu"); emit(me, {t: "join", invite: id, by, code: INV[id]}); if (U().member) { home(); return joined(); } return toast("参加できませんでした"); }
   if (q("[data-anchor]")) { const a = anchorNow(); toast(a ? `${a.day}日目の要約を刻みました（見本：本物では OpenTimestamps を通してビットコインへ）` : "新しい記録がありません"); return meCard(); }
@@ -2675,7 +2685,8 @@ function liveRefresh() {
     netBadge(); qrSync();
   }, 150);
 }
-function netBadge() { const t = document.querySelector(".tbar .tag"); if (t) { const on = LV.online(); t.textContent = on ? "試験運用・つながっています" : "試験運用・つないでいます…"; t.classList.toggle("on", on); } }
+// つながり：つながらない場所でも使える。出したものはこの端末に控え、つながったら届ける
+function netBadge() { const t = document.querySelector(".tbar .tag"); if (t) { const on = LV.online() && navigator.onLine !== false, n = LV.pending; t.textContent = on ? (n ? `試験運用・送っています（${n}）` : "試験運用・つながっています") : n ? `つながっていません・まだ届いていないもの ${n}（つながったら届きます）` : (navigator.onLine === false ? "つながっていません（見る・出すはできます）" : "試験運用・つないでいます…"); t.classList.toggle("on", on); } }
 // 出す：封が要るもの（輪のカード・輪の会話）は封をしてから
 async function liveCircleCard(c, media) {
   const k = CK[c.circle]; if (!k) { toast("輪のかぎがまだ届いていません"); return null; }
@@ -2834,19 +2845,38 @@ function joinWith(inviteId, code) {
 // はじめて開いた人：名前を決めて、この端末にかぎを作る（前のかぎで続けることもできる）
 function startSheet() {
   const sougo = LV.store.get("sougo.me", null);
-  openSheet(`<div class="done">${gmark(64, {halo: true})}<h2 class="rh">jeni（試験運用）</h2>
-    <p class="sub">名前を決めると、この端末の中に、あなただけの鍵が作られます。鍵はどこにも送りません。なくすと戻せないので、あとで「わたしのカード」から書き出して、大切に保管してください。</p></div>
-    <label class="fl">名前（あとで変えられます）<input id="st-name" maxlength="40" placeholder="例：はなこ"></label>
+  const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  openSheet(`<div class="done">${gmark(64, {halo: true})}<h2 class="rh">jeni（試験運用）</h2></div>
+    ${!STANDALONE() ? `<p class="sub warnc" style="font-size:12px;margin:0">${ios ? "iPhone・iPad は、先に Safari の共有ボタン →「ホーム画面に追加」をして、そのアイコンから始めてください。Safari のままだと、しばらく開かないうちに端末の中の鍵が消えることがあり、あとから追加したアイコンとは別の人になります。" : "ホーム画面に置くと、アプリのように使えます（つながらない場所でも開けます）。置くなら、始める前に。"}</p>${INSTALL ? `<button type="button" class="pill go" data-install style="justify-self:start">ホーム画面に置く</button>` : ""}` : ""}
+    <ol class="ess"><li><b>名前はみんなに見えます。</b>本名ではなく、ふだんの呼び名がおすすめです（あとで変えられます）。</li>
+      <li><b>出したカードや記録は消せません。</b>試験運用でも、毎日ビットコインに刻まれ、本番に引き継ぎます。</li>
+      <li><b>鍵はこの端末の中だけ。</b>始めたらすぐ、控えを取ります（なくすと、だれにも戻せません）。</li></ol>
+    <label class="fl">名前<input id="st-name" maxlength="40" placeholder="例：はなこ"></label>
     <button type="button" class="big" data-start>始める</button>
-    ${sougo && sougo.sk ? `<button type="button" class="big ghost" data-startsougo>相互レビューと同じ鍵で始める</button>` : ""}
-    <details class="more"><summary>前の鍵で続ける（別の端末から）</summary><label class="fl">書き出した鍵<input id="st-key" autocomplete="off" spellcheck="false" placeholder="64文字"></label><button type="button" class="pill go" data-startkey>この鍵で続ける</button>
-      <p class="sub" style="font-size:11px">${icon("lock")} 鍵を入れるのは、自分で書き出した鍵だけにしてください。jeni の人がたずねることはありません。</p></details>`);
+    <details class="more"><summary>前の鍵で続ける（別の端末から・ほかのアプリの鍵）</summary><label class="fl">控えた鍵<input id="st-key" autocomplete="off" spellcheck="false" placeholder="64文字"></label><button type="button" class="pill go" data-startkey>この鍵で続ける</button>
+      ${sougo && sougo.sk ? `<button type="button" class="pill" data-startsougo style="justify-self:start">相互レビューと同じ鍵で始める</button>` : ""}
+      <p class="sub" style="font-size:11px">${icon("lock")} 鍵を入れるのは、自分で控えた鍵だけにしてください。jeni の人がたずねることはありません。</p></details>`);
 }
-function afterStart() {
+// 鍵の控え：始めたらすぐ。取るまでは、わたしのカードの印に小さな赤い印
+const keySaved = () => !!(LIVE && LV.store.get("jeni.keysaved", false));
+function keySheet(first) {
+  openSheet(`${first ? "" : `<button type="button" class="back" data-close>${icon("back")}戻る</button>`}<h2 class="rh">${first ? "はじめに：鍵の控え" : "鍵の控え"}</h2>
+    <p class="sub" style="line-height:1.8">この64文字が、jeni でのあなた自身です。端末をなくしたり、ブラウザの記録を消したりしたときは、これがないと戻せません。紙に書くか、パスワード管理アプリに保存してください。</p>
+    <p class="keyv">${LV.me.sk}</p>
+    <p class="sub warnc" style="font-size:12px;margin:0">${icon("lock")} これを知った人は、だれでもあなたとして使えます。人に見せたり、送ったり、写真に撮ってだれかと共有したりしないでください。jeni の人がたずねることはありません。</p>
+    <div class="row2"><button type="button" class="big ghost" data-keycopy>写す</button><button type="button" class="big" data-keysaved>控えました</button></div>
+    ${first ? `<button type="button" class="link" data-close style="justify-self:center">あとで（印が残ります）</button>` : ""}`);
+}
+function afterStart(fresh = false) {
   me = LV.me.pk; READ_LOADED = false; liveRecompute(); closeSheet(); home();
+  if (fresh && !keySaved()) { if (PENDING) KEYNEXT = true; else setTimeout(() => keySheet(true), 300); }
   if (PENDING) { const [k, v] = PENDING; PENDING = null; setTimeout(() => handleLink(k, v), 300); }
 }
+let INSTALL = null;   // ホーム画面に置く（置ける端末だけ）
+const STANDALONE = () => { try { return matchMedia("(display-mode: standalone)").matches || navigator.standalone === true; } catch (x) { return false; } };
 function liveBoot() {
+  if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) navigator.serviceWorker.register("sw.js").catch(() => {});
+  addEventListener("beforeinstallprompt", ev => { ev.preventDefault(); INSTALL = ev; });
   me = LV.me ? LV.me.pk : "0".repeat(64);
   $("guide").hidden = true; document.title = "jeni 試験運用";
   document.addEventListener("click", () => setTimeout(liveSaveLocal, 0));
