@@ -478,7 +478,7 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 .over .x{z-index:3;position:absolute;right:max(12px,env(safe-area-inset-right,0px));top:8px;width:36px;height:36px;border:0;background:none;color:var(--mute);font-size:22px}
 .bigimg{width:100%;border-radius:14px;display:block}
 .qth{position:relative;overflow:visible}.qth.got{animation:qgot 1.6s ease both}
-.qth .qsp{position:absolute;left:50%;top:50%;width:128%;z-index:1;transform:translate(-50%,-50%);color:#e2b64e;opacity:0;pointer-events:none;transition:opacity .2s}.qth .qsp svg{display:block;width:100%;height:auto;overflow:visible}.qth .qsp .halo{stroke:rgba(0,0,0,.35)}
+.qth{overflow:hidden}.qth .qsp{position:absolute;left:50%;top:50%;width:86%;z-index:1;transform:translate(-50%,-50%);color:#e2b64e;opacity:0;pointer-events:none;transition:opacity .2s}.qth .qsp svg{display:block;width:100%;height:auto;overflow:visible}.qth .qsp .halo{stroke:rgba(0,0,0,.35)}
 .qth .ln{stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset .25s ease}.qth.drawing .qsp,.qth.drawn .qsp{opacity:1}.qth.drawing .ln{stroke-dashoffset:0;transition:stroke-dashoffset 1s linear}.qth.drawn .ln{stroke-dashoffset:0}
 @keyframes qgot{0%{box-shadow:0 0 0 0 rgba(226,182,78,0)}35%{box-shadow:0 0 0 3px #e2b64e,0 0 22px rgba(226,182,78,.95)}100%{box-shadow:0 0 0 2px #e2b64e,0 0 10px rgba(226,182,78,.5)}}
 .qdone{margin:0;font-size:15px;font-weight:700;color:var(--ink)}.qwatch .qhead{margin-bottom:4px}.done.qd{padding-top:4px}
@@ -644,12 +644,13 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 //  2 持つ　　：持つと、カードに書かれたものを受け取れる。作った人から持つと、値段の分の jeni が作った人へ。値段はずっと変わらない
 //             （デジタルは元のデータを何度でも。現物はそのものを1回。受け取るとなくなるものは「使った」になる）
 //  3 譲る　　：数に限りのあるカードは、持っている人から同じ値段で譲り受ける。jeni は手放した人へ
-//  4 投げ銭　：半分は作った人へ、半分は持っている人へ（枚数に応じて）。受け取るとなくなるもの（数に限りのあるカード）と、つなぐカードは全額が作った人へ
+//  4 投げ銭　：半分は作った人へ、半分は持っている人へ（枚数に応じて）。受け取るとなくなるもの（数に限りのあるカード）と、お店・会社や団体は全額が作った人へ。
+//             プロジェクトは、半分を自分のカードをつないで育てた人で等しく分ける（版2から）
 //  5 上限　　：同じカードは3枚まで（無料のカードは1枚まで）。使うか贈ると、また持てる
 "use strict";
 (function (root) {
   const R = {
-    version: 1,         // きまりの版。出来事には {v: 版} を付ける。版のない出来事は 1 とみなす。知らない（新しすぎる）版は読まない
+    version: 2,         // きまりの版（2：プロジェクトへの投げ銭の半分は、自分のカードをつないだ人へ）。出来事には {v: 版} を付ける。版のない出来事は 1 とみなす。知らない（新しすぎる）版は読まない
     start: 1000,        // 参加したときに届く jeni（配る量は使われ方を見て変わることがある。変わるときも全員に同じきまり）
     vouchMax: 3,        // 1人が認められる人数
     capPaid: 3,         // 同じカードを持てる数
@@ -953,6 +954,8 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
         if (!me.member || e.pubkey === card.by || !int(c.amount, 1, R.tipMax) || me.bal < c.amount) continue;   // 自分のカードには投げ銭しない
         const holders = {};
         if (card.supply == null && !BUNDLE.includes(card.kind)) for (const x of card.copies) if (!x.used && x.vis !== "lock") holders[x.owner] = (holders[x.owner] || 0) + 1;
+        // 版2から：プロジェクトは、自分のカードをつないで育てた人（作った人のほか）で半分を等しく分ける。仲間になっただけの人には分けない
+        if (card.kind === "project" && (c.v || 1) >= 2) for (const it of card.items) if (it.by !== card.by && U(it.by).member) holders[it.by] = 1;
         const n = Object.values(holders).reduce((a, b) => a + b, 0);
         me.bal -= c.amount;
         let toCreator = c.amount;
@@ -1558,14 +1561,22 @@ function holdEmit(c, extra = {}) {
   return LV.sealTo(c.by, {card: c.id}, "jeni-ph").then(sealed => { emit(me, {t: "phold", to: c.by, amount: c.price, sealed}); PHD[sealed] = {card: c.id}; liveRecompute(); });
 }
 const PHD = {};   // 開けた「鍵をかけて持った」封（封の文字 → どのカード）
+// 投げ銭の行き先（短く）
+const growers = c => c.kind === "project" ? [...new Set((c.items || []).filter(it => it.by !== c.by).map(it => it.by))] : [];
+function tipTo(c) {
+  const by = esc(nameOf(c.by));
+  if (c.kind === "project") { const g = growers(c).length; return g ? `半分は ${by} さんへ、半分はカードをつないで育てた${g}人へ` : `全額 ${by} さんへ（カードをつないで育てた人が出ると、半分はその人たちへ）`; }
+  if (c.supply != null || KEEP[c.kind] || !c.copies.some(x => !x.used && x.vis !== "lock")) return `全額 ${by} さんへ`;
+  return "半分ずつ作った人と持っている人へ";
+}
 function flowLine(c) {
   const by = esc(nameOf(c.by)), lim = c.supply != null;
   if (lim && !c.left) return `譲り受けると ${c.price} jeni → 手放した人へ・いま${c.queue.length}人が順番待ち`;
-  if (KEEP[c.kind]) return `${KEEP[c.kind][1]}と、新しくつながったカードの知らせが届きます。無料で、いつでもやめられます・投げ銭は全額 ${by} さんへ`;
+  if (KEEP[c.kind]) return `${KEEP[c.kind][1]}と、新しくつながったカードの知らせが届きます。無料で、いつでもやめられます・投げ銭は${tipTo(c)}`;
   const share = c.copies.some(x => !x.used && x.vis !== "lock");
   const pay = c.price ? `持つと ${c.price} jeni → ${by} さんへ` : "無料で持てます（1人1枚）";
   if (c.kind === "app") return `${pay}・持っているあいだ、このアプリを使えます`;
-  return `${pay}・投げ銭は${lim || !share ? `全額 ${by} さんへ` : "半分ずつ作った人と持っている人へ"}`;
+  void lim; void share; return `${pay}・投げ銭は${tipTo(c)}`;
 }
 // 長押しで決める（押しているあいだ、ボタンが満ちていく）
 // プロフィールアイコン：カードと同じ角の丸みと質感の、角丸の四角。名前の前に置く（将来、ここを押して送る相手を選べるように）
@@ -1825,13 +1836,13 @@ function redeemSheet(id) {
   emit(me, {t: "redeem", card: id, lock: sha256hex(code), until: clock + 300});
   RD = {id, code, holder: me};
   const evt = c.kind === "event" || c.kind === "service";
-  openOver(`<h2 class="rh">QRで${evt ? "入る" : c.kind === "service" ? "受ける" : "引き換える"}</h2><p class="sub">${evt ? "受付（作った人）" : "お店（作った人）"}に、この QR を読んでもらいます。一度きりで、すこしのあいだだけ使えます。</p>
+  openOver(`<h2 class="rh">QRで${c.kind === "event" ? "入る" : c.kind === "service" ? "受ける" : "引き換える"}</h2><p class="sub">${evt ? "受付（作った人）" : "お店（作った人）"}に、この QR を読んでもらいます。一度きりで、すこしのあいだだけ使えます。</p>
     <div class="qrbox"><div class="qrwrap">${qrSvg(`${BASE}#used=${id}.${code}`, "q")}</div><b>${esc(c.title)}</b></div>
     ${LIVE ? `<p class="sub" style="text-align:center;font-size:12px">読めないときの番号：<b style="letter-spacing:.08em">${code}</b></p>` : `<button type="button" class="pill go" data-shopread="${id}">見本：${esc(nameOf(c.by))} さん（${evt ? "受付" : "お店"}）として読む</button>`}`);
 }
 function attachAsk(pid) {
   const pj = S.cards[pid], own = Object.values(S.cards).filter(c => c.by === me && c.id !== pid && !c.hidden && !pj.items.some(x => x.card === c.id));
-  openOver(`<h2 class="rh">自分のカードをつなぐ</h2><p class="sub">「${esc(pj.title)}」に、あなたのカードをつなぎます。つないだカードはそのまま、あなたのものです。</p>
+  openOver(`<h2 class="rh">自分のカードをつなぐ</h2><p class="sub">「${esc(pj.title)}」に、あなたのカードをつなぎます。つないだカードはそのまま、あなたのものです。${pj.kind === "project" && pj.by !== me ? "つないだ人は、このプロジェクトへの投げ銭の半分を、ほかのつないだ人と等しく分けます。" : ""}</p>
     <section class="box">${own.map(c => `<div class="who-row"><span>${esc(c.title)}</span><button type="button" class="pill go" data-attach="${c.id}">つなぐ</button></div>`).join("") || `<div class="who-row"><span>つなげる自分のカードがありません</span></div>`}</section>`);
   sel = pid;
 }
@@ -2177,7 +2188,7 @@ function rules() {
       <li><b>はじまり</b>認められて（招待のリンク・QRからも）参加すると、${RULE.start.toLocaleString("ja-JP")} jeni が届きます。1人が認めて・招待してあげられるのは合わせて${RULE.vouchMax}人まで。カードを作れるのは参加している人です。</li>
       <li><b>持つ</b>持つと、カードに書かれたものを受け取れます。データは元のデータを何度でも、現物はそのものを1回、イベントは参加を1回、体験・サービスは受けるのを1回。お店・会社や団体・プロジェクト（つなぐカード）は無料で、持つと常連・会員・仲間になり、いつでもやめられます。作った人から持つと、値段の分の jeni が作った人へ。値段はずっと変わりません。</li>
       <li><b>譲る</b>数に限りのあるカードは、持っている人から同じ値段で譲り受けます。jeni は手放した人へ戻ります。</li>
-      <li><b>投げ銭</b>半分は作った人へ、半分は持っている人へ（鍵をかけて持っている人はのぞく：分け前の動きから、どのカードを持っているかが分かってしまうため）。受け取るとなくなるもの（現物など数に限りのあるカード）と、つなぐカード（常連・会員・仲間は無料でだれでもなれるため）は、全額が作った人へ。</li>
+      <li><b>投げ銭</b>半分は作った人へ、半分は持っている人へ（鍵をかけて持っている人はのぞく：分け前の動きから、どのカードを持っているかが分かってしまうため）。受け取るとなくなるもの（現物など数に限りのあるカード）と、お店・会社や団体は、全額が作った人へ。プロジェクトは、半分を自分のカードをつないで育てた人で等しく分けます（仲間になるのは無料でだれでもなれるので、なっただけの人には分けません）。</li>
       <li><b>上限</b>同じカードは${RULE.capPaid}枚まで（無料のカードは${RULE.capFree}枚まで）。使うか贈ると、また持てます。</li>
     </ol>
     <p class="rnote"><b>会話・友達・知らせる</b>　カードの会話は、参加している人ならだれでも書けます（輪のカードは輪の人だけ）。2人だけの会話と通話（ビデオ通話も）は、お互いに友達のときだけ（残高の下の吹き出しと受話器、または相手のカードから）。危ないカードや会話は、実績のある別々の人${RULE.flagsToHide}人の知らせで隠れます。現物・イベント・体験は、持っている人が出す一度きりのQRを作った人が読んで、受け取り・参加・受けたことにします。</p>
@@ -2516,7 +2527,7 @@ function quickSheet(id) {
   const full = mine(c).length >= capOf(c), hold = !full && canHoldQR(c) && !c.hidden;
   const holdRow = hold ? `<div class="acts2">${lpBtn("qhold", id, KEEP[c.kind] ? `${KEEP[c.kind][1]}<small>長押し</small>` : `${coin()}${c.price ? c.price : "無料"}<small>長押しで持つ</small>`, "go")}</div>` : `<p class="sub">${full ? `もう持っています（${capOf(c)}枚まで）` : "いまは持てません（受付終了・残りなし）"}</p>`;
   const tipRow = c.hidden ? "" : `<div class="acts2"><span class="tipc"><button type="button" class="tipamt" data-tipstep="${id}" aria-label="投げ銭の額を変える">${tipAmt(id)}</button>${lpBtn("qtip", id, `${coin()}投げ銭<small>長押し</small>`)}</span></div>`;
-  openOver(`<h2 class="rh">QRで払う</h2>${head}${holdRow}${hold ? `<p class="fline">${flowLine(c)}</p>` : ""}${tipRow}${tipRow && !hold ? `<p class="fline">投げ銭は${c.supply != null || KEEP[c.kind] ? `全額 ${esc(nameOf(c.by))} さんへ` : `半分は ${esc(nameOf(c.by))} さんへ、半分は持っている人へ`}・額を押すと変わります</p>` : ""}<button type="button" class="link" data-detail="${id}" style="justify-self:start">カードを見る</button>`);
+  openOver(`<h2 class="rh">QRで払う</h2>${head}${holdRow}${hold ? `<p class="fline">${flowLine(c)}</p>` : ""}${tipRow}${tipRow && !hold ? `<p class="fline">投げ銭は${tipTo(c)}・額を押すと変わります</p>` : ""}<button type="button" class="link" data-detail="${id}" style="justify-self:start">カードを見る</button>`);
 }
 function lpDo(act, id) {
   if (act === "gsend") { const n = parseInt(($("g-amt") || {}).value, 10), bal = U().bal;
