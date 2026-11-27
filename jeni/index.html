@@ -2522,6 +2522,7 @@ document.addEventListener("click", e => {
   if (!LIVE && q("[data-pksave]")) { closeSheet(); return toast("見本：本物では Face ID などで確かめて、鍵をパスキーで守ります"); }
   if (q("[data-pksave]")) { const b0 = q("[data-pksave]"); b0.disabled = true; LV.passkeySave(nameOf(me)).then(() => { closeSheet(); toast("パスキーで守りました"); }, e => { b0.disabled = false; toast(String((e && e.name === "NotAllowedError") ? "取りやめました" : (e && e.message) || "守れませんでした")); }); return; }
   if (q("[data-pkrestore]")) { LV.passkeyRestore().then(() => { LV.store.set("jeni.keysaved", true); afterStart(); toast("戻しました"); }, e => toast(String((e && e.name === "NotAllowedError") ? "取りやめました" : (e && e.message) || "戻せませんでした"))); return; }
+  if (LIVE && q("[data-start]") && $("st-inv") && $("st-inv").value.trim()) { const m = $("st-inv").value.trim().match(/#(join|genesis|me)=([0-9a-zA-Z.]+)/); if (!m) return toast("招待のリンクの形が合いません"); PENDING = [m[1], m[2]]; }
   if (q("[data-start]")) { const name = ($("st-name").value || "").trim().slice(0, 40); if (!name) return toast("名前を入れてください"); LV.newMe(); LV.store.set("jeni.keysaved", false); emit(me = LV.me.pk, {t: "profile", name, line: ""}); return afterStart(true); }
   if (q("[data-startsougo]")) { const sm = LV.store.get("sougo.me", null); if (!sm || !LV.importKey(sm.sk)) return toast("鍵を読めませんでした"); me = LV.me.pk; if (!(S.users[me] && S.users[me].name)) emit(me, {t: "profile", name: sm.name || "なまえ", line: ""}); return afterStart(); }
   if (q("[data-startkey]")) { const old = LV.me && LV.me.pk; if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); if (old !== LV.me.pk) LV.store.set("jeni.kbak", null); LV.store.set("jeni.keysaved", true); toast("戻しました"); return afterStart(); }
@@ -2933,8 +2934,9 @@ function startSheet(step = 0) {
     ${!STANDALONE() ? `<p class="sub warnc" style="font-size:13px;margin:0">${ios ? "先に、共有ボタン →「ホーム画面に追加」。そのアイコンから始めます。" : "ホーム画面に置いてから始めると、アプリのように使えます。"}</p>${INSTALL ? `<button type="button" class="pill go" data-install style="justify-self:start">ホーム画面に置く</button>` : ""}` : ""}
     <ul class="ess"><li>名前は、みんなに見えます</li><li>記録は、消せません</li><li>鍵は、Face ID で守ります</li></ul>
     <label class="fl">名前<input id="st-name" maxlength="40" placeholder="呼び名"></label>
+    ${LIVE && PENDING ? "" : `<details class="more"><summary>招待のリンクが届いた人</summary><label class="fl">届いたリンクを貼る<input id="st-inv" autocomplete="off" spellcheck="false" placeholder="https://…#join=…"></label></details>`}
     <button type="button" class="big" data-start>始める</button>
-    <details class="more"><summary>前に使っていた人</summary>
+    <details class="more" id="st-old"><summary>前に使っていた人</summary>
       <button type="button" class="big ghost" data-pkrestore>Face ID で戻す</button><label class="fl">控えた鍵（64文字）<input id="st-key" autocomplete="off" spellcheck="false"></label><button type="button" class="pill go" data-startkey>この鍵で戻す</button>
       ${sougo && sougo.sk ? `<button type="button" class="pill" data-startsougo style="justify-self:start">相互レビューと同じ鍵で始める</button>` : ""}</details>`);
 }
