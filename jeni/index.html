@@ -338,7 +338,8 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 
 /* プロフィールカード（メニューを兼ねる） */
 .me{aspect-ratio:1.586;max-width:100%;border-radius:18px;background:var(--card);border:1px solid var(--line);padding:16px;display:grid;grid-template-rows:auto 1fr auto auto;gap:6px;overflow:hidden}
-.me-top{display:flex;align-items:center;gap:10px;min-width:0}
+.me-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:4px 10px;min-width:0}
+.me-top>.me-r{display:contents}.me-top .bal{grid-column:3;grid-row:1}.me-top .comm{grid-column:2/4;grid-row:2;justify-self:end}
 .me-top>div:nth-child(2){min-width:0}
 .av{width:42px;height:42px;border-radius:28%;box-shadow:inset 0 0 0 1px rgba(0,0,0,.07),inset 0 1px 0 rgba(255,255,255,.5),0 1px 3px rgba(0,0,0,.14);background-size:cover;background-position:center;display:grid;place-items:center;background:var(--leaf-soft);color:var(--leaf);font-weight:700;flex:none}
 .me-name{font-weight:700;font-size:17px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -357,12 +358,13 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 .menu-w .make{flex:0 0 auto;width:max(34px, calc((100% - 28px) / 7.5));aspect-ratio:1;border:0;border-radius:12px;background:var(--gold);color:var(--gold-ink);display:grid;place-items:center;padding:0}
 .me-r{margin-left:auto;display:grid;justify-items:end;gap:4px}
 .me-line{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-@media (max-width:360px){.mods span{display:none}.mods button{padding:0 7px}.me{padding:12px;gap:4px}.pmark svg{width:42px;height:auto}.cb{width:26px;height:26px}.comm{gap:2px}.me-top .av{width:34px;height:34px}.me-name{font-size:15px}.bal{font-size:15px}}
+@media (max-width:360px){.me-line{-webkit-line-clamp:1}.me-top{row-gap:0}.cb{width:24px!important;height:24px!important}.cb svg.i{width:15px;height:15px}.mods span{display:none}.mods button{padding:0 7px}.me{padding:12px;gap:4px}.pmark svg{width:42px;height:auto}.cb{width:26px;height:26px}.comm{gap:2px}.me-top .av{width:34px;height:34px}.me-name{font-size:15px}.bal{font-size:15px}}
 .me-r .bal{margin-left:0}
 .comm{display:flex;gap:4px}
 .cb{position:relative;width:30px;height:30px;border:0;border-radius:999px;background:transparent;color:var(--mute);display:grid;place-items:center;padding:0}.cb svg.i{width:17px;height:17px}
 .pmark .kdot{position:absolute;top:2px;right:2px;width:7px;height:7px;border-radius:50%;background:#e0604f;animation:none}
-.ess{margin:0;padding:12px 14px 12px 30px;border-radius:14px;background:var(--sunk);font-size:13px;line-height:1.75;text-align:left}.ess li+li{margin-top:4px}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.seg button{min-height:40px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);font:inherit;font-size:13px}.seg button[aria-pressed="true"]{border-color:var(--leaf);box-shadow:0 0 0 1px var(--leaf);font-weight:700}
+.ess{margin:0;padding:12px 14px 12px 32px;border-radius:14px;background:var(--sunk);font-size:15px;font-weight:600;line-height:1.9;text-align:left}
 .keyv{font:600 13px/1.6 ui-monospace,monospace;word-break:break-all;user-select:all;background:var(--sunk);padding:10px;border-radius:10px;margin:0}
 .cb b{position:absolute;top:5px;right:5px;width:5px;height:5px;border-radius:50%;background:#e0604f}
 .menu button{aspect-ratio:1;border:0;border-radius:12px;background:transparent;color:var(--mute);display:grid;place-items:center;padding:0}
@@ -671,6 +673,7 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6.5 11 12 16.5 17.5 11M5 20h14"/></symbol>
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20V8M6.5 13 12 7.5 17.5 13M5 4h14"/></symbol>
   <symbol id="i-gift" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="10" rx="1.5"/><path d="M3 7h18v3H3zM12 7v13M12 7c-1.5-3-5-3.5-5-1.2C7 7 9 7 12 7Zm0 0c1.5-3 5-3.5 5-1.2C17 7 15 7 12 7Z"/></symbol>
+  <symbol id="i-set" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2.8v2.4M12 18.8v2.4M2.8 12h2.4M18.8 12h2.4M5.5 5.5l1.7 1.7M16.8 16.8l1.7 1.7M5.5 18.5l1.7-1.7M16.8 7.2l1.7-1.7"/></symbol>
   <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2Z"/></symbol>
   <symbol id="i-app" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="3"/><path d="M10 18h4"/></symbol>
   <symbol id="i-sale" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><path d="M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2"/></symbol>
@@ -1486,7 +1489,7 @@ function home() {
       <div class="me-top"><div class="av" ${PICS[me] ? `style="background:url('${PICS[me]}') center/cover"` : ""}>${PICS[me] ? "" : esc(nameOf(me).slice(0, 1))}</div>
         <div><div class="me-name">${esc(nameOf(me))}</div><div class="me-line">${u.member ? esc((S.users[me] && S.users[me].line) || p.line) : "まだ参加していません"}</div></div>
         <div class="me-r"><button type="button" class="bal" data-rules title="jeni のきまり">${coin()}<span id="balv">${u.bal.toLocaleString("ja-JP")}</span><small>jeni</small></button>
-          ${u.member ? `<div class="comm">${FX.map(f => { const n = f.dot(); return `<button type="button" class="cb" data-fx="${f.k}" aria-label="${f.l}${n ? "（新しい知らせあり）" : ""}" title="${f.l}">${icon(f.i)}${n ? `<b aria-hidden="true"></b>` : ""}</button>`; }).join("")}</div>` : ""}</div></div>
+          <div class="comm">${FX.filter(f => u.member || f.k === "set").map(f => { const n = f.dot(); return `<button type="button" class="cb" data-fx="${f.k}" aria-label="${f.l}${n ? "（新しい知らせあり）" : ""}" title="${f.l}">${icon(f.i)}${n ? `<b aria-hidden="true"></b>` : ""}</button>`; }).join("")}</div></div></div>
       <div class="me-mid"><div class="mods" role="group" aria-label="しぼり（いくつでも重ねられます）">${[["mine", "hold", "持っている"], ["fav", "fav", "お気に入り"], ["near", "near", "近く"]].map(([k, i, l]) => `<button type="button" data-mod="${k}" aria-pressed="${MOD[k]}">${icon(i)}<span>${l}</span></button>`).join("")}</div><button type="button" class="pmark" data-me aria-label="わたしのカード（QR）${LIVE && LV.me && !keySaved() ? "・鍵の控えがまだです" : ""}">${gmark(56, {halo: true})}${LIVE && LV.me && !keySaved() ? `<b class="kdot" aria-hidden="true"></b>` : ""}</button></div>
       <div class="mcap" aria-live="polite">${FIELDS.find(f => f[0] === field)[1]}${MOD.mine ? "・持っている" : ""}${MOD.fav ? "・お気に入り" : ""}${MOD.near ? "・近い順" : ""}・${list.length}枚${field === "circle" ? "・輪の人だけ" : ""}</div>
       <div class="menu-w"><nav class="menu" aria-label="表示するカード">${FIELDS.map(([k, l]) => `<button type="button" data-f="${k}" aria-pressed="${field === k}" aria-label="${l}" title="${l}">${icon(k)}</button>`).join("")}</nav><button type="button" class="make" data-make aria-label="カードを作る・その場で売る" title="カードを作る・その場で売る">${icon("plus")}</button></div>
@@ -1798,8 +1801,20 @@ const FX = [
   {k: "chats", i: "talk", l: "話す", dot: () => unreadChat(), open: () => chatList()},
   {k: "gifts", i: "gift", l: "贈る", dot: () => 0, open: () => giftList()},
   {k: "news", i: "bell", l: "お知らせ", dot: () => news().filter(n => n.at > (NSEEN[me] || 0)).length, open: () => newsList()},
+  {k: "set", i: "set", l: "設定", dot: () => 0, open: () => setSheet()},
 ];
 const NSEEN = {};
+// 設定：色（端末に合わせる・明るい・暗い）。この端末の中だけ
+const THEMES = [["auto", "端末に合わせる"], ["light", "明るい"], ["dark", "暗い"]];
+const themeNow = () => { try { return localStorage.getItem("jeni.theme") || "auto"; } catch (x) { return "auto"; } };
+function themeSet(v) { try { localStorage.setItem("jeni.theme", v); } catch (x) {} if (v === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.dataset.theme = v; }
+themeSet(themeNow());
+function setSheet() {
+  const t = themeNow();
+  openSheet(`<button type="button" class="back" data-close>${icon("back")}一覧へ</button><h2 class="rh">設定</h2>
+    <section class="box"><h3>色</h3><div class="seg" role="group" aria-label="色">${THEMES.map(([k, l]) => `<button type="button" data-theme-set="${k}" aria-pressed="${t === k}">${l}</button>`).join("")}</div></section>
+    ${LIVE ? `<section class="box"><h3>${icon("lock")} 鍵</h3><div class="who-row"><span>${pkOn() ? "Face ID で守っています" : keySaved() ? "控えを取っています" : "まだ守っていません"}</span><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵を守る</button></div></section>` : ""}`);
+}
 function news() {
   const out = [];
   for (const b of Object.values(S.cards)) {
@@ -2401,6 +2416,7 @@ document.addEventListener("click", e => {
   }
   if ((b = q("[data-mod]"))) { const k = b.dataset.mod; MOD[k] = !MOD[k]; home(); if (MOD[k] && k === "near") toast("近い順（見本の現在地：東京駅のあたり。本物では端末の位置をどこにも送りません）"); return; }
   if ((b = q("[data-fx]"))) return FX.find(f => f.k === b.dataset.fx).open();
+  if ((b = q("[data-theme-set]"))) { themeSet(b.dataset.themeSet); return setSheet(); }
   if (q("[data-make]")) { if (!U().member) return toast("参加すると作れます"); MK.mode = "make"; return make(); }
   if ((b = q("[data-mk]"))) { readMK(); MK.mode = b.dataset.mk;  return make(); }
   if ((b = q("[data-mappick]"))) { readMK(); const r = b.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
@@ -2906,17 +2922,14 @@ function joinWith(inviteId, code) {
 function startSheet() {
   const sougo = LIVE ? LV.store.get("sougo.me", null) : null;
   const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  openSheet(`${LIVE ? "" : `<button type="button" class="back" data-close>${icon("back")}見本を閉じる</button>`}<div class="done">${gmark(64, {halo: true})}<h2 class="rh">jeni（試験運用）</h2></div>
-    ${!STANDALONE() ? `<p class="sub warnc" style="font-size:12px;margin:0">${ios ? "iPhone・iPad は、先に Safari の共有ボタン →「ホーム画面に追加」をして、そのアイコンから始めてください。Safari のままだと、しばらく開かないうちに端末の中の鍵が消えることがあり、あとから追加したアイコンとは別の人になります。" : "ホーム画面に置くと、アプリのように使えます（つながらない場所でも開けます）。置くなら、始める前に。"}</p>${INSTALL ? `<button type="button" class="pill go" data-install style="justify-self:start">ホーム画面に置く</button>` : ""}` : ""}
-    <ol class="ess"><li><b>名前はみんなに見えます。</b>本名ではなく、ふだんの呼び名がおすすめです（あとで変えられます）。</li>
-      <li><b>出したカードや記録は消せません。</b>試験運用でも本番に引き継ぎます（毎日、記録の指紋をビットコインに刻むので、あとから書き換えもできません）。</li>
-      <li><b>鍵はこの端末の中だけ。</b>始めたらすぐ、Face ID などのパスキーで守ります（守らずに端末をなくすと、だれにも戻せません）。</li></ol>
-    <label class="fl">名前<input id="st-name" maxlength="40" placeholder="例：はなこ"></label>
+  openSheet(`${LIVE ? "" : `<button type="button" class="back" data-close>${icon("back")}見本を閉じる</button>`}<div class="done">${gmark(64, {halo: true})}<h2 class="rh">jeni</h2></div>
+    ${!STANDALONE() ? `<p class="sub warnc" style="font-size:13px;margin:0">${ios ? "先に、共有ボタン →「ホーム画面に追加」。そのアイコンから始めます。" : "ホーム画面に置いてから始めると、アプリのように使えます。"}</p>${INSTALL ? `<button type="button" class="pill go" data-install style="justify-self:start">ホーム画面に置く</button>` : ""}` : ""}
+    <ul class="ess"><li>名前は、みんなに見えます</li><li>記録は、消せません</li><li>鍵は、Face ID で守ります</li></ul>
+    <label class="fl">名前<input id="st-name" maxlength="40" placeholder="呼び名"></label>
     <button type="button" class="big" data-start>始める</button>
-    <details class="more"><summary>前に使っていた人（パスキー・控えた鍵で戻す）</summary>
-      <button type="button" class="big ghost" data-pkrestore>Face ID・パスキーで戻す</button><label class="fl">控えた鍵<input id="st-key" autocomplete="off" spellcheck="false" placeholder="64文字"></label><button type="button" class="pill go" data-startkey>この鍵で続ける</button>
-      ${sougo && sougo.sk ? `<button type="button" class="pill" data-startsougo style="justify-self:start">相互レビューと同じ鍵で始める</button>` : ""}
-      <p class="sub" style="font-size:11px">${icon("lock")} 鍵を入れるのは、自分で控えた鍵だけにしてください。jeni の人がたずねることはありません。</p></details>`);
+    <details class="more"><summary>前に使っていた人</summary>
+      <button type="button" class="big ghost" data-pkrestore>Face ID で戻す</button><label class="fl">控えた鍵（64文字）<input id="st-key" autocomplete="off" spellcheck="false"></label><button type="button" class="pill go" data-startkey>この鍵で戻す</button>
+      ${sougo && sougo.sk ? `<button type="button" class="pill" data-startsougo style="justify-self:start">相互レビューと同じ鍵で始める</button>` : ""}</details>`);
 }
 // 鍵の控え：始めたらすぐ。取るまでは、わたしのカードの印に小さな赤い印
 const keySaved = () => !!(LIVE && (LV.store.get("jeni.keysaved", false) || LV.store.get("jeni.kbak", null)));
@@ -2924,16 +2937,14 @@ const SAMPLE_SK = "5a1e".repeat(16);   // 見本の画面で見せる鍵（本�
 const pkOn = () => !!(LIVE && LV.store.get("jeni.kbak", null));
 function keySheet(first) {
   const sk = LIVE ? LV.me.sk : SAMPLE_SK, on = pkOn();
-  openSheet(`${first ? "" : `<button type="button" class="back" data-close>${icon("back")}戻る</button>`}<h2 class="rh">${first ? "はじめに：鍵を守る" : "鍵を守る"}</h2>
-    <p class="sub" style="line-height:1.8">jeni でのあなた自身は、この端末の中の「鍵」です。端末をなくしたり、ブラウザの記録を消したりしても戻せるように、守っておきます。</p>
-    ${on ? `<p class="sub" style="color:var(--leaf);font-weight:700;margin:0">${icon("lock")} パスキーで守っています。機種を変えても、同じパスキー（Face ID など）で戻せます。</p>`
-      : `<button type="button" class="big" data-pksave>Face ID・パスキーで守る（おすすめ）</button>
-    <p class="sub" style="font-size:12px;margin:-4px 0 0;line-height:1.7">パスキーは、iPhone なら iCloud キーチェーン、Android なら Google パスワード マネージャーに入ります。機種を変えても、同じアカウントなら Face ID などで戻せます。そのアカウントに入れなくなると戻せないので、心配なら下の控えも。</p>`}
-    <details class="more"><summary>64文字の控えも取る（紙・パスワード管理アプリ）</summary>
-      <p class="keyv">${sk}</p>${LIVE ? "" : `<p class="sub" style="font-size:11px;margin:0">（見本の鍵です。本物では、あなただけの鍵がここに出ます）</p>`}
-      <p class="sub warnc" style="font-size:12px;margin:0">${icon("lock")} これを知った人は、だれでもあなたとして使えます。人に見せたり、送ったり、写真に撮ってだれかと共有したりしないでください。jeni の人がたずねることはありません。</p>
+  openSheet(`${first ? "" : `<button type="button" class="back" data-close>${icon("back")}戻る</button>`}<h2 class="rh">鍵を守る</h2>
+    <p class="sub" style="margin:0">鍵は、jeni でのあなた自身です。Face ID で守ると、機種を変えても戻せます。</p>
+    ${on ? `<p class="sub" style="color:var(--leaf);font-weight:700;margin:0">${icon("lock")} Face ID（パスキー）で守っています</p>` : `<button type="button" class="big" data-pksave>Face ID で守る</button>`}
+    <details class="more"><summary>64文字の控えも取る</summary>
+      <p class="keyv">${sk}</p>${LIVE ? "" : `<p class="sub" style="font-size:11px;margin:0">（見本の鍵）</p>`}
+      <p class="sub warnc" style="font-size:12px;margin:0">${icon("lock")} 人に見せない・送らない。jeni がたずねることはありません。</p>
       <div class="row2"><button type="button" class="big ghost" data-keycopy>写す</button><button type="button" class="big" data-keysaved>控えました</button></div></details>
-    ${first ? `<button type="button" class="link" data-close style="justify-self:center">あとで（守るまで、わたしのカードの印に赤い点）</button>` : ""}`);
+    ${first ? `<button type="button" class="link" data-close style="justify-self:center">あとで</button>` : ""}`);
 }
 function afterStart(fresh = false) {
   me = LV.me.pk; READ_LOADED = false; liveRecompute(); closeSheet(); home();
