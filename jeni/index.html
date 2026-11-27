@@ -383,6 +383,8 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 .row{position:relative;border-top:1px solid var(--line)}
 .row:first-child{border-top:0}
 .line{display:grid;grid-template-columns:52px minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 12px;cursor:pointer}
+.avs.lg{width:52px;height:52px;border-radius:12px;font-size:20px}
+.psearch{display:block;padding:8px 12px 4px}.psearch input{width:100%;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 12px;min-height:44px}
 .th{width:52px;height:52px;border-radius:12px;border:0;padding:0;overflow:hidden;position:relative;display:grid;place-items:center;background:var(--sunk);color:var(--mute)}
 .th img{width:100%;height:100%;object-fit:cover;display:block}
 .th[data-k="music"],.th[data-k="video"]{background:var(--t-media);color:var(--ink)}
@@ -532,7 +534,7 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 .jc2 video.inplay{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 /* 下から出る記録 */
 .scrim{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:25}
-.over{position:fixed;left:0;right:0;bottom:0;z-index:26;max-height:82dvh;overflow:auto;background:var(--bg);border-radius:20px 20px 0 0;display:grid;gap:10px;
+.over{position:fixed;left:0;right:0;bottom:0;z-index:26;max-height:82dvh;overflow:auto;background:var(--bg);border-radius:20px 20px 0 0;display:grid;grid-template-columns:minmax(0,1fr);gap:10px;
   padding:10px max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));box-shadow:0 -10px 30px -10px rgba(0,0,0,.5)}
 .over>*{max-width:440px;width:100%;justify-self:center}
 .over .grab{width:40px;height:4px;border-radius:2px;background:var(--line)}
@@ -585,8 +587,21 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 .cm.hid{color:var(--mute);font-size:12px}
 .say{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:end}
 .say textarea{font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 10px;min-height:44px;max-height:120px;resize:vertical;min-width:0}
-.chat .bub{max-width:80%;padding:8px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line);font-size:14px;justify-self:start;overflow-wrap:anywhere}
-.chat .bub.me{justify-self:end;background:var(--leaf-soft)}
+.chat{gap:4px;max-height:58dvh}
+.chat .bub{max-width:80%;padding:7px 11px 5px;border-radius:16px 16px 16px 4px;background:var(--card);border:1px solid var(--line);font-size:14px;justify-self:start;overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.55}
+.chat .bub.mymsg{justify-self:end;background:var(--leaf-soft);border-radius:16px 16px 4px 16px}
+.chat .bub time{display:block;font-size:10px;color:var(--mute);text-align:right;margin-top:1px;white-space:nowrap}
+.chat .cday{justify-self:center;font-size:11px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin:8px 0 4px}
+.chat .cpics{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:4px;margin:2px 0}
+.chat .cpics img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--line);display:block}
+.chat .cfile,.chat .ccard{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:var(--bg);border-radius:12px;padding:8px 10px;font:inherit;font-size:13px;color:inherit;text-align:left;min-height:44px;width:100%;white-space:normal}
+.chat .cfile small,.chat .ccard small{display:block;color:var(--mute);font-size:11px}
+.say.c3{grid-template-columns:auto minmax(0,1fr) auto}
+.say .cplus{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);font-size:22px;line-height:1;color:var(--leaf);padding:0}
+.cpl{display:flex;gap:6px;flex-wrap:wrap}.cpl label.pill input{display:none}
+.lbx{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.92);display:grid;place-items:center;padding:max(16px,env(safe-area-inset-top,0px)) 16px}
+.lbx img{max-width:100%;max-height:100%;object-fit:contain}
+.lbx button{position:absolute;top:max(12px,env(safe-area-inset-top,0px));right:12px;width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.15);color:#fff;font-size:22px}
 .call{display:grid;justify-items:center;gap:10px;padding:24px 0}
 .pav2{width:84px;height:84px;border-radius:28%;display:grid;place-items:center;background:var(--leaf-soft);color:var(--leaf);font-size:32px;font-weight:700;animation:shine 2.4s ease-in-out infinite}
 .mini{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:8px;align-items:center;width:100%;border:0;border-top:1px solid var(--line);background:none;padding:8px 0;text-align:left;font-size:14px}
@@ -653,6 +668,7 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="i-hold" viewBox="0 0 24 24"><rect x="7" y="4" width="13" height="9" rx="2"/><rect x="4" y="9" width="13" height="9" rx="2"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20c.8-3.9 3.6-6 7-6s6.2 2.1 7 6"/></symbol>
   <symbol id="i-all" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
   <symbol id="i-rwa" viewBox="0 0 24 24"><path d="M4 10h16l-1.5 9h-13Z"/><path d="M8 10l2-5M16 10l-2-5"/></symbol>
   <symbol id="i-music" viewBox="0 0 24 24"><circle cx="7" cy="17" r="2.5"/><circle cx="17" cy="15" r="2.5"/><path d="M9.5 17V6l10-2v11"/></symbol>
@@ -711,9 +727,9 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 "use strict";
 (function (root) {
   const R = {
-    version: 2,         // きまりの版（2：プロジェクトへの投げ銭の半分は、自分のカードをつないだ人へ）。出来事には {v: 版} を付ける。版のない出来事は 1 とみなす。知らない（新しすぎる）版は読まない
+    version: 3,         // きまりの版（2：プロジェクトへの投げ銭の半分は、自分のカードをつないだ人へ。3：1人が認められるのは10人まで）。出来事には {v: 版} を付ける。版のない出来事は 1 とみなす。知らない（新しすぎる）版は読まない
     start: 1000,        // 参加したときに届く jeni（配る量は使われ方を見て変わることがある。変わるときも全員に同じきまり）
-    vouchMax: 3,        // 1人が認められる人数
+    vouchMax: 10,       // 1人が認められる人数（版3から。版2までの出来事は3人まで）
     capPaid: 3,         // 同じカードを持てる数
     capFree: 1,         // 無料のカードを持てる数
     priceMax: 1000000,
@@ -792,24 +808,25 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 
       if (c.t === "profile") { me.name = str(c.name, 40); me.line = str(c.line, 60); continue; }
 
-      // 1 はじまり：参加している人が、まだの人を認める（1人3人まで）
+      // 1 はじまり：参加している人が、まだの人を認める（1人10人まで）
+      const vmax = (c.v || 1) >= 3 ? R.vouchMax : 3;
       if (c.t === "vouch") {
-        if (!me.member || !isHex(c.who, 64) || c.who === e.pubkey || me.vouched.length >= R.vouchMax) continue;
+        if (!me.member || !isHex(c.who, 64) || c.who === e.pubkey || me.vouched.length >= vmax) continue;
         if (U(c.who).member) continue;
         me.vouched.push(c.who); join(c.who, t, e.pubkey); ok(e, "vouch"); continue;
       }
 
       // 招待：参加している人が、一度きりの番号（の要約）と期限を出す。リンクや QR で番号を受け取った人が「参加」を出すと、認めたのと同じになる
-      // （認められるのは1人3人まで。まだ使われていない招待も数に入れる）
+      // （認められるのは1人10人まで。まだ使われていない招待も数に入れる）
       if (c.t === "invite") {
         const open = me.invites.filter(x => !x.used && x.until >= t).length;
-        if (!me.member || !isHex(c.lock, 64) || !int(c.until, t, t + R.inviteMax) || me.vouched.length + open >= R.vouchMax) continue;
+        if (!me.member || !isHex(c.lock, 64) || !int(c.until, t, t + R.inviteMax) || me.vouched.length + open >= vmax) continue;
         me.invites.push({id: e.id, lock: c.lock, until: c.until, used: null}); ok(e, "invite"); continue;
       }
       if (c.t === "join") {
         if (me.member || !isHex(c.by, 64) || typeof c.code !== "string") continue;
         const inv = U(c.by), x = inv.invites.find(y => y.id === c.invite);
-        if (!inv.member || !x || x.used || t > x.until || sha256hex(c.code) !== x.lock || inv.vouched.length >= R.vouchMax) continue;
+        if (!inv.member || !x || x.used || t > x.until || sha256hex(c.code) !== x.lock || inv.vouched.length >= vmax) continue;
         x.used = e.pubkey; inv.vouched.push(e.pubkey); join(e.pubkey, t, c.by); ok(e, "join"); continue;
       }
 
@@ -1181,7 +1198,8 @@ function makeQR(text, forceMask) {
     const at = await input.getPrimaryAudioTrack();
     if (kind === "video" && !vt) throw new Error("動画が入っていません");
     if (kind === "music" && !at) throw new Error("音が入っていません");
-    const useAac = at ? await aacOK(M) : false;
+    const aCopy = !!at && at.codec === "aac";
+    const useAac = at && !aCopy ? await aacOK(M) : false;
     const acodec = useAac ? "aac" : "opus";
     const plan = kind === "music" ? PLAN.music : dur <= PLAN.short.sec ? PLAN.short : PLAN.long;
     let w = 0, h = 0, poster = null;
@@ -1196,33 +1214,38 @@ function makeQR(text, forceMask) {
     const ac = at ? at.codec : null;
     const srcRate = file.size * 8 / dur;
     const copyOK = file.size <= LIM.part && (!vt || (vt.codec === "avc" && Math.max(vt.displayWidth, vt.displayHeight) <= 1920)) && (!at || ac === "aac") && srcRate <= ((plan.v || 0) + plan.a) * 2.2;
-    const rate = (plan.v || 0) + (at ? plan.a : 0);
-    const n = copyOK ? 1 : Math.max(1, Math.ceil(dur / Math.floor(LIM.part * 8 / (rate * 1.08))));
+    const rate = (plan.v || 0) + (at ? (aCopy ? (kind === "music" ? Math.max(plan.a, srcRate) : 320000) : plan.a) : 0);   // そのまま移す音は、多めに見積もる
+    // MP3 の音楽：変換せず、MP3 のまま分けて置く（音はそのまま・速い）
+    const mp3 = kind === "music" && ac === "mp3";
+    const n = copyOK ? 1 : mp3 ? Math.max(1, Math.ceil(dur / Math.floor(LIM.part * 8 / (srcRate * 1.08)))) : Math.max(1, Math.ceil(dur / Math.floor(LIM.part * 8 / (rate * 1.08))));
     const seg = dur / n, parts = [];
     for (let i = 0; i < n; i++) {
-      const out = new M.Output({format: new M.Mp4OutputFormat({fastStart: "in-memory"}), target: new M.BufferTarget()});
+      const out = new M.Output({format: mp3 ? new M.Mp3OutputFormat() : new M.Mp4OutputFormat({fastStart: "in-memory"}), target: new M.BufferTarget()});
       const start = i * seg, end = i === n - 1 ? dur : (i + 1) * seg;
       const opts = {input: i === 0 ? input : open(), output: out, tags: {}, showWarnings: false};
       if (n > 1) opts.trim = {start, end};
-      if (copyOK) {
+      if (mp3) { opts.video = {discard: true}; opts.audio = {}; opts.copy = {shiftTolerance: Infinity}; }
+      else if (copyOK) {
         opts.video = kind === "music" ? {discard: true} : undefined;
       } else {
-        opts.copy = false;
-        opts.video = kind === "music" ? {discard: true} : {codec: "avc", width: w, height: h, fit: "contain", quality: new M.Quality({bitrate: plan.v}), keyFrameInterval: 2};
-        opts.audio = {codec: acodec, quality: new M.Quality({bitrate: plan.a}), numberOfChannels: 2, sampleRate: 48000};
+        opts.video = kind === "music" ? {discard: true} : {codec: "avc", width: w, height: h, fit: "contain", quality: new M.Quality({bitrate: plan.v}), keyFrameInterval: 2, forceTranscode: true};
+        // 音：もとが AAC（iPhone の動画・ボイスメモなど）なら、変換せずそのまま移す（端末が音を解けなくても、音が消えない）
+        opts.audio = aCopy ? {} : {codec: acodec, quality: new M.Quality({bitrate: plan.a}), numberOfChannels: 2, sampleRate: 48000, forceTranscode: true};
       }
       if (!at && kind === "video") opts.audio = {discard: true};
       const conv = await M.Conversion.init(opts);
       if (!conv.isValid) throw new Error("この形のファイルは変換できません");
+      // 音が黙って落ちることがないように（音のない動画を置かない）
+      if (at && conv.discardedTracks.some(x => x.track.type === "audio" && x.reason !== "discarded_by_user")) throw new Error("この端末では、この音を変換できません");
       conv.onProgress = p => onp((i + p) / n);
       await conv.execute();
-      const blob = new Blob([out.target.buffer], {type: kind === "music" ? "audio/mp4" : "video/mp4"});
+      const blob = new Blob([out.target.buffer], {type: mp3 ? "audio/mpeg" : kind === "music" ? "audio/mp4" : "video/mp4"});
       if (blob.size > 19.5 * MiB) throw new Error("分けても大きすぎました");
       const d = Math.round((end - start) * 100) / 100;
       if (onPart) parts.push({...(await onPart(blob, i, n, d)), d, size: blob.size}); else parts.push({blob, d, size: blob.size});
     }
     onp(1);
-    return {parts, dur, poster, w, h, codec: acodec, copied: copyOK};
+    return {parts, dur, poster, w, h, codec: mp3 ? "mp3" : aCopy ? "aac" : acodec, copied: copyOK};
   }
 
   // 写真：長い辺 2048 まで、描き直して位置情報などを消す。表に使う小さい写し（640）も作る
@@ -1469,7 +1492,7 @@ function holdBtn(c) {
 }
 // 項目：1枚のもの → つなぐもの → 仲間の輪（見える範囲）。作る画面も同じ並び
 // 項目：よく見るもの（メディア）を手前に。☆（お気に入り）と 近く は項目ではなく、どの項目にも重ねてかけられる「しぼり」
-const FIELDS = [["all", "すべて"], ["music", "音楽"], ["video", "動画"], ["picture", "写真"], ["text", "文章"], ["rwa", "現物"], ["event", "イベント"], ["service", "体験・サービス"], ["app", "アプリ"], ["shop", "お店"], ["org", "会社・団体"], ["project", "プロジェクト"], ["circle", "仲間の輪"]];
+const FIELDS = [["all", "すべて"], ["people", "人"], ["music", "音楽"], ["video", "動画"], ["picture", "写真"], ["text", "文章"], ["rwa", "現物"], ["event", "イベント"], ["service", "体験・サービス"], ["app", "アプリ"], ["shop", "お店"], ["org", "会社・団体"], ["project", "プロジェクト"], ["circle", "仲間の輪"]];
 const MOD = {mine: false, fav: false, near: false};   // しぼり：持っている・お気に入り・近く（いくつでも重ねられる）
 // 現在地（見本は東京駅のあたり）。本物では端末の位置を使い、どこにも送らない
 const HERE = [35.681, 139.767], NEAR_KM = 60;
@@ -1483,8 +1506,23 @@ function visibleCards(all = false) {
     .sort((a, b) => !all && MOD.near ? kmTo(a.geo) - kmTo(b.geo) : b.at - a.at);
 }
 visibleCards.all = () => visibleCards(true);
+// 人：参加している人のプロフィールカード（友達を先に）。名前やひとことで探せる
+function peopleList() {
+  const fs = friendsOf(me), mine0 = (S.users[me] || {}).friends || [];
+  return Object.values(S.users).filter(x => x.member && x.pk !== me).map(x => x.pk)
+    .sort((a, b) => (fs.includes(b) - fs.includes(a)) || (mine0.includes(b) - mine0.includes(a)) || ((S.users[b].at || 0) - (S.users[a].at || 0)));
+}
+function peopleHtml() {
+  const fs = friendsOf(me), mine0 = (S.users[me] || {}).friends || [], ps = peopleList();
+  return `<div class="psearch"><input id="pq" type="search" placeholder="名前・ひとことで探す" aria-label="人を探す" autocomplete="off" value="${esc(PQ)}"></div>
+    ${ps.map(pk => { const u = S.users[pk], line = u.line || (byPk[pk] || {}).line || "", st = fs.includes(pk) ? "友達" : mine0.includes(pk) ? "友達になるのを待っています" : (u.friends || []).includes(me) ? "友達になりたいそうです" : "";
+      return `<article class="row" data-pn="${esc((nameOf(pk) + " " + line + " " + pk.slice(0, 8)).toLowerCase())}"><div class="line" data-person="${pk}" tabindex="0">${avatar(pk, "lg")}<div class="mid"><div class="t">${esc(nameOf(pk))}</div><div class="s">${esc([st, line].filter(Boolean).join("・"))}</div></div><span></span></div></article>`; }).join("") || `<p class="empty">まだほかに参加している人はいません</p>`}
+    <p class="empty" id="pq-none" hidden>見つかりません</p>`;
+}
+let PQ = "";
+function pqApply() { const q0 = PQ.trim().toLowerCase(); let n = 0; document.querySelectorAll("#home .list .row[data-pn]").forEach(r => { const on = !q0 || r.dataset.pn.includes(q0); r.hidden = !on; n += on; }); const z = $("pq-none"); if (z) z.hidden = n > 0 || !q0; }
 function home() {
-  const u = U(), p = byPk[me] || {}, list = visibleCards(), m0 = document.querySelector("#home .menu"), mx = m0 ? m0.scrollLeft : 0;
+  const u = U(), p = byPk[me] || {}, list = field === "people" ? [] : visibleCards(), m0 = document.querySelector("#home .menu"), mx = m0 ? m0.scrollLeft : 0;
   $("home").innerHTML = `
     ${LIVE ? `<div class="tbar"><span class="tag" title="出来事は署名して、複数の中継に置きます">試験運用</span><button type="button" class="reset" data-scan>QRを読む</button></div>` : `<div class="tbar"><span class="tag" title="ここでの出来事はこの端末の中だけで、どこにも送りません">テスト版（どこにも送らない）</span>
       <label>見ている人 <select id="who">${Object.values(P).map(x => `<option value="${x.pk}" ${x.pk === me ? "selected" : ""}>${esc(x.name)}${S.users[x.pk] && S.users[x.pk].member ? "" : "（まだ参加していない）"}</option>`).join("")}</select></label>
@@ -1495,14 +1533,15 @@ function home() {
         <div class="me-r"><button type="button" class="bal" data-rules title="jeni のきまり">${coin(u.member ? "" : "idle")}<span id="balv">${u.bal.toLocaleString("ja-JP")}</span><small>jeni</small></button>
           ${u.member ? `<div class="comm">${FX.map(f => { const n = f.dot(); return `<button type="button" class="cb" data-fx="${f.k}" aria-label="${f.l}${n ? "（新しい知らせあり）" : ""}" title="${f.l}">${icon(f.i)}${n ? `<b aria-hidden="true"></b>` : ""}</button>`; }).join("")}</div>` : ""}</div></div>
       <div class="me-mid"><div class="mods" role="group" aria-label="しぼり（いくつでも重ねられます）">${[["mine", "hold", "持っている"], ["fav", "fav", "お気に入り"], ["near", "near", "近く"]].map(([k, i, l]) => `<button type="button" data-mod="${k}" aria-pressed="${MOD[k]}">${icon(i)}<span>${l}</span></button>`).join("")}</div><button type="button" class="pmark" data-me aria-label="わたしのカード（QR）${LIVE && LV.me && !keySaved() ? "・鍵の控えがまだです" : ""}">${gmark(56, {halo: true})}${LIVE && LV.me && !keySaved() ? `<b class="kdot" aria-hidden="true"></b>` : ""}</button></div>
-      <div class="mcap" aria-live="polite">${FIELDS.find(f => f[0] === field)[1]}${MOD.mine ? "・持っている" : ""}${MOD.fav ? "・お気に入り" : ""}${MOD.near ? "・近い順" : ""}・${list.length}枚${field === "circle" ? "・輪の人だけ" : ""}</div>
+      <div class="mcap" aria-live="polite">${field === "people" ? `人・${peopleList().length}人` : `${FIELDS.find(f => f[0] === field)[1]}${MOD.mine ? "・持っている" : ""}${MOD.fav ? "・お気に入り" : ""}${MOD.near ? "・近い順" : ""}・${list.length}枚${field === "circle" ? "・輪の人だけ" : ""}`}</div>
       <div class="menu-w"><nav class="menu" aria-label="表示するカード">${FIELDS.map(([k, l]) => `<button type="button" data-f="${k}" aria-pressed="${field === k}" aria-label="${l}" title="${l}">${icon(k)}</button>`).join("")}</nav><button type="button" class="make" data-make aria-label="カードを作る・その場で売る" title="カードを作る・その場で売る">${icon("plus")}</button></div>
     </section>
     ${u.member ? "" : `<div class="notice">${gmark(28)}<span>まだ参加していません。${LIVE ? "招待のリンクを開くか、" : ""}<b>わたしのカード</b>のQRを、参加している人に読んでもらうと始められます。</span></div>`}
-    <main class="list">${list.length ? list.map(c => `<article class="row">
+    <main class="list">${field === "people" ? peopleHtml() : list.length ? list.map(c => `<article class="row">
       <div class="line" data-detail="${c.id}" tabindex="0">${thumb(c)}<div class="mid"><div class="t">${esc(c.title || "その場のカード")}</div><div class="s">${sub(c)}</div></div>${holdBtn(c)}</div>
       ${MEDIA[c.id] && MEDIA[c.id].src && c.kind === "music" && !JeniMedia.linkOf(MEDIA[c.id].src) ? `<div class="bar"><i id="bar${c.id}"></i></div>` : ""}</article>`).join("")
       : `<p class="empty">${(MOD.mine && !MOD.fav && !MOD.near ? "持っているカードはまだありません" : MOD.fav ? "カードの右上の☆で、お気に入りに入れられます" : MOD.near ? "近くに場所のあるカードはありません" : field === "circle" ? "入っている仲間の輪のカードはありません" : "まだカードがありません")}</p>`}</main>`;
+  if (field === "people") pqApply();
   // 横に滑る並び：前の位置を保ち、選んだ項目が隠れていたら見える所まで滑らせる
   const m = document.querySelector("#home .menu"); if (m) { m.scrollLeft = mx; const sb = m.querySelector('[aria-pressed="true"]');
     if (sb && (sb.offsetLeft < m.scrollLeft || sb.offsetLeft + sb.offsetWidth > m.scrollLeft + m.clientWidth - 18)) m.scrollTo({left: sb.offsetLeft - (m.clientWidth - sb.offsetWidth) / 2, behavior: m0 ? "smooth" : "auto"}); }
@@ -1601,6 +1640,7 @@ function openSheet(html, keep = false) {
   $("sheet").scrollTop = keep ? top : 0; probeAll();
 }
 function closeSheet() {
+  if (RECA) { RECA.cancel = true; try { RECA.mr.stop(); } catch (e) {} }
   $("sheet").querySelectorAll("video,audio").forEach(m => m.pause()); for (const k in VCH) { VCH[k].dispose(); delete VCH[k]; }
   clearInterval(saleTimer); $("sheet").classList.remove("feed"); $("sheet").hidden = true; $("sheet").innerHTML = ""; document.body.style.overflow = ""; sel = null; home();
   if (KEYNEXT) { KEYNEXT = false; if (LIVE && LV.me && !keySaved()) setTimeout(() => keySheet(true), 250); }   // 参加の知らせを閉じたら、鍵の控え
@@ -1699,17 +1739,75 @@ const OPENED = new Set(); let RETIRE = null;
 document.addEventListener("toggle", e => { const d = e.target; if (!d.dataset || !d.dataset.more) return; const id = d.dataset.more;
   if (d.open) { OPENED.add(id); if (!d.querySelector(".recb")) d.insertAdjacentHTML("beforeend", `<div class="recb">${recBody(id)}</div>`); } else OPENED.delete(id); }, true);
 // 直す：作った人だけ。題・説明・日時・場所・地図の点・求めているもの・画像（値段・数・種類は直せない）
-function editSheet(id) {
-  const c = S.cards[id], m = MEDIA[id] || {}; ED.id = id; ED.img = m.img || ""; ED.geo = c.geo || null;
-  const at = AT.includes(c.kind), body = true;
+function editSheet(id, keep = false) {
+  const c = S.cards[id], m = MEDIA[id] || {};
+  if (!keep) { for (const k in ED) delete ED[k]; Object.assign(ED, {id, img: m.img || "", geo: c.geo || null, f: {}, media: null, job: null,
+    pics: (m.pics || []).map((p, i) => ({...p, thumb: i === 0 && m.img ? m.img : p.k ? "" : picUrl(m, i)}))}); ED.pics0 = JSON.stringify(ED.pics.map(p => p.u)); }
+  else edRead();
+  const F = (k, d) => ED.f[k] != null ? ED.f[k] : d;
+  const at = AT.includes(c.kind), k = c.kind, pic = k === "picture", av = (k === "music" || k === "video") && (m.parts || (m.src && !/^https:/.test(m.src)) || !m.src);
+  const J = ED.job, L = JeniMedia.LIM.pics;
   openOver(`<h2 class="rh">直す</h2><p class="sub">値段・数・種類は直せません（持った人との約束なので）。直したことは記録に残ります。</p>
-    <label class="ph-pick${ED.img ? " has" : ""}" ${ED.img ? `style="--img:url('${ED.img}')"` : ""}><input type="file" id="e-photo" accept="image/*"><span>${ED.img ? "画像を変える" : "カードの画像（なくてもよい）"}</span></label>
-    ${sampleChips(c.kind, "data-esample")}
-    <label class="fl">題<input id="e-title" maxlength="80" value="${esc(c.title)}"></label>
-    ${body ? `<label class="fl">${{text: "本文", app: "どんなアプリか", project: "何をめざすか"}[c.kind] || "説明"}<textarea id="e-body" maxlength="2000">${esc(c.body || "")}</textarea></label>` : ""}
-    ${c.kind === "project" ? `<label class="fl">求めているもの<input id="e-want" maxlength="200" value="${esc(c.want || "")}"></label>` : ""}
-    ${at ? `<div class="row2"><label class="fl">${c.kind === "shop" ? "営業の日・時間" : "日時"}<input id="e-when" maxlength="60" value="${esc(c.when || "")}"></label><label class="fl">場所<input id="e-place" maxlength="100" value="${esc(c.place || "")}"></label></div>` : ""}
-    <button type="button" class="big" data-esave>直す</button>`);
+    ${pic ? `<div class="alb">${ED.pics.map((p, i) => `<div class="ali" ${p.thumb ? `style="background-image:url('${p.thumb}')"` : ""}>${p.thumb ? "" : icon("lock")}<button type="button" data-epicdel="${i}" aria-label="${i + 1}枚目を外す">×</button>${i === 0 ? "<span>表</span>" : ""}</div>`).join("")}${ED.pics.length < L ? `<label class="ali add" aria-label="写真を足す"><input type="file" id="e-pics" accept="image/*" multiple ${J && J.on ? "disabled" : ""}>${icon("plus")}</label>` : ""}</div>`
+      : `<label class="ph-pick${ED.img ? " has" : ""}" ${ED.img ? `style="--img:url('${ED.img}')"` : ""}><input type="file" id="e-photo" accept="image/*"><span>${ED.img ? "画像を変える" : "カードの画像（なくてもよい）"}</span></label>
+    ${sampleChips(c.kind, "data-esample")}`}
+    ${av ? `<label class="ph-pick mp${ED.media ? " has" : ""}"><input type="file" id="e-media" accept="${k === "music" ? "audio/*,.m4a,.mp3,.aac,.wav" : "video/*"}" ${J && J.on ? "disabled" : ""}><span>${ED.media ? `入れ替えます（${ED.media.len}）・変える` : k === "music" ? "音を入れ替える" : "動画を入れ替える"}</span></label>` : ""}
+    ${J ? `<div class="job"><i id="e-jobbar" style="width:${J.pct}%"></i></div><p class="sub${J.err ? " warnc" : ""}" id="e-job" style="font-size:12px;margin:-4px 0 0">${J.on ? `${J.text} ${Math.round(J.pct)}%` : esc(J.err || "")}</p>` : ""}
+    <label class="fl">題<input id="e-title" maxlength="80" value="${esc(F("title", c.title))}"></label>
+    <label class="fl">${{text: "本文", app: "どんなアプリか", project: "何をめざすか"}[c.kind] || "説明"}<textarea id="e-body" maxlength="2000">${esc(F("body", c.body || ""))}</textarea></label>
+    ${k === "app" ? `<label class="fl">アプリのURL<input id="e-url" inputmode="url" maxlength="300" value="${esc(F("url", m.url || ""))}" placeholder="https://…"></label>` : ""}
+    ${(k === "music" || k === "video") && m.src && /^https:/.test(m.src) && !m.parts ? `<label class="fl">リンク<input id="e-link" inputmode="url" maxlength="300" value="${esc(F("link", m.src))}"></label>` : ""}
+    ${c.kind === "project" ? `<label class="fl">求めているもの<input id="e-want" maxlength="200" value="${esc(F("want", c.want || ""))}"></label>` : ""}
+    ${at ? `<div class="row2"><label class="fl">${c.kind === "shop" ? "営業の日・時間" : "日時"}<input id="e-when" maxlength="60" value="${esc(F("when", c.when || ""))}"></label><label class="fl">場所<input id="e-place" maxlength="100" value="${esc(F("place", c.place || ""))}"></label></div>` : ""}
+    <button type="button" class="big" data-esave ${J && J.on ? "disabled" : ""}>直す</button>`);
+}
+function edRead() { for (const k of ["title", "body", "want", "when", "place", "url", "link"]) { const el = $("e-" + k); if (el) ED.f[k] = el.value; } }
+function edJobUI() { const J = ED.job; if (!J) return; const b = $("e-jobbar"), t = $("e-job"); if (b) b.style.width = J.pct + "%"; if (t) t.textContent = `${J.text} ${Math.round(J.pct)}%`; }
+// 直す：アルバムに写真を足す（置き場へ送るのは、ここで選んだものだけ）
+async function edPics(files) {
+  const id = ED.id, c = S.cards[id], L = JeniMedia.LIM.pics, list = Array.from(files).slice(0, Math.max(0, L - ED.pics.length));
+  if (!list.length) return toast(`アルバムは${L}枚までです`);
+  ED.job = {on: true, pct: 0, text: "写真を整えています"}; editSheet(id, true);
+  try {
+    for (let i = 0; i < list.length; i++) {
+      const im = await JeniMedia.imageOf(list[i]);
+      const p = await putFile(im.blob, f => { ED.job.pct = 100 * (i + f) / list.length; ED.job.text = `写真を置き場へ送っています（${i + 1}/${list.length}）`; edJobUI(); }, c.circle);
+      ED.pics.push({...p, thumb: im.thumb});
+    }
+    ED.job = null;
+  } catch (e) { ED.job = {err: (e && e.message) || "写真を置けませんでした", pct: 0}; }
+  if (ED.id === id && !$("over").hidden) editSheet(id, true);
+}
+// 直す：動画・音を入れ替える
+async function edMedia(file) {
+  const id = ED.id, c = S.cards[id], kind = c.kind, word = kind === "music" ? "音を整えて置いています" : "動画を軽くして置いています";
+  ED.job = {on: true, pct: 0, text: "準備しています"}; ED.media = null; editSheet(id, true);
+  const set = (pct, text) => { ED.job.pct = pct; ED.job.text = text; edJobUI(); };
+  try {
+    const r = await JeniMedia.prepare(file, kind, p => set(p * 70, word), (blob, i, n) => putFile(blob, f => set(100 * (i + .7 + .3 * f) / n, `${word}${n > 1 ? `（${i + 1}/${n}）` : ""}`), c.circle));
+    const poster = r.poster ? await shrink(URL.createObjectURL(r.poster), 640) : "";
+    ED.media = {parts: r.parts.map(({u, x, m, e, d, k, t}) => ({u, x, m, e, d, k, t})), dur: Math.round(r.dur), len: JeniMedia.fmtLen(r.dur), poster}; ED.job = null;
+  } catch (e) { ED.job = {err: (e && e.message) || "できませんでした", pct: 0}; }
+  if (ED.id === id && !$("over").hidden) editSheet(id, true);
+}
+// 表の小さい写し（置き場の写真から作る。作れないときは、前の表のまま）
+function thumbOf(u) {
+  return new Promise(res => { const im = new Image(); im.crossOrigin = "anonymous"; im.onload = () => { try { const k = Math.min(1, 640 / Math.max(im.width, im.height)), cv = document.createElement("canvas");
+    cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k); cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height); res(cv.toDataURL("image/jpeg", .72)); } catch (e) { res(""); } };
+    im.onerror = () => res(""); im.src = u; });
+}
+// 直したあとの写真・動画など（変わったところだけ）。変わらなければ null
+async function edMediaOut(id) {
+  const c = S.cards[id], old = MEDIA[id] || {}, o = {...old}; let ch = false;
+  if (c.kind === "picture") {
+    if (JSON.stringify(ED.pics.map(p => p.u)) !== ED.pics0) { ch = true;
+      o.pics = ED.pics.map(({u, x, m, e, k, t}) => ({u, x, m, e, k, t}));
+      const f = ED.pics[0]; o.img = !f ? "" : /^data:/.test(f.thumb || "") ? f.thumb : f.u === ((old.pics || [])[0] || {}).u ? old.img : (await thumbOf(f.thumb || f.u)) || old.img || ""; if (!o.pics.length) delete o.pics; }
+  } else if ((ED.img || "") !== (old.img || "")) { ch = true; o.img = ED.img ? (/^data:image\/jpeg/.test(ED.img) && ED.img.length < 120000 ? ED.img : await shrink(ED.img, 640)) : ""; }
+  if (ED.media) { ch = true; Object.assign(o, {parts: ED.media.parts, src: ED.media.parts[0].u, len: ED.media.len, dur: ED.media.dur}); if (c.kind === "video" && ED.media.poster && !o.img) o.img = ED.media.poster; }
+  const url = ED.f.url != null ? ED.f.url.trim() : null; if (url != null && url !== (old.url || "")) { ch = true; o.url = url; }
+  const link = ED.f.link != null ? ED.f.link.trim() : null; if (link != null && link !== (old.src || "")) { ch = true; o.src = link; }
+  return ch ? o : null;
 }
 const ED = {};
 let feedIds = [];
@@ -1755,7 +1853,7 @@ function recBody(id) {
   if (m.where) rec.push(["受け取り", esc(m.where)]);
   if (c.circle) rec.push(["見える人", `${esc(S.circles[c.circle].name)}（${S.circles[c.circle].members.length}人）`]);
   if (c.refunds) rec.push(["返した", c.refunds + "回"]);
-  if (c.history && c.history.length) rec.push(["直す前", c.history.map(h => `「${esc(h.title)}」`).join("→") + ` → 「${esc(c.title)}」`]);
+  if (c.history && c.history.length) rec.push(["直す前", c.circle ? `${c.history.length}回直しました（前の中身は輪の封の中）` : c.history.map(h => `「${esc(h.title)}」`).join("→") + ` → 「${esc(c.title)}」`]);
   if (LIVE) { const d = liveProof(c.id); rec.push(["刻んだ記録", d ? `${d} の指紋に入っています（${d} にはもうあった、とビットコインで確かめられます。証明：github.com/nndahedeyo/jeni の stamps/${d}.txt.ots）` : "次の刻み（1日1回）で刻まれます"]); }
   else { const pf = proofOfEvent(c.id);
   rec.push(["刻んだ記録", pf && pf.ok ? `${pf.a.day}日目の指紋に入っています（その日にはもうあった、と確かめられます・証明 ${pf.n}段）` : "次の要約で刻まれます"]); }
@@ -1839,7 +1937,7 @@ function chatList() {
   openSheet(`<button type="button" class="back" data-close>${icon("back")}一覧へ</button>
     <h2 class="rh" data-view="chats">話す</h2>
     <section class="box">${fs.map(pk => `<div class="who-row"><button type="button" class="who" data-person="${pk}" aria-label="${esc(nameOf(pk))} さんのカード">${avatar(pk)}</button>
-      <button type="button" class="crow" data-chat="${pk}"><b>${esc(nameOf(pk))}</b><small>${last(pk) ? esc(last(pk).text) : "まだ話していません"}</small></button>
+      <button type="button" class="crow" data-chat="${pk}"><b>${esc(nameOf(pk))}</b><small>${last(pk) ? `${esc(msgPreview(last(pk)))}・${dayLabel(new Date(tsOf(last(pk)) * 1000)).replace("今日", hm(new Date(tsOf(last(pk)) * 1000)))}` : "まだ話していません"}</small></button>
       ${unreadOf(pk) ? `<span class="nb" aria-label="新しい会話"></span>` : ""}</div>`).join("") || `<div class="who-row"><span>まだ話せる人がいません</span></div>`}</section>
     <p class="fline">お互いに友達の人とだけ、2人で話せます（鍵つき）。友達になるのは、その人のプロフィールカードから。</p>`);
 }
@@ -1871,13 +1969,79 @@ function giftTo(pk) {
     <section class="box"><h3>持っているカード</h3>${cs.map(c => `<div class="who-row"><span>${icon(kindIcon(c.kind))} ${esc(c.title)}</span>${lpBtn("gcard", c.id + ":" + pk, `贈る<small>長押し</small>`)}</div>`).join("") || `<p class="sub">贈れるカードがありません</p>`}</section>
     <p class="fline">贈ると取り消せません。相手の名前を確かめてから、長押ししてください。だれからだれへ何を贈ったかは、記録に残ります（鍵をかけて持ったカードは贈れません）。</p>`);
 }
-function chatSheet(pk) {
-  const k = pairKey(me, pk), msgs = CHAT[k] || []; READ[me + ":" + pk] = clock;
-  openOver(`<h2 class="rh">${esc(nameOf(pk))} さんと</h2><p class="sub" style="font-size:11px">${icon("lock")} 2人の鍵で封をして置きます。ほかの人には読めません${LIVE ? "" : "（この見本の画面では、どこにも送りません）"}。</p>
-    <div class="talk chat">${msgs.map(m => `<div class="bub${m.by === me ? " me" : ""}">${esc(m.text)}</div>`).join("") || `<p class="sub">まだ話していません</p>`}</div>
-    <div class="say"><textarea id="c-text" maxlength="1000" placeholder="メッセージ"></textarea><button type="button" class="pill go" data-send="${pk}">送る</button></div>`);
-  const t = $("over").querySelector(".talk"); if (t) t.scrollTop = t.scrollHeight;
+// 2人の会話：ふつうのメッセンジャーのように（日付の区切り・時刻・写真・ファイル・カード）
+let CHATPK = null; const CURL = {};
+const tsOf = m => m.ts || (LIVE ? m.at : Date.now() / 1000 - (clock - m.at) * 60);
+const hm = d => `${d.getHours()}:${String(d.getMinutes()).padStart(2, "0")}`;
+function dayLabel(d) {
+  const t = new Date(); t.setHours(0, 0, 0, 0); const x = new Date(d); x.setHours(0, 0, 0, 0); const n = Math.round((t - x) / 864e5);
+  return n === 0 ? "今日" : n === 1 ? "昨日" : `${x.getFullYear() !== t.getFullYear() ? x.getFullYear() + "年" : ""}${x.getMonth() + 1}月${x.getDate()}日（${"日月火水木金土"[x.getDay()]}）`;
 }
+const sizeOf = n => n >= 1048576 ? (n / 1048576).toFixed(1) + "MB" : Math.max(1, Math.round(n / 1024)) + "KB";
+const msgPreview = m => m.text || (m.pics ? `写真${m.pics.length > 1 ? " " + m.pics.length + "枚" : ""}` : m.file ? "ファイル" : m.card ? "カード" : "");
+function talkHtml(pk) {
+  const msgs = CHAT[pairKey(me, pk)] || []; let out = "", day = "";
+  for (let i = 0; i < msgs.length; i++) { const m = msgs[i], d = new Date(tsOf(m) * 1000), dk = d.toDateString();
+    if (dk !== day) { out += `<div class="cday">${dayLabel(d)}</div>`; day = dk; }
+    const c = m.card && S.cards[m.card];
+    const body = [m.pics ? `<div class="cpics">${m.pics.map((p, j) => `<img alt="写真" data-cimg="${i}.${j}" ${!p.k && CURL[p.u] !== undefined ? `src="${CURL[p.u] || p.u}"` : !p.k ? `src="${esc(p.u)}"` : CURL[p.u] ? `src="${CURL[p.u]}"` : ""}>`).join("")}</div>` : "",
+      m.file ? `<button type="button" class="cfile" data-cfile="${i}">${icon("data")}<span>${esc(m.file.name || "ファイル")}<small>${sizeOf(m.file.size || 0)}・押すと開く</small></span></button>` : "",
+      m.card ? (c && !c.gone ? `<button type="button" class="ccard" data-detail="${c.id}">${icon(kindIcon(c.kind))}<span>${esc(c.title)}<small>${esc(nameOf(c.by))}・カードを開く</small></span></button>` : `<span class="sub">（もうないカード）</span>`) : "",
+      m.text ? esc(m.text) : ""].filter(Boolean).join("");
+    out += `<div class="bub${m.by === me ? " mymsg" : ""}">${body}<time>${hm(d)}</time></div>`;
+  }
+  return out || `<p class="sub">まだ話していません</p>`;
+}
+// 封をした写真は、開けてから見せる
+function talkOpen() {
+  const msgs = CHAT[pairKey(me, CHATPK)] || [];
+  document.querySelectorAll("#c-talk img[data-cimg]:not([src])").forEach(im => { const [i, j] = im.dataset.cimg.split(".").map(Number), p = ((msgs[i] || {}).pics || [])[j]; if (!p || !p.k) return;
+    if (CURL[p.u]) { im.src = CURL[p.u]; return; }
+    JeniMedia.openPart(p).then(u => { CURL[p.u] = u; im.src = u; }, () => {}); });
+}
+function talkRender(pk, stick) {
+  const t = $("c-talk"); if (!t) return; const bottom = stick || t.scrollHeight - t.scrollTop - t.clientHeight < 80;
+  t.innerHTML = talkHtml(pk); talkOpen(); if (bottom) t.scrollTop = t.scrollHeight;
+}
+const CPLUS = () => `<label class="pill">${icon("picture")} 写真<input type="file" id="c-pic" accept="image/*" multiple></label><label class="pill">${icon("data")} ファイル<input type="file" id="c-file"></label><button type="button" class="pill" data-ccard>${icon("hold")} カード</button>`;
+function chatSheet(pk) {
+  READ[me + ":" + pk] = clock; CHATPK = pk;
+  openOver(`<h2 class="rh">${esc(nameOf(pk))} さん</h2><p class="sub" style="font-size:11px;margin:-6px 0 6px">${icon("lock")} 2人だけが読めます${LIVE ? "" : "（見本：どこにも送りません）"}</p>
+    <div class="talk chat" id="c-talk"></div>
+    <p class="sub" id="c-job" style="font-size:12px;margin:0" hidden></p>
+    <div class="cpl" id="c-plus" hidden>${CPLUS()}</div>
+    <div class="say c3"><button type="button" class="cplus" data-cplus aria-label="写真・ファイル・カードを送る">＋</button><textarea id="c-text" maxlength="1000" rows="1" placeholder="メッセージ"></textarea><button type="button" class="pill go" data-send="${pk}">送る</button></div>`);
+  talkRender(pk, true);
+}
+// 会話で送る：文・写真・ファイル・カード（写真とファイルは、2人だけが開ける鍵で封をしてから置く）
+async function chatSend(pk, obj) {
+  if (LIVE) { await sendDM(pk, obj); return; }
+  const k = pairKey(me, pk); (CHAT[k] = CHAT[k] || []).push({by: me, ...obj, at: clock, ts: Date.now() / 1000});
+}
+async function chatPut(blob) {
+  if (!LIVE) { const u = URL.createObjectURL(blob); CURL[u] = u; return {u}; }
+  const sb = await JeniMedia.sealBlob(blob), up = await JeniMedia.upload(sb.blob, LV.sign);
+  return {...up, k: sb.k, t: sb.t};
+}
+function cjob(t) { const el = $("c-job"); if (!el) return; el.hidden = !t; el.textContent = t || ""; }
+async function chatPics(pk, files) {
+  const list = Array.from(files).slice(0, 10); cjob("写真を送っています…");
+  try { const pics = []; for (let i = 0; i < list.length; i++) { cjob(`写真を送っています（${i + 1}/${list.length}）`); const im = await JeniMedia.imageOf(list[i]); const p = await chatPut(im.blob); CURL[p.u] = CURL[p.u] || URL.createObjectURL(im.blob); pics.push(p); }
+    await chatSend(pk, {pics}); cjob(""); } catch (e) { cjob("送れませんでした（つながる場所で、もう一度）"); }
+  if (CHATPK === pk) talkRender(pk, true);
+}
+async function chatFile(pk, f) {
+  if (f.size > JeniMedia.LIM.part) return toast(`ファイルが大きすぎます（${Math.floor(JeniMedia.LIM.part / 1048576)}MBまで）`);
+  cjob("ファイルを送っています…");
+  try { const p = await chatPut(f); await chatSend(pk, {file: {...p, name: String(f.name || "ファイル").slice(0, 120), size: f.size, type: String(f.type || "").slice(0, 80)}}); cjob(""); } catch (e) { cjob("送れませんでした（つながる場所で、もう一度）"); }
+  if (CHATPK === pk) talkRender(pk, true);
+}
+async function chatOpenFile(m) {
+  const f = m.file; let u = CURL[f.u];
+  try { if (!u) { if (f.k) u = await JeniMedia.openPart(f); else { const r = await fetch(f.u); u = URL.createObjectURL(new Blob([await r.blob()], {type: f.type || "application/octet-stream"})); } CURL[f.u] = u; } } catch (e) { return toast("開けませんでした"); }
+  const a = document.createElement("a"); a.href = u; a.download = f.name || "file"; a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
+}
+function lightbox(src) { const d = document.createElement("div"); d.className = "lbx"; d.innerHTML = `<img alt="写真" src="${src}"><button type="button" aria-label="閉じる">×</button>`; d.addEventListener("click", () => d.remove()); document.body.appendChild(d); }
 let callT = null;
 const vcallHtml = (pk, note) => `<div class="vcall"><video id="rtc-v" autoplay playsinline></video><video id="rtc-me" autoplay playsinline muted></video><div class="vnote" id="vnote">${note}</div></div>
   <div class="call"><b>${esc(nameOf(pk))}</b><span class="sub" id="call-s">呼び出しています…</span><div class="row2"><button type="button" class="pill" data-camoff>カメラを切る</button><button type="button" class="pill warn" data-hang="${pk}">終える</button></div></div>`;
@@ -1917,7 +2081,7 @@ function pickPerson(title, id, act, people, note) {
   sel = id;
 }
 function openOver(html) { $("over").innerHTML = `<div class="grab" aria-hidden="true"></div><button type="button" class="x" data-overclose aria-label="閉じる">×</button>${html}`; $("over").hidden = false; $("scrim").hidden = false; }
-function closeOver() { $("over").hidden = true; $("scrim").hidden = true; $("over").innerHTML = ""; }
+function closeOver() { CHATPK = null; $("over").hidden = true; $("scrim").hidden = true; $("over").innerHTML = ""; }
 // カードの中で再生する（音楽・動画）。写真は大きく、文章は下に全部
 function cplay(id) {
   const c = S.cards[id], m = MEDIA[id] || {}, pg = $("pg-" + id); if (!pg) return;
@@ -2021,11 +2185,32 @@ function jobUI() {
 const setJob = (pct, text) => { JOB.pct = Math.max(0, Math.min(100, pct)); if (text) JOB.text = text; jobUI(); };
 const MEDIA_KINDS = ["picture", "music", "video"];   // 置き場に置くもの。輪のカードのものは、鍵で封をしてから置く（見せる相手を先に決める）
 // 置き場へ送る（輪のカードなら、ファイルごとの鍵で封をしてから。鍵は輪の人だけが読める中身の中に入る）
-async function putFile(blob, onp) {
+async function putFile(blob, onp, circle = MK.circle) {
   if (!LIVE) return {u: URL.createObjectURL(blob)};
-  if (!MK.circle) return JeniMedia.upload(blob, LV.sign, onp);
+  if (!circle) return JeniMedia.upload(blob, LV.sign, onp);
   const sb = await JeniMedia.sealBlob(blob), up = await JeniMedia.upload(sb.blob, LV.sign, onp);
   return {...up, k: sb.k, t: sb.t};
+}
+/* ---- その場で録音（音楽のカード）：マイクで録って、そのまま置く ---- */
+let RECA = null;
+const recLen = () => { const t = RECA ? Math.floor((Date.now() - RECA.t0) / 1000) : 0; return `${Math.floor(t / 60)}:${String(t % 60).padStart(2, "0")}`; };
+async function recToggle() {
+  if (RECA) { const r = RECA; if (r.mr.state !== "inactive") r.mr.stop(); return; }
+  if (!navigator.mediaDevices || !window.MediaRecorder) return toast("この端末では録音できません");
+  let st; try { st = await navigator.mediaDevices.getUserMedia({audio: true}); } catch (e) { return toast("マイクを使えません（ブラウザの設定を確かめてください）"); }
+  const type = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm"].find(t => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || "";
+  const mr = new MediaRecorder(st, type ? {mimeType: type, audioBitsPerSecond: 192000} : {}), chunks = [];
+  readMK(); RECA = {mr, st, t0: Date.now()};
+  mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+  mr.onstop = () => {
+    const cancel = RECA && RECA.cancel; clearInterval(RECA && RECA.iv); st.getTracks().forEach(t => t.stop()); RECA = null; if (cancel) return;
+    const mt = (mr.mimeType || type || "audio/mp4").split(";")[0], f = new File(chunks, `録音.${/webm/.test(mt) ? "webm" : "m4a"}`, {type: mt});
+    if (!f.size) { make(); return toast("録音できませんでした"); }
+    mediaJob(f, "music");
+  };
+  mr.start(1000);
+  RECA.iv = setInterval(() => { const el = $("m-rect"); if (el) el.textContent = recLen(); if (RECA && Date.now() - RECA.t0 > JeniMedia.LIM.audioSec * 1000) mr.stop(); }, 500);
+  make();
 }
 async function mediaJob(file, kind) {
   if ($("m-circle")) MK.circle = $("m-circle").value;
@@ -2132,7 +2317,9 @@ function make() {
       <p class="sub" style="font-size:12px;margin:-2px 0 0">${MK.pics.length ? `${MK.pics.length}枚（${JeniMedia.LIM.pics}枚まで）・1枚目がカードの表。${MK.pics.length > 1 ? "カードの上で自動でゆっくりめくれます。" : "2枚以上で、自動でめくれるアルバムに。"}` : `写真を選ぶ（${JeniMedia.LIM.pics}枚まで・一度に何枚でも）。位置などの情報は消してから置きます。`}</p>`
       : `<label class="ph-pick${MK.img ? " has" : ""}" ${MK.img ? `style="--img:url('${MK.img}')"` : ""}><input type="file" id="m-photo" accept="image/*" ${sale ? 'capture="environment"' : ""}><span>${MK.img ? "画像を変える" : needImg ? "写真を撮る・選ぶ" : media ? (k === "music" ? "ジャケットの画像（なくてもよい）" : "表紙の画像（なくても、動画の最初から作ります）") : "カードの画像（なくてもよい）"}</span></label>`}
       ${sampleChips(k, "data-sample")}
-    ${media ? `<label class="ph-pick mp${MK.media ? " has" : ""}"><input type="file" id="m-media" accept="${k === "music" ? "audio/*" : "video/*"}" ${JOB.on ? "disabled" : ""}><span>${MK.media ? `${k === "music" ? "音" : "動画"}を選びました（${MK.media.len}${MK.media.parts.length > 1 ? `・${MK.media.parts.length}つに分けて置きました` : ""}）・変える` : MK.src && !/^https:/.test(MK.src) ? `見本を選びました${MK.len ? `（${MK.len}）` : ""}・変える` : k === "music" ? "音を選ぶ（2時間まで）" : "動画を選ぶ（2時間まで）"}</span></label>
+    ${media ? `<label class="ph-pick mp${MK.media ? " has" : ""}"><input type="file" id="m-media" accept="${k === "music" ? "audio/*,.m4a,.mp3,.aac,.wav" : "video/*"}" ${JOB.on || RECA ? "disabled" : ""}><span>${MK.media ? `${k === "music" ? "音" : "動画"}を選びました（${MK.media.len}${MK.media.parts.length > 1 ? `・${MK.media.parts.length}つに分けて置きました` : ""}）・変える` : MK.src && !/^https:/.test(MK.src) ? `見本を選びました${MK.len ? `（${MK.len}）` : ""}・変える` : k === "music" ? "音を選ぶ（2時間まで）" : "動画を選ぶ（2時間まで）"}</span></label>
+      ${k === "music" ? `<div class="row2"><button type="button" class="pill${RECA ? " warn" : ""}" data-mrec ${JOB.on ? "disabled" : ""}>${RECA ? `● 録音をとめる <span id="m-rect">${recLen()}</span>` : "その場で録音する"}</button></div>
+      ${RECA ? "" : `<p class="sub" style="font-size:11px;margin:-4px 0 0">ボイスメモは、共有 →「"ファイル"に保存」で、上から選べます</p>`}` : ""}
       ${JOB.on || JOB.err ? `<div class="job"><i id="m-jobbar" style="width:${JOB.pct}%"></i></div><p class="sub${JOB.err ? " warnc" : ""}" id="m-job" style="font-size:12px;margin:-4px 0 0">${JOB.on ? `${JOB.text} ${Math.round(JOB.pct)}%` : esc(JOB.err)}</p>` : ""}
       ${LIVE ? "" : `<div class="chips"><span class="sub">見本：</span><button type="button" data-msample="${k === "music" ? "media/rain.mp3" : "media/field.mp4"}">${k === "music" ? "雨の音" : "畑の動画"}</button></div>`}
       <label class="fl">またはリンク（YouTube・${k === "music" ? "音" : "動画"}のファイルの https）<input id="m-src" type="url" maxlength="300" value="${esc(/^https:/.test(MK.src || "") ? MK.src : "")}" placeholder="https://…" ${MK.media ? "disabled" : ""}></label>
@@ -2254,22 +2441,36 @@ function rules() {
   openSheet(`<button type="button" class="back" data-close>${icon("back")}一覧へ</button>
     <h2 class="rh">${coin()} jeni のきまり</h2>
     <ol class="rules">
+      <li><b>はじめる</b>参加している人に認めてもらうと、${RULE.start.toLocaleString("ja-JP")} jeni が届きます。あなたも${RULE.vouchMax}人まで認められます。</li>
+      <li><b>カード</b>だれでもカードを作って、値段（jeni）をつけられます。値段はあとから変えられません。</li>
+      <li><b>持つ</b>カードを持つと、書かれたものを受け取れます。払った jeni は作った人へ。</li>
+      <li><b>投げ銭</b>気に入ったカードに jeni を送れます。半分は作った人、半分はそのカードを持っている人へ。</li>
+      <li><b>長押しで決める</b>jeni が動くのは、あなたが長押ししたときだけ。QRを読んだだけでは動きません。</li>
+    </ol>
+    <p class="rnote"><b>知っておくこと</b><br>
+      ・jeni は円と交換できません。<br>
+      ・だれがだれに払ったかは記録に残り、だれでも見られます。見せたくないカードは、持つときに「かくす」か「鍵をかける」を。<br>
+      ・2人の会話と、仲間の輪の中身は、その人たちだけが読めます。<br>
+      ・鍵をなくすと戻せません。わたしのカードの「鍵を守る」で守ってください。</p>
+    <details class="more"><summary>くわしいきまり</summary>
+    <ol class="rules">
       <li><b>はじまり</b>認められて（招待のリンク・QRからも）参加すると、${RULE.start.toLocaleString("ja-JP")} jeni が届きます。1人が認めて・招待してあげられるのは合わせて${RULE.vouchMax}人まで。カードを作れるのは参加している人です。</li>
       <li><b>持つ</b>持つと、カードに書かれたものを受け取れます。データは元のデータを何度でも、現物はそのものを1回、イベントは参加を1回、体験・サービスは受けるのを1回。お店・会社や団体・プロジェクト（つなぐカード）は無料で、持つと常連・会員・仲間になり、いつでもやめられます。作った人から持つと、値段の分の jeni が作った人へ。値段はずっと変わりません。</li>
       <li><b>譲る</b>数に限りのあるカードは、持っている人から同じ値段で譲り受けます。jeni は手放した人へ戻ります。</li>
       <li><b>投げ銭</b>半分は作った人へ、半分は持っている人へ（鍵をかけて持っている人はのぞく：分け前の動きから、どのカードを持っているかが分かってしまうため）。受け取るとなくなるもの（現物など数に限りのあるカード）と、お店・会社や団体は、全額が作った人へ。プロジェクトは、半分を自分のカードをつないで育てた人で等しく分けます（仲間になるのは無料でだれでもなれるので、なっただけの人には分けません）。</li>
       <li><b>上限</b>同じカードは${RULE.capPaid}枚まで（無料のカードは${RULE.capFree}枚まで）。使うか贈ると、また持てます。</li>
     </ol>
-    <p class="rnote"><b>会話・友達・知らせる</b>　カードの会話は、参加している人ならだれでも書けます（輪のカードは輪の人だけ）。2人だけの会話と通話（ビデオ通話も）は、お互いに友達のときだけ（残高の下の吹き出しと受話器、または相手のカードから）。危ないカードや会話は、実績のある別々の人${RULE.flagsToHide}人の知らせで隠れます。現物・イベント・体験は、持っている人が出す一度きりのQRを作った人が読んで、受け取り・参加・受けたことにします。</p>
+        <p class="rnote"><b>会話・友達・知らせる</b>　カードの会話は、参加している人ならだれでも書けます（輪のカードは輪の人だけ）。2人だけの会話（写真・ファイル・カードも送れる）と通話（ビデオ通話も）は、お互いに友達のときだけ（残高の下の吹き出しと受話器、または相手のカードから）。危ないカードや会話は、実績のある別々の人${RULE.flagsToHide}人の知らせで隠れます。現物・イベント・体験は、持っている人が出す一度きりのQRを作った人が読んで、受け取り・参加・受けたことにします。</p>
     <p class="rnote"><b>QRは3つ</b>　どのQRも、読んだだけで jeni は動きません（読んだ人が自分の画面で長押ししたときだけ）。<br>
       ・カードの裏・プロフィールのQR：カードや人が開きます（紹介・友達になる・参加を認める）<br>
       ・QRで受け取る：作った人・売る人が出すQR。読んだ人の画面に「持つ」と「投げ銭」が出て、長押しすると jeni が出した人に届きます（その場で売るときは5分・1回だけ）<br>
       ・QRで引き換える（入る・受ける）：持っている人が出し、作った人が読むQR。現物の受け取り・入場・体験に<br>決まると、両方の画面の小さなカードが同じように光ります。招待は一度きりのリンクで送ります（QRにもできます）。</p>
-    <p class="rnote"><b>直す・取り下げる</b>　作った人は、題・説明・日時・場所・画像を直せます（値段・数・種類は直せません）。取り下げると、だれも持っていないカードは消え、持っている人がいるカードは受付を終えます（持っている人のものはそのまま）。自分の書いた会話は消せます。直した・消したことは記録に残ります。</p>
+    <p class="rnote"><b>直す・取り下げる</b>　作った人は、あとから題・説明・日時・場所・画像を直したり、アルバムに写真を足したり、動画や音を入れ替えたりできます（値段・数・種類は直せません）。取り下げると、だれも持っていないカードは消え、持っている人がいるカードは受付を終えます（持っている人のものはそのまま）。自分の書いた会話は消せます。直した・消したことは記録に残ります。</p>
     <p class="rnote"><b>見えるもの・隠れるもの</b>　だれがだれに何 jeni 払ったかは、確かめ合うために記録に残り、だれでも見られます（番号と、その人が決めた名前で）。見せ方は3つ：「みんなに見せる」、「かくす（分け前あり）」＝画面に出さないだけで記録を調べれば分かる・投げ銭の分け前を受け取れる、「鍵をかける（分け前なし）」＝どのカードかは本人と作った人にしか分からない（数に限りのないカードだけ・分け前が届くと分かってしまうので受け取らない）。仲間の輪の中身（写真・音・動画も）は、輪の人にしか読めません。ただし、輪の人が自分の端末に保存したり、輪から外れた人がそれまでに見たものを持っていたりすることは防げません。2人だけの会話・通話も同じで、相手の手元に残ることは防げません。</p>
     <p class="rnote"><b>贈る</b>　jeni や持っているカードを、参加している人に直接届けられます（残高の下の贈り物の印か、相手のプロフィールカードから・長押しで決める）。贈ると取り消せません。だれからだれへ何を贈ったかは記録に残ります。</p>
     <p class="rnote"><b>配る量について</b>　配る量や配り方は、使われ方を見て変わることがあります。変わるときも全員に同じきまりが同じように当てはまり、前もって知らせます。jeni は円と交換できず、値段は作った人が決めるので、配る量の大きさそのものに意味はありません。</p>
-    <p class="rnote"><b>運営のサーバーはありません</b>　記録は、だれでも立てられる複数の中継（リレー）に置き、それぞれの端末にも写しを持ちます。1か所が止まっても、ほかに残ります。無料の中継は古い記録を消すことがあるので、記録の書き出しで守ります。また毎日、記録の「指紋」（中身は分からない64文字）をビットコインに刻み、日付をさかのぼった書き換えができないようにしています。</p>`);
+    <p class="rnote"><b>運営のサーバーはありません</b>　記録は、だれでも立てられる複数の中継（リレー）に置き、それぞれの端末にも写しを持ちます。1か所が止まっても、ほかに残ります。無料の中継は古い記録を消すことがあるので、記録の書き出しで守ります。また毎日、記録の「指紋」（中身は分からない64文字）をビットコインに刻み、日付をさかのぼった書き換えができないようにしています。</p>
+    </details>`);
 }
 
 /* ---- 再生（一覧の中でそのまま） ---- */
@@ -2346,7 +2547,8 @@ const AS = name => P[name].pk;
 const cardBy = t => Object.values(S.cards).find(c => c.title === t);
 const GUIDE = [
   ["しぼり：持っている・お気に入り・近く", "アイコンの上の3つ。いくつでも重ねられ、どの項目にもかかります（例：持っている×音楽、お気に入り×近く×現物）。", () => { me = AS("kenji"); field = "all"; MOD.mine = true; MOD.fav = false; MOD.near = false; closeSheet(); }],
-  ["よく見るものを手前に", "並びは すべて・音楽・動画・写真・文章 → 現物・イベント・体験 → アプリ・お店・会社や団体・プロジェクト → 仲間の輪。", () => { me = AS("kenji"); MOD.mine = MOD.near = false; field = "music"; closeSheet(); }],
+  ["よく見るものを手前に", "並びは すべて・人・音楽・動画・写真・文章 → 現物・イベント・体験 → アプリ・お店・会社や団体・プロジェクト → 仲間の輪。", () => { me = AS("kenji"); MOD.mine = MOD.near = false; field = "music"; closeSheet(); }],
+  ["人を探す", "並びの「人」で、参加している人のプロフィールカードが出ます。名前やひとことで探して、カードから友達に。", () => { me = AS("kenji"); field = "people"; closeSheet(); }],
   ["カードのページ", "どのカードも同じ並び：カード → 作った人・投げ銭・持つ → 値段・残り・持っている人・jeni の行き先 → 受け取る →「くわしく・記録」（そのカードだけの話と、持っている人・譲る・贈る・記録）。", () => { me = AS("kenji"); detail(cardBy("畑の収穫体験").id); }],
   ["投げ銭は1か所で", "額を押すと 1→5→10→20 と変わり（最初に届く 1,000 jeni に合わせた段）、となりを長押しで贈ります。", () => { me = AS("kenji"); detail(cardBy("Ambient Waves").id); }],
   ["全画面", "カードのページの右上「全画面」。写真・動画は画面いっぱいに、1枚ずつめくれます。", () => { me = AS("kenji"); detail(cardBy("畑の一日").id); }],
@@ -2359,7 +2561,7 @@ const GUIDE = [
   ["長い動画・音", "動画も音も2時間まで（音は MP3 の 256〜320kbps と同じくらいの音質）。端末の中で軽くして、長いものは分けて置き、続けて1本として流れます。下の線を押すと、その所へ。", () => { me = AS("kenji"); detail(cardBy("畑の一日").id); }],
   ["動画・音を作る", "＋ → データ → 動画。選ぶと、その場で軽くして（進み具合が出ます）、そのまま出せます。リンク（YouTube など）も入れられます。", () => { me = AS("kenji"); MK.mode = "video"; make(); }],
   ["はじめて開いたとき", "運用版の最初の流れ：jeni とは（3枚・貝はまだ待っている）→ 大事な3つと名前 → 始める → 鍵を守る。参加して jeni が届くと、貝が動き出します。", () => startSheet()],
-  ["招待する（身内に）", "わたしのカードの「招待する」。一度きりのリンクとQRを LINE などで送ります（7日間・1人・認められる3人に数える）。", () => { me = AS("kenji"); meCard(); }],
+  ["招待する（身内に）", "わたしのカードの「招待する」。一度きりのリンクとQRを LINE などで送ります（7日間・1人・認められる10人に数える）。", () => { me = AS("kenji"); meCard(); }],
   ["直す・取り下げる", "自分のカードのページから。値段・数・種類は直せません。取り下げると、だれも持っていなければ消え、持っている人がいれば受付を終えます。", () => { me = AS("farmer"); detail(cardBy("朝採り大根 3本セット").id); }],
   ["作るはすぐ入力から", "＋で入力の画面。上の4つ（もの・体験／データ／つなぐ／その場で売る）と種類で欄が切り替わります。どのカードにも画像をつけられます。", () => { me = AS("kenji"); MK.mode = "event"; make(); }],
   ["常連・会員・仲間", "お店・会社や団体・プロジェクトは、長押しで常連・会員・仲間に（無料・いつでもやめられる）。新しくつながったカードは鈴へ。", () => { me = AS("kenji"); newsList(); }],
@@ -2398,6 +2600,7 @@ document.addEventListener("change", e => {
     fr.readAsDataURL(e.target.files[0]);
   }
 });
+document.addEventListener("input", e => { if (e.target.id === "pq") { PQ = e.target.value; pqApply(); } });
 document.addEventListener("click", e => {
   { const pg = e.target.closest && e.target.closest(".pg"); if (pg) sel = pg.dataset.pg; }
   const q = s => e.target.closest(s);
@@ -2466,8 +2669,13 @@ document.addEventListener("click", e => {
   if ((b = q("[data-unfriend]"))) { emit(me, {t: "unfriend", who: b.dataset.unfriend}); return personCard(b.dataset.unfriend); }
   if ((b = q("[data-chat]"))) return chatSheet(b.dataset.chat);
   if ((b = q("[data-send]"))) { const pk = b.dataset.send, text = ($("c-text").value || "").trim(); if (!text) return;
-    if (LIVE) { $("c-text").value = ""; sendDM(pk, text).then(() => setTimeout(() => chatSheet(pk), 300)); return; }
-    const k = pairKey(me, pk); (CHAT[k] = CHAT[k] || []).push({by: me, text, at: clock}); return chatSheet(pk); }
+    $("c-text").value = ""; $("c-text").focus(); chatSend(pk, {text}).then(() => { if (CHATPK === pk) talkRender(pk, true); }); return; }
+  if (q("[data-cplus]")) { const pl = $("c-plus"); pl.hidden = !pl.hidden; if (!pl.hidden) pl.innerHTML = CPLUS(); return; }
+  if (q("[data-ccard]")) { const pl = $("c-plus"), cs = Object.values(S.cards).filter(c => !c.gone && !c.hidden && (c.by === me || mine(c).length) && (!c.circle || (S.circles[c.circle] && S.circles[c.circle].members.includes(CHATPK))));
+    pl.innerHTML = cs.length ? cs.slice(-30).reverse().map(c => `<button type="button" class="pill" data-csendcard="${c.id}">${icon(kindIcon(c.kind))} ${esc(c.title.slice(0, 18))}</button>`).join("") : `<span class="sub">送れるカードがありません（作ったカード・持っているカード）</span>`; return; }
+  if ((b = q("[data-csendcard]"))) { const pk = CHATPK, id = b.dataset.csendcard; $("c-plus").hidden = true; chatSend(pk, {card: id}).then(() => { if (CHATPK === pk) talkRender(pk, true); }); return; }
+  if ((b = q("[data-cfile]"))) { const m = (CHAT[pairKey(me, CHATPK)] || [])[+b.dataset.cfile]; if (m && m.file) chatOpenFile(m); return; }
+  if ((b = q("#c-talk img[data-cimg]")) && b.src) return lightbox(b.src);
   if ((b = q("[data-call]"))) return callSheet(b.dataset.call);
   if ((b = q("[data-vcall]"))) return callSheet(b.dataset.vcall, true);
   if ((b = q("[data-giftp]"))) return giftTo(b.dataset.giftp);
@@ -2480,7 +2688,9 @@ document.addEventListener("click", e => {
   if ((b = q("[data-redeem]"))) return redeemSheet(b.dataset.redeem);
   if ((b = q("[data-edit]"))) return editSheet(b.dataset.edit);
   if ((b = q("[data-esample]"))) { ED.img = b.dataset.esample; const pk = $("over").querySelector(".ph-pick"); pk.classList.add("has"); pk.style.setProperty("--img", `url('${ED.img}')`); pk.querySelector("span").textContent = "画像を変える"; return; }
+  if ((b = q("[data-epicdel]"))) { ED.pics.splice(+b.dataset.epicdel, 1); return editSheet(ED.id, true); }
   if (q("[data-esave]")) {
+    edRead();
     const id = ED.id, c = S.cards[id], v = k => { const el = $(k); return el ? el.value.trim() : undefined; }, ch = {t: "edit", card: id};
     if (v("e-title") !== undefined) ch.title = v("e-title"); if (v("e-body") !== undefined) ch.body = v("e-body"); if (v("e-want") !== undefined) ch.want = v("e-want");
     if (v("e-when") !== undefined) ch.when = v("e-when"); if (v("e-place") !== undefined) ch.place = v("e-place");
@@ -2488,11 +2698,11 @@ document.addEventListener("click", e => {
       (async () => {
         if (c.circle && CK[c.circle]) { const sealed = await LV.sealWith(CK[c.circle], {title: ch.title, body: ch.body}, "jeni-c:" + c.circle); DEC[sealed] = {title: ch.title, body: ch.body}; ch.title = ""; ch.body = sealed; }
         emit(me, ch);
-        const old = MEDIA[id] || {}; if ((ED.img || "") !== (old.img || "")) publishMedia(id, {...old, img: ED.img ? await shrink(ED.img, 640) : ""});
+        const nm = await edMediaOut(id); if (nm) publishMedia(id, nm);
         closeOver(); OPENED.add(id); liveRecompute(); refreshPage(id); toast("直しました");
       })(); return;
     }
-    emit(me, ch); MEDIA[id] = Object.assign(MEDIA[id] || {}, {img: ED.img}); closeOver(); OPENED.add(id); refreshPage(id); void c; return toast("直しました");
+    (async () => { emit(me, ch); const nm = await edMediaOut(id); if (nm) MEDIA[id] = nm; closeOver(); OPENED.add(id); refreshPage(id); toast("直しました"); })(); return;
   }
   if ((b = q("[data-retireask]"))) { RETIRE = b.dataset.retireask; return refreshPage(RETIRE); }
   if (q("[data-retireno]")) { const id = RETIRE; RETIRE = null; return refreshPage(id); }
@@ -2514,7 +2724,7 @@ document.addEventListener("click", e => {
   if ((b = q("[data-qrshow]"))) return qrShowSheet(b.dataset.qrshow);
   if (q("[data-scan]")) return scanSheet();
   if (q("[data-scantext]")) { const t = ($("scan-t").value || "").trim(); scanStop(); closeOver(); return /^[0-9a-f]{16}$/.test(t) && sel && S.cards[sel] && S.cards[sel].by === me ? useCode(sel, t) : onScan(t); }
-  if ((b = q("[data-vouch]"))) { const pk = b.dataset.vouch; emit(me, {t: "vouch", who: pk}); closeOver(); return toast(S.users[pk] && S.users[pk].member ? `${nameOf(pk)} さんが参加しました` : "認められませんでした（3人まで・もう参加している人は認められません）"); }
+  if ((b = q("[data-vouch]"))) { const pk = b.dataset.vouch; emit(me, {t: "vouch", who: pk}); closeOver(); return toast(S.users[pk] && S.users[pk].member ? `${nameOf(pk)} さんが参加しました` : `認められませんでした（${RULE.vouchMax}人まで・もう参加している人は認められません）`); }
   if (q("[data-firstrun]")) return startSheet();
   if ((b = q("[data-story]"))) return startSheet(+b.dataset.story);
   if (!LIVE && q("[data-start]")) { if (!($("st-name").value || "").trim()) return toast("名前を入れてください"); return keySheet(true); }
@@ -2527,6 +2737,7 @@ document.addEventListener("click", e => {
   if (q("[data-start]")) { const name = ($("st-name").value || "").trim().slice(0, 40); if (!name) return toast("名前を入れてください"); LV.newMe(); LV.store.set("jeni.keysaved", false); emit(me = LV.me.pk, {t: "profile", name, line: ""}); return afterStart(true); }
   if (q("[data-startsougo]")) { const sm = LV.store.get("sougo.me", null); if (!sm || !LV.importKey(sm.sk)) return toast("鍵を読めませんでした"); me = LV.me.pk; if (!(S.users[me] && S.users[me].name)) emit(me, {t: "profile", name: sm.name || "なまえ", line: ""}); return afterStart(); }
   if (q("[data-startkey]")) { const old = LV.me && LV.me.pk; if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); if (old !== LV.me.pk) LV.store.set("jeni.kbak", null); LV.store.set("jeni.keysaved", true); toast("戻しました"); return afterStart(); }
+  if (q("[data-mrec]")) return recToggle();
   if (q("[data-keyexp]")) return keySheet(false);
   if (q("[data-logout]")) return openOver(`<h2 class="rh">この端末から出る</h2>
     ${keySaved() ? `<p class="sub" style="margin:0">出たあとは、始める画面の「前に使っていた人」から、${pkOn() ? "Face ID か" : ""}控えた鍵で戻れます。</p>` : `<p class="sub warnc" style="margin:0">鍵を守っていません。出ると、この人には二度と戻れません（jeni もカードも）。先に「鍵を守る」を。</p>`}
@@ -2661,6 +2872,10 @@ document.addEventListener("touchend", e => {
   if (!$("sheet").hidden) { const bk = $("sheet").querySelector(".back"); if (bk) bk.click(); }
 }, {passive: true});
 document.addEventListener("change", e => {
+  if (e.target.id === "c-pic" && e.target.files.length && CHATPK) { $("c-plus").hidden = true; return chatPics(CHATPK, e.target.files); }
+  if (e.target.id === "c-file" && e.target.files[0] && CHATPK) { $("c-plus").hidden = true; return chatFile(CHATPK, e.target.files[0]); }
+  if (e.target.id === "e-pics" && e.target.files.length) { edRead(); return edPics(e.target.files); }
+  if (e.target.id === "e-media" && e.target.files[0]) { edRead(); return edMedia(e.target.files[0]); }
   if (e.target.id === "e-photo" && e.target.files[0]) { const fr = new FileReader(); fr.onload = () => { ED.img = fr.result; const pk = $("over").querySelector(".ph-pick"); pk.classList.add("has"); pk.style.setProperty("--img", `url('${ED.img}')`); }; fr.readAsDataURL(e.target.files[0]); return; }
   if (e.target.id === "p-bg" && e.target.files[0]) { const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => {
     const k = Math.min(1, 900 / im.width), cv = document.createElement("canvas"); cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k); cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height);
@@ -2721,7 +2936,7 @@ function liveRecompute() {
   for (const k in CHAT) delete CHAT[k];
   for (const e of evs) if (e.kind === K.dm && mine) { const to = (e.tags.find(t => t[0] === "p") || [])[1]; if (!to || (e.pubkey !== mine && to !== mine)) continue;
     const other = e.pubkey === mine ? to : e.pubkey, d = DMS[e.id];
-    if (d) (CHAT[pairKey(mine, other)] = CHAT[pairKey(mine, other)] || []).push({by: e.pubkey, text: d.text, at: e.created_at});
+    if (d) { const o = dmClean(d); if (o) (CHAT[pairKey(mine, other)] = CHAT[pairKey(mine, other)] || []).push({by: e.pubkey, ...o, at: e.created_at}); }
     else todo.push(LV.openFrom(other, e.content, "jeni-dm").then(o => { if (o) { DMS[e.id] = o; return true; } })); }
   for (const k in CHAT) CHAT[k].sort((a, b) => a.at - b.at);
   // 通話：呼び出しの記録（不在着信）と、つなぎの受け答え
@@ -2735,6 +2950,14 @@ function liveRecompute() {
   if (todo.length) Promise.all(todo).then(r => { if (r.some(Boolean)) liveRefresh(); });
 }
 const httpsOk = u => typeof u === "string" && /^https:\/\/[^\s"'<>`]+$/.test(u) && u.length < 400;
+// 届いた会話の中身：決まった形だけ受け取る（写真・ファイルは置き場の https のものだけ）
+function dmClean(d) {
+  const o = {text: typeof d.text === "string" ? d.text.slice(0, 1000) : ""};
+  if (Array.isArray(d.pics)) { const ps = d.pics.slice(0, 10).map(cleanPart).filter(Boolean); if (ps.length) o.pics = ps; }
+  if (d.file) { const f = cleanPart(d.file); if (f && f.k && /^[\w.+-]+\/[\w.+-]+$/.test(d.file.t || "")) f.t = d.file.t; if (f) o.file = {...f, name: String(d.file.name || "ファイル").replace(/[\u0000-\u001f]/g, "").slice(0, 120), size: Math.max(0, +d.file.size || 0), type: /^[\w.+-]+\/[\w.+-]+$/.test(d.file.type || "") ? d.file.type : ""}; }
+  if (typeof d.card === "string" && /^[0-9a-zA-Z]{4,80}$/.test(d.card)) o.card = d.card;
+  return o.text || o.pics || o.file || o.card ? o : null;
+}
 const cleanPart = p => { if (!p || !httpsOk(p.u)) return null; const o = {u: p.u, x: /^[0-9a-f]{64}$/.test(p.x) ? p.x : "", m: Array.isArray(p.m) ? p.m.filter(httpsOk).slice(0, 3) : [], e: /^\.[a-z0-9]{2,4}$/i.test(p.e || "") ? p.e : "", d: Math.max(0, Math.min(3600, +p.d || 0))};
   if (/^[0-9a-f]{64}$/.test(p.k || "")) { o.k = p.k; o.t = /^(image|audio|video)\/[\w.+-]{1,30}$/.test(p.t || "") ? p.t : ""; } return o; };
 function cleanMedia(m) {
@@ -2756,6 +2979,7 @@ let refT = null;
 function liveRefresh() {
   clearTimeout(refT); refT = setTimeout(() => {
     liveRecompute();
+    if (CHATPK && !$("over").hidden && $("c-talk")) { READ[me + ":" + CHATPK] = clock; talkRender(CHATPK); }
     const typing = document.activeElement && /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName);
     if (typing) return;
     if ($("sheet").hidden) home();
@@ -2778,7 +3002,7 @@ function publishMedia(id, m) {
   if (c.circle && CK[c.circle]) { LV.sealWith(CK[c.circle], m, "jeni-m:" + c.circle).then(sealed => { LV.publish(LV.K.media, {card: id, sealed}); liveRefresh(); }); return; }
   LV.publish(LV.K.media, {card: id, ...m}); liveRefresh();
 }
-async function sendDM(pk, text) { const sealed = await LV.sealTo(pk, {text}, "jeni-dm"); LV.publish(LV.K.dm, sealed, [["p", pk]]); liveRefresh(); }
+async function sendDM(pk, obj) { const sealed = await LV.sealTo(pk, typeof obj === "string" ? {text: obj} : obj, "jeni-dm"); LV.publish(LV.K.dm, sealed, [["p", pk]]); liveRefresh(); }
 async function sendCall(pk, obj) { const sealed = await LV.sealTo(pk, obj, "jeni-call"); LV.publish(LV.K.call, sealed, [["p", pk]]); }
 async function shareCircleKey(ci, k) {
   const keys = {}; for (const pk of ci.members) keys[pk] = await LV.sealTo(pk, {k}, "jeni-ck:" + ci.id);
@@ -2982,7 +3206,7 @@ function liveBoot() {
 }
 
 if (LIVE) liveBoot(); else { seed(); home(); }
-window.__jt = {MEDIA, PREF, startSheet: () => startSheet(), get S() { return S; }, get EV() { return EV; }, get CHAT() { return CHAT; }, get me() { return me; }, set me(v) { me = v; home(); }, P, emit, detail, home, closeSheet, MK, person: pk => personCard(pk)};
+window.__jt = {MEDIA, PREF, startSheet: () => startSheet(), get S() { return S; }, get EV() { return EV; }, get CHAT() { return CHAT; }, get me() { return me; }, set me(v) { me = v; home(); }, P, emit, detail, home, closeSheet, MK, person: pk => personCard(pk), chatSheet: pk => chatSheet(pk)};
 </script>
 
 </body></html>
