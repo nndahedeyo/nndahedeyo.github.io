@@ -1698,9 +1698,9 @@ function recBody(id) {
   if (c.circle) rec.push(["見える人", `${esc(S.circles[c.circle].name)}（${S.circles[c.circle].members.length}人）`]);
   if (c.refunds) rec.push(["返した", c.refunds + "回"]);
   if (c.history && c.history.length) rec.push(["直す前", c.history.map(h => `「${esc(h.title)}」`).join("→") + ` → 「${esc(c.title)}」`]);
-  if (LIVE) { const d = liveProof(c.id); rec.push(["刻んだ記録", d ? `${d} にビットコインに刻んだ記録に入っています（証明：github.com/nndahedeyo/jeni の stamps/${d}.txt.ots）` : "次の刻み（1日1回）で刻まれます"]); }
+  if (LIVE) { const d = liveProof(c.id); rec.push(["刻んだ記録", d ? `${d} の指紋に入っています（${d} にはもうあった、とビットコインで確かめられます。証明：github.com/nndahedeyo/jeni の stamps/${d}.txt.ots）` : "次の刻み（1日1回）で刻まれます"]); }
   else { const pf = proofOfEvent(c.id);
-  rec.push(["刻んだ記録", pf && pf.ok ? `ビットコインに刻んだ ${pf.a.day}日目の要約に入っています（証明 ${pf.n}段）` : "次の要約で刻まれます"]); }
+  rec.push(["刻んだ記録", pf && pf.ok ? `${pf.a.day}日目の指紋に入っています（その日にはもうあった、と確かめられます・証明 ${pf.n}段）` : "次の要約で刻まれます"]); }
   const acts = my.length && !KEEP[c.kind] ? `<div class="acts2">${c.supply != null && c.queue.length ? `<button type="button" class="pill" data-passask="${id}">譲る（${c.queue.length}人待ち）</button>` : ""}<button type="button" class="pill" data-giftask="${id}">贈る</button></div>` : "";
   const u2 = S.users[me] || {}, canFlag = u2.member && u2.deals >= 1 && c.by !== me && !c.flags.includes(me);
   return `${acts}
@@ -1915,7 +1915,7 @@ function meCard(edit = false) {
     ${u.member ? `<section class="box"><h3>記録の控え</h3>
       <div class="who-row"><span>あなたの記録 ${EV.filter(e => e.pubkey === me).length}件・写真など ${Object.values(S.cards).filter(c => c.by === me && MEDIA[c.id] && (MEDIA[c.id].img || MEDIA[c.id].src)).length}件</span><button type="button" class="pill" data-export>書き出す</button></div>
       ${LIVE ? `<div class="who-row"><span>ビットコインに刻んだ日 ${STAMPS ? Object.keys(STAMPS).length + "日分" : "（読み込み中・まだなし）"}</span></div>` : `<div class="who-row"><span>刻んだ要約 ${ANCHORS.length}日分${ANCHORS.length ? `（最後：${ANCHORS[ANCHORS.length - 1].root.slice(0, 8)}…・${ANCHORS[ANCHORS.length - 1].ids.length}件）` : ""}</span><button type="button" class="pill" data-anchor>いま刻む（見本）</button></div>`}
-      <p class="sub" style="font-size:11px;margin:4px 0 0">書き出すと、記録と写真などを端末に保存できます（無料の置き場が消しても、自分で戻せるように）。${LIVE ? "記録は毎日1回、GitHub の決まった仕事が中継から集め、OpenTimestamps を通してビットコインに刻みます（費用なし・だれでも確かめられます）。" : "要約は1日1回、その日までの記録をまとめた1つの数字をビットコインに刻みます（費用なし）。"}どのカードも、刻んだ記録に入っていることを示せるので、日付をさかのぼった書き換えができません。</p></section>
+      <p class="sub" style="font-size:11px;margin:4px 0 0">書き出すと、記録と写真などを端末に保存できます（無料の置き場が消しても、自分で戻せるように）。毎日1回、ビットコインに刻みます。記録の中身（名前・カード・会話）はビットコインには書きません。刻むのは、その日までの記録すべての番号をまとめて計算した「指紋」のような64文字1つだけです。指紋から中身は分かりませんが、記録が1文字でも変わると指紋が合わなくなるので、「この記録はこの日にはもうあった」と、だれでも確かめられます。${LIVE ? "刻むのは GitHub の決まった仕事で、OpenTimestamps という無料の仕組みを通します。" : ""}</p></section>
     ${LIVE ? `<section class="box"><h3>${icon("lock")} あなたの鍵</h3>${keySaved() ? "" : `<p class="sub warnc" style="margin:0 0 6px;font-size:12px">まだ鍵の控えを取っていません。</p>`}<p class="sub" style="margin:0;font-size:12px;line-height:1.7">鍵はこの端末の中だけにあります。端末をなくしたり、ブラウザの記録を消したりすると、控えがない限り戻せません。jeni の人が鍵をたずねることはありません。</p>
       <div class="row2"><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵の控えを取る</button><button type="button" class="pill" data-scan>QRを読む</button></div></section>` : ""}
     ${(() => { const cs = Object.values(S.circles).filter(ci => ci.members.includes(me)); return cs.length ? `<section class="box"><h3>入っている仲間の輪</h3>${cs.map(ci => `<div class="who-row"><span>${esc(ci.name)}（${ci.members.length}人）${ci.by === me ? "・作った輪" : ""}</span>${ci.by === me ? "" : `<button type="button" class="pill" data-cleave="${ci.id}">抜ける</button>`}</div>${ci.by === me ? ci.members.filter(x => x !== me).map(x => `<div class="who-row" style="padding-left:12px">${whoTag(x)}<button type="button" class="link" data-cremove="${ci.id}:${x}">外す</button></div>`).join("") : ""}`).join("")}</section>` : ""; })()}
@@ -2207,7 +2207,7 @@ function rules() {
     <p class="rnote"><b>見えるもの・隠れるもの</b>　だれがだれに何 jeni 払ったかは、確かめ合うために記録に残り、だれでも見られます（番号と、その人が決めた名前で）。見せ方は3つ：「みんなに見せる」、「かくす（分け前あり）」＝画面に出さないだけで記録を調べれば分かる・投げ銭の分け前を受け取れる、「鍵をかける（分け前なし）」＝どのカードかは本人と作った人にしか分からない（数に限りのないカードだけ・分け前が届くと分かってしまうので受け取らない）。仲間の輪の中身（写真・音・動画も）は、輪の人にしか読めません。ただし、輪の人が自分の端末に保存したり、輪から外れた人がそれまでに見たものを持っていたりすることは防げません。2人だけの会話・通話も同じで、相手の手元に残ることは防げません。</p>
     <p class="rnote"><b>贈る</b>　jeni や持っているカードを、参加している人に直接届けられます（残高の下の贈り物の印か、相手のプロフィールカードから・長押しで決める）。贈ると取り消せません。だれからだれへ何を贈ったかは記録に残ります。</p>
     <p class="rnote"><b>配る量について</b>　配る量や配り方は、使われ方を見て変わることがあります。変わるときも全員に同じきまりが同じように当てはまり、前もって知らせます。jeni は円と交換できず、値段は作った人が決めるので、配る量の大きさそのものに意味はありません。</p>
-    <p class="rnote"><b>運営のサーバーはありません</b>　記録は、だれでも立てられる複数の中継（リレー）に置き、それぞれの端末にも写しを持ちます。1か所が止まっても、ほかに残ります。無料の中継は古い記録を消すことがあるので、記録の書き出しと、毎日ビットコインに刻む要約で守ります。</p>`);
+    <p class="rnote"><b>運営のサーバーはありません</b>　記録は、だれでも立てられる複数の中継（リレー）に置き、それぞれの端末にも写しを持ちます。1か所が止まっても、ほかに残ります。無料の中継は古い記録を消すことがあるので、記録の書き出しで守ります。また毎日、記録の「指紋」（中身は分からない64文字）をビットコインに刻み、日付をさかのぼった書き換えができないようにしています。</p>`);
 }
 
 /* ---- 再生（一覧の中でそのまま） ---- */
@@ -2296,12 +2296,13 @@ const GUIDE = [
   ["輪の写真・音・動画", "仲間の輪のカードの写真・音・動画は、輪の人だけが開ける鍵で封をしてから置き場に置きます。見せる相手は、写真などを選ぶ前に決めます。", () => { me = AS("kenji"); MK.mode = "picture"; make(); }],
   ["長い動画・音", "動画も音も2時間まで（音は MP3 の 256〜320kbps と同じくらいの音質）。端末の中で軽くして、長いものは分けて置き、続けて1本として流れます。下の線を押すと、その所へ。", () => { me = AS("kenji"); detail(cardBy("畑の一日").id); }],
   ["動画・音を作る", "＋ → データ → 動画。選ぶと、その場で軽くして（進み具合が出ます）、そのまま出せます。リンク（YouTube など）も入れられます。", () => { me = AS("kenji"); MK.mode = "video"; make(); }],
+  ["はじめて開いたとき", "運用版の最初の流れ：大事な3つ（名前は見える・消せない・鍵の控え）→ 名前 → 始める → すぐ鍵の控え。iPhone では先にホーム画面に追加する案内も出ます。", () => startSheet()],
   ["招待する（身内に）", "わたしのカードの「招待する」。一度きりのリンクとQRを LINE などで送ります（7日間・1人・認められる3人に数える）。", () => { me = AS("kenji"); meCard(); }],
   ["直す・取り下げる", "自分のカードのページから。値段・数・種類は直せません。取り下げると、だれも持っていなければ消え、持っている人がいれば受付を終えます。", () => { me = AS("farmer"); detail(cardBy("朝採り大根 3本セット").id); }],
   ["作るはすぐ入力から", "＋で入力の画面。上の4つ（もの・体験／データ／つなぐ／その場で売る）と種類で欄が切り替わります。どのカードにも画像をつけられます。", () => { me = AS("kenji"); MK.mode = "event"; make(); }],
   ["常連・会員・仲間", "お店・会社や団体・プロジェクトは、長押しで常連・会員・仲間に（無料・いつでもやめられる）。新しくつながったカードは鈴へ。", () => { me = AS("kenji"); newsList(); }],
   ["話す・電話・お知らせ", "残高の下に 受話器・吹き出し・鈴。知らせは小さな赤い印。相手への連絡は、相手のカードの右下から（お互いに友達のとき）。", () => { me = AS("kenji"); personCard(AS("farmer")); }],
-  ["記録の控えとウォレットの場所", "わたしのカード：記録の書き出し・毎日の要約をビットコインに刻む（見本）。裏にウォレットの場所（暗号資産・開発中）。", () => { me = AS("kenji"); meCard(); }],
+  ["記録の控えとウォレットの場所", "わたしのカード：記録の書き出し・毎日、記録の指紋（中身は分からない64文字）をビットコインに刻む（見本）。裏にウォレットの場所（暗号資産・開発中）。", () => { me = AS("kenji"); meCard(); }],
   ["現物・イベント・体験の受け取り", "持っている人が一度きりのQRを出し、作った人が読むと「使った」に。", () => { me = AS("kenji"); detail(cardBy("天然酵母カンパーニュ").id); }],
   ["記録は「くわしく・記録」の中", "持っている人・譲る・贈る・返す・危ないものを知らせる・刻んだ要約。", () => { me = AS("haru"); recSheet(cardBy("天然酵母カンパーニュ").id); }],
   ["仲間の輪", "輪の中のカードは輪の人にしか見えません。抜ける・外すは、わたしのカードから。", () => { me = AS("kenji"); MOD.mine = MOD.fav = MOD.near = false; field = "circle"; closeSheet(); }],
@@ -2452,6 +2453,9 @@ document.addEventListener("click", e => {
   if (q("[data-scan]")) return scanSheet();
   if (q("[data-scantext]")) { const t = ($("scan-t").value || "").trim(); scanStop(); closeOver(); return /^[0-9a-f]{16}$/.test(t) && sel && S.cards[sel] && S.cards[sel].by === me ? useCode(sel, t) : onScan(t); }
   if ((b = q("[data-vouch]"))) { const pk = b.dataset.vouch; emit(me, {t: "vouch", who: pk}); closeOver(); return toast(S.users[pk] && S.users[pk].member ? `${nameOf(pk)} さんが参加しました` : "認められませんでした（3人まで・もう参加している人は認められません）"); }
+  if (!LIVE && q("[data-start]")) { if (!($("st-name").value || "").trim()) return toast("名前を入れてください"); return keySheet(true); }
+  if (!LIVE && q("[data-keysaved]")) { closeSheet(); return toast("見本：本物では、控えたことがこの端末に残り、赤い印が消えます"); }
+  if (!LIVE && (q("[data-keycopy]") || q("[data-startkey]") || q("[data-install]"))) return toast("見本：本物で動きます");
   if (q("[data-start]")) { const name = ($("st-name").value || "").trim().slice(0, 40); if (!name) return toast("名前を入れてください"); LV.newMe(); LV.store.set("jeni.keysaved", false); emit(me = LV.me.pk, {t: "profile", name, line: ""}); return afterStart(true); }
   if (q("[data-startsougo]")) { const sm = LV.store.get("sougo.me", null); if (!sm || !LV.importKey(sm.sk)) return toast("鍵を読めませんでした"); me = LV.me.pk; if (!(S.users[me] && S.users[me].name)) emit(me, {t: "profile", name: sm.name || "なまえ", line: ""}); return afterStart(); }
   if (q("[data-startkey]")) { if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); LV.store.set("jeni.keysaved", true); return afterStart(); }
@@ -2845,12 +2849,12 @@ function joinWith(inviteId, code) {
 }
 // はじめて開いた人：名前を決めて、この端末にかぎを作る（前のかぎで続けることもできる）
 function startSheet() {
-  const sougo = LV.store.get("sougo.me", null);
+  const sougo = LIVE ? LV.store.get("sougo.me", null) : null;
   const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-  openSheet(`<div class="done">${gmark(64, {halo: true})}<h2 class="rh">jeni（試験運用）</h2></div>
+  openSheet(`${LIVE ? "" : `<button type="button" class="back" data-close>${icon("back")}見本を閉じる</button>`}<div class="done">${gmark(64, {halo: true})}<h2 class="rh">jeni（試験運用）</h2></div>
     ${!STANDALONE() ? `<p class="sub warnc" style="font-size:12px;margin:0">${ios ? "iPhone・iPad は、先に Safari の共有ボタン →「ホーム画面に追加」をして、そのアイコンから始めてください。Safari のままだと、しばらく開かないうちに端末の中の鍵が消えることがあり、あとから追加したアイコンとは別の人になります。" : "ホーム画面に置くと、アプリのように使えます（つながらない場所でも開けます）。置くなら、始める前に。"}</p>${INSTALL ? `<button type="button" class="pill go" data-install style="justify-self:start">ホーム画面に置く</button>` : ""}` : ""}
     <ol class="ess"><li><b>名前はみんなに見えます。</b>本名ではなく、ふだんの呼び名がおすすめです（あとで変えられます）。</li>
-      <li><b>出したカードや記録は消せません。</b>試験運用でも、毎日ビットコインに刻まれ、本番に引き継ぎます。</li>
+      <li><b>出したカードや記録は消せません。</b>試験運用でも本番に引き継ぎます（毎日、記録の指紋をビットコインに刻むので、あとから書き換えもできません）。</li>
       <li><b>鍵はこの端末の中だけ。</b>始めたらすぐ、控えを取ります（なくすと、だれにも戻せません）。</li></ol>
     <label class="fl">名前<input id="st-name" maxlength="40" placeholder="例：はなこ"></label>
     <button type="button" class="big" data-start>始める</button>
@@ -2860,10 +2864,12 @@ function startSheet() {
 }
 // 鍵の控え：始めたらすぐ。取るまでは、わたしのカードの印に小さな赤い印
 const keySaved = () => !!(LIVE && LV.store.get("jeni.keysaved", false));
+const SAMPLE_SK = "5a1e".repeat(16);   // 見本の画面で見せる鍵（本物ではない）
 function keySheet(first) {
+  const sk = LIVE ? LV.me.sk : SAMPLE_SK;
   openSheet(`${first ? "" : `<button type="button" class="back" data-close>${icon("back")}戻る</button>`}<h2 class="rh">${first ? "はじめに：鍵の控え" : "鍵の控え"}</h2>
     <p class="sub" style="line-height:1.8">この64文字が、jeni でのあなた自身です。端末をなくしたり、ブラウザの記録を消したりしたときは、これがないと戻せません。紙に書くか、パスワード管理アプリに保存してください。</p>
-    <p class="keyv">${LV.me.sk}</p>
+    <p class="keyv">${sk}</p>${LIVE ? "" : `<p class="sub" style="font-size:11px;margin:0">（見本の鍵です。本物では、あなただけの鍵がここに出ます）</p>`}
     <p class="sub warnc" style="font-size:12px;margin:0">${icon("lock")} これを知った人は、だれでもあなたとして使えます。人に見せたり、送ったり、写真に撮ってだれかと共有したりしないでください。jeni の人がたずねることはありません。</p>
     <div class="row2"><button type="button" class="big ghost" data-keycopy>写す</button><button type="button" class="big" data-keysaved>控えました</button></div>
     ${first ? `<button type="button" class="link" data-close style="justify-self:center">あとで（印が残ります）</button>` : ""}`);
@@ -2889,7 +2895,7 @@ function liveBoot() {
 }
 
 if (LIVE) liveBoot(); else { seed(); home(); }
-window.__jt = {MEDIA, PREF, get S() { return S; }, get EV() { return EV; }, get CHAT() { return CHAT; }, get me() { return me; }, set me(v) { me = v; home(); }, P, emit, detail, home, closeSheet, MK, person: pk => personCard(pk)};
+window.__jt = {MEDIA, PREF, startSheet: () => startSheet(), get S() { return S; }, get EV() { return EV; }, get CHAT() { return CHAT; }, get me() { return me; }, set me(v) { me = v; home(); }, P, emit, detail, home, closeSheet, MK, person: pk => personCard(pk)};
 </script>
 
 </body></html>
