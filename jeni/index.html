@@ -1977,7 +1977,8 @@ function meCard(edit = false) {
     ${(() => { const cs = Object.values(S.circles).filter(ci => ci.members.includes(me)); return cs.length ? `<section class="box"><h3>入っている仲間の輪</h3>${cs.map(ci => `<div class="who-row"><span>${esc(ci.name)}（${ci.members.length}人）${ci.by === me ? "・作った輪" : ""}</span>${ci.by === me ? "" : `<button type="button" class="pill" data-cleave="${ci.id}">抜ける</button>`}</div>${ci.by === me ? ci.members.filter(x => x !== me).map(x => `<div class="who-row" style="padding-left:12px">${whoTag(x)}<button type="button" class="link" data-cremove="${ci.id}:${x}">外す</button></div>`).join("") : ""}`).join("")}</section>` : ""; })()}
 ` : ""}
     ${LIVE ? `<section class="box"><h3>${icon("lock")} あなたの鍵</h3>${pkOn() ? `<p class="sub" style="margin:0 0 6px;font-size:12px;color:var(--leaf);font-weight:700">パスキーで守っています</p>` : keySaved() ? "" : `<p class="sub warnc" style="margin:0 0 6px;font-size:12px">まだ鍵を守っていません。</p>`}<p class="sub" style="margin:0;font-size:12px;line-height:1.7">鍵はこの端末の中だけにあります。端末をなくしたり、ブラウザの記録を消したりすると、控えがない限り戻せません。jeni の人が鍵をたずねることはありません。</p>
-      <div class="row2"><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵を守る</button><button type="button" class="pill" data-scan>QRを読む</button></div></section>` : ""}
+      <div class="row2"><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵を守る</button><button type="button" class="pill" data-scan>QRを読む</button></div>
+      <button type="button" class="link" data-logout style="justify-self:start;color:var(--mute);font-size:12px;margin-top:6px">この端末から出る</button></section>` : ""}
     ${u.member && edit ? `<section class="box form"><label class="fl">名前<input id="p-name" maxlength="40" value="${esc(nameOf(me))}"></label>
       <label class="fl">ひとこと<input id="p-line" maxlength="60" value="${esc(line)}"></label>
       <div class="row2"><label class="fl">プロフィールアイコン<input id="p-pic" type="file" accept="image/*"></label><label class="fl">カードの背景<input id="p-bg" type="file" accept="image/*"></label></div>
@@ -2527,6 +2528,10 @@ document.addEventListener("click", e => {
   if (q("[data-startsougo]")) { const sm = LV.store.get("sougo.me", null); if (!sm || !LV.importKey(sm.sk)) return toast("鍵を読めませんでした"); me = LV.me.pk; if (!(S.users[me] && S.users[me].name)) emit(me, {t: "profile", name: sm.name || "なまえ", line: ""}); return afterStart(); }
   if (q("[data-startkey]")) { const old = LV.me && LV.me.pk; if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); if (old !== LV.me.pk) LV.store.set("jeni.kbak", null); LV.store.set("jeni.keysaved", true); toast("戻しました"); return afterStart(); }
   if (q("[data-keyexp]")) return keySheet(false);
+  if (q("[data-logout]")) return openOver(`<h2 class="rh">この端末から出る</h2>
+    ${keySaved() ? `<p class="sub" style="margin:0">出たあとは、始める画面の「前に使っていた人」から、${pkOn() ? "Face ID か" : ""}控えた鍵で戻れます。</p>` : `<p class="sub warnc" style="margin:0">鍵を守っていません。出ると、この人には二度と戻れません（jeni もカードも）。先に「鍵を守る」を。</p>`}
+    ${LV.pending ? `<p class="sub warnc" style="margin:6px 0 0">まだ届いていないものが ${LV.pending}件あります。つながってから出てください。</p>` : ""}
+    <div class="acts2">${lpBtn("logout", "", `この端末から出る<small>長押し</small>`, keySaved() && !LV.pending ? "" : "warn")}</div>`);
   if (q("[data-keycopy]")) { try { navigator.clipboard.writeText(LV.me.sk).then(() => toast("写しました。パスワード管理アプリなどに貼って保存してください"), () => toast("写せませんでした。長押しで選んで写してください")); } catch (x) { toast("長押しで選んで写してください"); } return; }
   if (q("[data-keysaved]")) { LV.store.set("jeni.keysaved", true); closeSheet(); home(); return toast("控えを取りました。大切に保管してください"); }
   if (q("[data-install]")) { if (INSTALL) { INSTALL.prompt(); INSTALL = null; } return; }
@@ -2612,6 +2617,7 @@ function quickSheet(id) {
   openOver(`<h2 class="rh">QRで払う</h2>${head}${holdRow}${hold ? `<p class="fline">${flowLine(c)}</p>` : ""}${tipRow}${tipRow && !hold ? `<p class="fline">投げ銭は${tipTo(c)}・額を押すと変わります</p>` : ""}<button type="button" class="link" data-detail="${id}" style="justify-self:start">カードを見る</button>`);
 }
 function lpDo(act, id) {
+  if (act === "logout") { for (const k of ["jeni.me", "jeni.kbak", "jeni.keysaved", "jeni.outbox", "jeni.ck", "jeni.read", "jeni.cseen", "jeni.nseen", "jeni.fav", "jeni.pref"]) { try { localStorage.removeItem(k); } catch (x) {} } location.replace(location.pathname); return; }
   if (act === "gsend") { const n = parseInt(($("g-amt") || {}).value, 10), bal = U().bal;
     if (!Number.isInteger(n) || n < 1) return toast("贈る jeni の数を入れてください"); if (n > bal) return toast("jeni が足りません");
     const before = (S.sends || []).length; emit(me, {t: "send", to: id, amount: n});
