@@ -2508,6 +2508,7 @@ function qGot(root, held) { const t = root && root.querySelector(".qth"); if (!t
 function qDone(text, id, held = false) {
   const o = $("over"); qGot(o, held);
   o.querySelectorAll(".acts2,.fline,p.sub,.link").forEach(x => x.remove());
+  if (LIVE && !(LV.online() && navigator.onLine !== false)) text += "<br><small>この端末に控えました。つながったら届きます</small>";
   o.insertAdjacentHTML("beforeend", `<div class="done qd">${coin()}<p class="qdone" role="status">${text}</p></div><div class="row2"><button type="button" class="big ghost" data-detail="${id}">カードを見る</button><button type="button" class="big" data-overclose>閉じる</button></div>`);
 }
 // QRを出している人の画面：だれかが読んで持った・投げ銭したら、同じ動きで知らせる
