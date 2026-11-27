@@ -1313,6 +1313,8 @@ function makeQR(text, forceMask) {
   root.JeniMedia = {LIM, PLAN, SERVERS, MB_URL, lib, prepare, imageOf, upload, urlsOf, linkOf, fmtLen, sha256, sealBlob, openBlob, openPart};
 })(typeof globalThis !== "undefined" ? globalThis : this);
 </script>
+<script></script>
+<script></script>
 <script>
 "use strict";
 const {reduce, sha256hex, R: RULE, COUNTED, AT, merkleRoot, merkleProof, merkleCheck} = JeniRules;
@@ -1835,7 +1837,7 @@ const friendsOf = pk => { const u = S.users[pk] || {}; return (u.friends || []).
 function chatList() {
   const fs = friendsOf(me), last = pk => (CHAT[pairKey(me, pk)] || []).slice(-1)[0];
   openSheet(`<button type="button" class="back" data-close>${icon("back")}一覧へ</button>
-    <h2 class="rh">話す</h2>
+    <h2 class="rh" data-view="chats">話す</h2>
     <section class="box">${fs.map(pk => `<div class="who-row"><button type="button" class="who" data-person="${pk}" aria-label="${esc(nameOf(pk))} さんのカード">${avatar(pk)}</button>
       <button type="button" class="crow" data-chat="${pk}"><b>${esc(nameOf(pk))}</b><small>${last(pk) ? esc(last(pk).text) : "まだ話していません"}</small></button>
       ${unreadOf(pk) ? `<span class="nb" aria-label="新しい会話"></span>` : ""}</div>`).join("") || `<div class="who-row"><span>まだ話せる人がいません</span></div>`}</section>
@@ -1846,7 +1848,7 @@ function phoneList() {
   const fs = friendsOf(me), log = CALLS.filter(c => c.from === me || c.to === me).slice(-8).reverse(), seen = CSEEN[me] || 0;
   CSEEN[me] = clock;
   openSheet(`<button type="button" class="back" data-close>${icon("back")}一覧へ</button>
-    <h2 class="rh">電話</h2>
+    <h2 class="rh" data-view="phones">電話</h2>
     ${log.length ? `<section class="box"><h3>着信・発信</h3>${log.map(c => { const o = c.from === me ? c.to : c.from; return `<div class="who-row"><span class="${c.missed && c.to === me && c.at > seen ? "warnc" : ""}">${esc(nameOf(o))}・${c.from === me ? "かけた" : c.missed ? "不在着信" : "受けた"}</span><button type="button" class="pill go" data-call="${o}" aria-label="${esc(nameOf(o))} さんにかける">${icon("phone")}</button></div>`; }).join("")}</section>` : ""}
     <section class="box"><h3>かけられる人</h3>${fs.map(pk => `<div class="who-row"><button type="button" class="who" data-person="${pk}" aria-label="${esc(nameOf(pk))} さんのカード">${avatar(pk)}<span>${esc(nameOf(pk))}</span></button><button type="button" class="pill go" data-call="${pk}" aria-label="${esc(nameOf(pk))} さんにかける">${icon("phone")}</button><button type="button" class="pill go" data-vcall="${pk}" aria-label="${esc(nameOf(pk))} さんとビデオ通話">${icon("video")}</button></div>`).join("") || `<div class="who-row"><span>まだいません</span></div>`}</section>
     <p class="fline">お互いに友達の人とだけ通話できます（見本・つながない）。</p>`);
@@ -1982,7 +1984,10 @@ function meCard(edit = false) {
       <fieldset class="visopt"><legend>カードを持ったときの見せ方</legend>${["show", "hide", "lock"].map(v => `<label><input type="radio" name="p-vis" value="${v}" ${(PREF[me] || "show") === v ? "checked" : ""}><b>${VIS[v]}</b><small>${VISD[v]}</small></label>`).join("")}</fieldset>
       <p class="sub" style="font-size:11px;margin:-2px 0 0">鍵は、数に限りのないカードだけ。数に限りのあるカード・常連などは「かくす」になります。</p>
       <button type="button" class="big" data-saveme>保存する</button></section>` : ""}
-    ${u.member ? "" : LIVE ? `<section class="box"><h3>参加するには</h3><p class="sub" style="margin:0">招待のリンクを開くか、参加している人に、このカードの裏のQRを読んでもらいます。</p></section>` : `<section class="box"><h3>見本：参加している人に読んでもらう</h3>${vouchers.map(x => `<div class="who-row"><span>${esc(nameOf(x.pk))}（あと${RULE.vouchMax - x.vouched.length}人認めてあげられる）</span><button type="button" class="pill go" data-vouchby="${x.pk}">読んでもらう</button></div>`).join("") || `<div class="who-row"><span>認められる人がいません</span></div>`}</section>`}`);
+    ${u.member ? "" : LIVE ? `<section class="box"><h3>参加するには</h3><p class="sub" style="margin:0">招待のリンクを開くか、参加している人に、このカードの裏のQRを読んでもらいます。</p>
+      <details class="more"><summary>前に使っていた人（別の場所で参加した鍵に戻す）</summary>
+        <p class="sub warnc" style="font-size:12px;margin:0">戻すと、いまのこの名前（まだ参加していない方）は使わなくなります。</p>
+        <button type="button" class="big ghost" data-pkrestore>Face ID で戻す</button><label class="fl">控えた鍵（64文字）<input id="st-key" autocomplete="off" spellcheck="false"></label><button type="button" class="pill go" data-startkey>この鍵で戻す</button></details></section>` : `<section class="box"><h3>見本：参加している人に読んでもらう</h3>${vouchers.map(x => `<div class="who-row"><span>${esc(nameOf(x.pk))}（あと${RULE.vouchMax - x.vouched.length}人認めてあげられる）</span><button type="button" class="pill go" data-vouchby="${x.pk}">読んでもらう</button></div>`).join("") || `<div class="who-row"><span>認められる人がいません</span></div>`}</section>`}`);
 }
 // 招待：一度きりの番号を作り、その要約だけを記録に出す。番号はリンクと QR にだけ入る（身内に LINE などで送る）
 const INV = {};
@@ -2434,7 +2439,7 @@ document.addEventListener("click", e => {
   if ((b = q("[data-vouchby]"))) { const before = U().member; emit(b.dataset.vouchby, {t: "vouch", who: me}); if (!before && U().member) return joined(); return toast("認められませんでした"); }
   if (!LIVE && QRBACK && q("[data-overclose]") && $("over").querySelector(".qdone")) {   // 見本：QRを出していた人の画面に戻ると、同じ動きで届いたことが分かる
     const k = QRBACK; QRBACK = null; me = k.me; closeOver(); home(); detail(k.id); qrShowSheet(k.id, k); return setTimeout(qrSync, 300); }
-  if (q("[data-overclose]") || e.target.id === "scrim") { QRBACK = null; closeOver(); const h = $("sheet").querySelector("h2.rh"); if (h && h.textContent === "話す") chatList(); return; }
+  if (q("[data-overclose]") || e.target.id === "scrim") { QRBACK = null; closeOver(); if ($("sheet").querySelector('h2[data-view="chats"]')) chatList(); return; }
   // 裏のウォレット：押したときだけ説明（裏を押すと表に戻る、より先に）
   if (q("[data-wallet]")) return openOver(`<h2 class="rh">${icon("wallet")} ウォレット（開発中）</h2>
     <p class="sub" style="line-height:1.8">ここでは、いずれ暗号資産を受け取るQRを出したり、相手に送ったりできるようにする予定です。ウォレットで扱うのは暗号資産で、jeni は扱いません（jeni は円や暗号資産とは交換できません）。安全を最優先に作るため、いまは使えません。<br>一緒に作ってくれる開発者を募集しています：<b>github.com/nndahedeyo/jeni</b></p>
@@ -2470,7 +2475,7 @@ document.addEventListener("click", e => {
   if (LIVE && q("[data-hang]")) { rtcEnd(true); closeOver(); return toast("通話を終えました"); }
   if ((b = q("[data-pickup]"))) return rtcAnswer(b.dataset.pickup === "v");
   if (q("[data-decline]")) { const i = RTC.inc; RTC.inc = null; if (i) sendCall(i.from, {cid: i.cid, ty: "end"}); return closeOver(); }
-  if ((b = q("[data-hang]"))) { clearTimeout(callT); closeOver(); if ($("sheet").querySelector("h2.rh") && /^電話$/.test($("sheet").querySelector("h2.rh").textContent)) phoneList(); return toast("通話を終えました"); }
+  if ((b = q("[data-hang]"))) { clearTimeout(callT); closeOver(); if ($("sheet").querySelector('h2[data-view="phones"]')) phoneList(); return toast("通話を終えました"); }
   if ((b = q("[data-redeem]"))) return redeemSheet(b.dataset.redeem);
   if ((b = q("[data-edit]"))) return editSheet(b.dataset.edit);
   if ((b = q("[data-esample]"))) { ED.img = b.dataset.esample; const pk = $("over").querySelector(".ph-pick"); pk.classList.add("has"); pk.style.setProperty("--img", `url('${ED.img}')`); pk.querySelector("span").textContent = "画像を変える"; return; }
@@ -2519,7 +2524,7 @@ document.addEventListener("click", e => {
   if (q("[data-pkrestore]")) { LV.passkeyRestore().then(() => { LV.store.set("jeni.keysaved", true); afterStart(); toast("戻しました"); }, e => toast(String((e && e.name === "NotAllowedError") ? "取りやめました" : (e && e.message) || "戻せませんでした"))); return; }
   if (q("[data-start]")) { const name = ($("st-name").value || "").trim().slice(0, 40); if (!name) return toast("名前を入れてください"); LV.newMe(); LV.store.set("jeni.keysaved", false); emit(me = LV.me.pk, {t: "profile", name, line: ""}); return afterStart(true); }
   if (q("[data-startsougo]")) { const sm = LV.store.get("sougo.me", null); if (!sm || !LV.importKey(sm.sk)) return toast("鍵を読めませんでした"); me = LV.me.pk; if (!(S.users[me] && S.users[me].name)) emit(me, {t: "profile", name: sm.name || "なまえ", line: ""}); return afterStart(); }
-  if (q("[data-startkey]")) { if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); LV.store.set("jeni.keysaved", true); return afterStart(); }
+  if (q("[data-startkey]")) { const old = LV.me && LV.me.pk; if (!LV.importKey($("st-key").value)) return toast("鍵の形が合いません（64文字）"); if (old !== LV.me.pk) LV.store.set("jeni.kbak", null); LV.store.set("jeni.keysaved", true); toast("戻しました"); return afterStart(); }
   if (q("[data-keyexp]")) return keySheet(false);
   if (q("[data-keycopy]")) { try { navigator.clipboard.writeText(LV.me.sk).then(() => toast("写しました。パスワード管理アプリなどに貼って保存してください"), () => toast("写せませんでした。長押しで選んで写してください")); } catch (x) { toast("長押しで選んで写してください"); } return; }
   if (q("[data-keysaved]")) { LV.store.set("jeni.keysaved", true); closeSheet(); home(); return toast("控えを取りました。大切に保管してください"); }
