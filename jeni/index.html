@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-0fhRJ/+97eHauc4JIUnyzuKajyG0wdWtGu9YX8l9fxY=' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-hABIiUrw9BnjohLPUJvmGB2qC5sNK9+ZgFWx+r70J90=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-6z7B6IMFL4kkrKb8NklvmLmqQO08LXL7R81hoTEvsvk=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-o+x7Pc2emiJZGMVpsWBT6QBItFTfj2GRxzyel79ZQu4=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
 // 公式の試験ベクトル（tests/sig.test.js）で正しさを確かめている。
 "use strict";
 (function (root) {
@@ -1257,7 +1257,7 @@ function makeQR(text, forceMask) {
     const n = copyOK ? 1 : mp3 ? Math.max(1, Math.ceil(dur / Math.floor(LIM.part * 8 / (srcRate * 1.08)))) : Math.max(1, Math.ceil(dur / Math.floor(LIM.part * 8 / (rate * 1.08))));
     const seg = dur / n, parts = [];
     // 動画は「切れ端に分けた MP4」（fMP4）で作り、切れ端ごとの指紋を控える。流すときに切れ端ごとに確かめてから画面に送る（すり替えられた切れ端は映らない）
-    const frag = kind === "video";
+    const frag = !mp3; let pending = null;   // 動画と、MP4 の音（AAC など）。MP3 はそのまま
     for (let i = 0; i < n; i++) {
       const moofs = [];
       const out = new M.Output({format: mp3 ? new M.Mp3OutputFormat() : frag ? new M.Mp4OutputFormat({fastStart: "fragmented", minimumFragmentDuration: 1, onMoof: (d, pos, ts) => { moofs.push([pos, ts]); }}) : new M.Mp4OutputFormat({fastStart: "in-memory"}), target: new M.BufferTarget()});
@@ -1285,17 +1285,21 @@ function makeQR(text, forceMask) {
       const d = Math.round((end - start) * 100) / 100;
       let c = null;
       if (frag && moofs.length) { try { c = await chunkTable(buf, moofs, await out.getMimeType()); } catch (e) { c = null; } }
-      if (onPart) parts.push({...(await onPart(blob, i, n, d)), d, size: blob.size, c}); else parts.push({blob, d, size: blob.size, c});
+      // 置き場へ送るのと、次の部分を作るのを重ねる（送るのは1つずつ）
+      if (onPart) { const prev = pending; pending = (async () => { await prev; return {...(await onPart(blob, i, n, d)), d, size: blob.size, c}; })(); parts.push(pending); pending.catch(() => {}); }
+      else parts.push(Promise.resolve({blob, d, size: blob.size, c}));
     }
+    const done = await Promise.all(parts);
     onp(1);
-    return {parts, dur, poster, w, h, codec: mp3 ? "mp3" : aCopy ? "aac" : acodec, copied: copyOK};
+    return {parts: done, dur, poster, w, h, codec: mp3 ? "mp3" : aCopy ? "aac" : acodec, copied: copyOK};
   }
 
   // 切れ端の表：はじめ（ftyp+moov）と、1MB ほどずつにまとめた切れ端（moof+mdat の並び）。それぞれの長さ・はじまる時刻・指紋と、全体の指紋
   async function chunkTable(buf, moofs, mime) {
-    const u8 = new Uint8Array(buf), N = u8.length, TARGET = 1024 * 1024;
+    // はじめの切れ端は小さく（すぐ流れはじめる）、だんだん大きく（取る回数を減らす）：256KB → 512KB → 1MB
+    const u8 = new Uint8Array(buf), N = u8.length, KB = 1024, target = k => k <= 1 ? 256 * KB : k === 2 ? 512 * KB : 1024 * KB;
     const starts = [0, moofs[0][0]], times = [0, Math.round(moofs[0][1] * 100) / 100];
-    for (const [pos, ts] of moofs.slice(1)) if (pos - starts[starts.length - 1] >= TARGET) { starts.push(pos); times.push(Math.round(ts * 100) / 100); }
+    for (const [pos, ts] of moofs.slice(1)) if (pos - starts[starts.length - 1] >= target(starts.length - 1)) { starts.push(pos); times.push(Math.round(ts * 100) / 100); }
     const l = [], h = [];
     for (let i = 0; i < starts.length; i++) { const a = starts[i], z = i + 1 < starts.length ? starts[i + 1] : N; l.push(z - a); h.push(hexOf(await crypto.subtle.digest("SHA-256", u8.subarray(a, z)))); }
     return {m: mime, l, t: times, h, x0: hexOf(await crypto.subtle.digest("SHA-256", u8))};
@@ -1694,7 +1698,7 @@ const probeAll = () => { probeAll0(); vidObserve(); };
 const VCH = Object.create(null);   // カードの中の動画（分けて置いたものを続けて流す）
 function vidEl(face, m) {
   const v = document.createElement("video"); v.className = "inplay"; v.preload = "metadata"; v.playsInline = true; if (m.img) v.poster = m.img;
-  const p = partsOf(m)[0]; if (p && !p.k) { v.dataset.u = 0; v.src = p.us[0]; v.addEventListener("error", function nxt() { if (v.dataset.chain) return v.removeEventListener("error", nxt); const k = +v.dataset.u + 1; if (k < p.us.length) { v.dataset.u = k; v.src = p.us[k]; } }); } v.style.opacity = "0"; face.insertBefore(v, face.querySelector(".gfield")); v.addEventListener("play", () => { v.style.opacity = "1"; }); return v;
+  const p = partsOf(m)[0]; if (p && p.c && LIVE && segOK(p.c)) segWarm(p); else if (p && !p.k) { v.dataset.u = 0; v.src = p.us[0]; v.addEventListener("error", function nxt() { if (v.dataset.chain) return v.removeEventListener("error", nxt); const k = +v.dataset.u + 1; if (k < p.us.length) { v.dataset.u = k; v.src = p.us[k]; } }); } v.style.opacity = "0"; face.insertBefore(v, face.querySelector(".gfield")); v.addEventListener("play", () => { v.style.opacity = "1"; }); return v;
 }
 function vidRelease(id, face) {
   if (VCH[id]) { VCH[id].dispose(); delete VCH[id]; }
@@ -1872,11 +1876,10 @@ async function edPics(files) {
   if (!list.length) return toast(`アルバムは${L}枚までです`);
   ED.job = {on: true, pct: 0, text: "写真を整えています"}; editSheet(id, true);
   try {
-    for (let i = 0; i < list.length; i++) {
-      const im = await JeniMedia.imageOf(list[i]);
-      const p = await putFile(im.blob, f => { ED.job.pct = 100 * (i + f) / list.length; ED.job.text = `写真を置き場へ送っています（${i + 1}/${list.length}）`; edJobUI(); }, c.circle);
-      ED.pics.push({...p, thumb: im.thumb});
-    }
+    let done = 0;
+    const got = await pmap(list, 3, async f => { const im = await JeniMedia.imageOf(f); const p = await putFile(im.blob, () => {}, c.circle);
+      done++; ED.job.pct = 100 * done / list.length; ED.job.text = `写真を置き場へ送っています（${done}/${list.length}）`; edJobUI(); return {...p, thumb: im.thumb}; });
+    ED.pics.push(...got);
     ED.job = null;
   } catch (e) { ED.job = {err: (e && e.message) || "写真を置けませんでした", pct: 0}; }
   if (ED.id === id && !$("over").hidden) editSheet(id, true);
@@ -1966,7 +1969,7 @@ function doHold(id) {
     refreshPage(id); toast(`${c.price ? `${c.price} jeni → ${nameOf(c.by)} さんへ` : "持ちました"}${prefVis(c) === "lock" ? "（鍵つき）" : ""}`); });
 }
 const TIP_STEPS = () => [0.001, 0.005, 0.01, 0.02].map(r => Math.max(1, Math.round(RULE.start * r)));
-const TIPS = {}; const tipAmt = id => TIPS[id] || TIP_STEPS()[1];
+const TIPS = {}; const tipAmt = id => TIPS[id] || TIP_STEPS()[0];
 // 記録（下から出る）：持っている人、この先の操作（譲る・贈る・受け取り・返す）、数
 function holdersHtml(c) {
   const by = {}; for (const x of c.copies) if (!x.used || c.handover) (by[x.owner] = by[x.owner] || []).push(x);
@@ -2328,6 +2331,9 @@ function jobUI() {
 const setJob = (pct, text) => { JOB.pct = Math.max(0, Math.min(100, pct)); if (text) JOB.text = text; jobUI(); };
 const MEDIA_KINDS = ["picture", "music", "video"];   // 置き場に置くもの。輪のカードのものは、鍵で封をしてから置く（見せる相手を先に決める）
 // 置き場へ送る（輪のカードなら、ファイルごとの鍵で封をしてから。鍵は輪の人だけが読める中身の中に入る）
+// いくつかを同時に（順番はそのまま）：写真を何枚も置くときに速く
+async function pmap(list, k, fn) { const out = new Array(list.length); let next = 0;
+  await Promise.all(Array.from({length: Math.min(k, list.length)}, async () => { while (next < list.length) { const i = next++; out[i] = await fn(list[i], i); } })); return out; }
 async function putFile(blob, onp, circle = MK.circle) {
   if (!LIVE) return {u: URL.createObjectURL(blob)};
   if (!circle) return JeniMedia.upload(blob, LV.sign, onp);
@@ -2386,11 +2392,10 @@ async function picsJob(files) {
   MK.mcircle = MK.circle;
   Object.assign(JOB, {on: true, pct: 0, text: "写真を整えています", err: "", kind: "picture"}); jobUI();
   try {
-    for (let i = 0; i < list.length; i++) {
-      const im = await JeniMedia.imageOf(list[i]);
-      const p = await putFile(im.blob, f => setJob(100 * (i + f) / list.length, `写真を置き場へ送っています（${i + 1}/${list.length}）`));
-      MK.pics.push({...p, thumb: im.thumb}); setJob(100 * (i + 1) / list.length, "写真を整えています");
-    }
+    let done = 0;
+    const got = await pmap(list, 3, async f => { const im = await JeniMedia.imageOf(f); const p = await putFile(im.blob, () => {});
+      done++; setJob(100 * done / list.length, `写真を置き場へ送っています（${done}/${list.length}）`); return {...p, thumb: im.thumb}; });
+    MK.pics.push(...got);
   } catch (e) { JOB.err = (e && e.message) || "写真を置けませんでした"; }
   JOB.on = false; if (MK.pics[0]) MK.img = MK.pics[0].thumb; if ($("m-title")) readMK(); make();
 }
@@ -2625,7 +2630,12 @@ const hexOfBuf = b => Array.from(new Uint8Array(b), x => x.toString(16).padStart
    すり替えられた切れ端は一瞬も映らない。動画配信と同じ流し方（MediaSource／iPhone は ManagedMediaSource） ---- */
 const MSC = () => window.ManagedMediaSource || window.MediaSource;
 const segOK = c => { const M = MSC(); try { return !!(c && M && M.isTypeSupported(c.m)); } catch (e) { return false; } };
+// カードのページを開いたら、押される前に はじめの切れ端（ほんの数百KB）だけ取って確かめておく：押してからすぐ流れる
+const SEGWARM = Object.create(null);
+function segWarm(p) { if (!LIVE || !p || !p.c || p.k || !segOK(p.c)) return; for (const i of [0, 1]) { const k = p.x + ":" + i; if (SEGWARM[k]) continue;
+  SEGWARM[k] = new Seg_({p}).get(i).catch(() => null); } }
 const hostOf = u => (String(u).match(/^https:\/\/([^/]+)/) || [])[1] || "";
+class Seg_ { constructor({p}) { Object.assign(this, {p: {...p, us: p.us || JeniMedia.urlsOf(p)}, c: p.c, n: p.c.l.length, off: [], ui: 0, h: {}}); let o = 0; for (const l of this.c.l) { this.off.push(o); o += l; } } }
 class Seg {
   constructor(el, p, h) {
     Object.assign(this, {el, p, h, c: p.c, n: p.c.l.length, off: [], next: 1, ui: 0, gen: 0});
@@ -2641,7 +2651,7 @@ class Seg {
     this.url = URL.createObjectURL(this.ms); el.src = this.url;
   }
   async open() {
-    if (this.gone) return;
+    if (this.gone) return; this.fetchV(0); this.fetchV(1);
     try { this.sb = this.ms.addSourceBuffer(this.c.m); } catch (e) { return this.bail("この端末では切れ端で流せない"); }
     try { if (+this.p.d) this.ms.duration = +this.p.d; } catch (e) {}
     if (!(await this.append(0))) return;
@@ -2662,6 +2672,9 @@ class Seg {
   finish() { if (this.ended || !this.sb) return; this.idle().then(() => { try { if (this.ms.readyState === "open" && this.next >= this.n) { this.ms.endOfStream(); this.ended = true; } } catch (e) {} }); }
   idle() { const sb = this.sb; return !sb || !sb.updating ? Promise.resolve() : new Promise(r => sb.addEventListener("updateend", r, {once: true})); }
   trim() { const t = this.el.currentTime, sb = this.sb; if (!sb || sb.updating || t < 45) return; try { if (sb.buffered.length && sb.buffered.start(0) < t - 30) sb.remove(0, t - 30); } catch (e) {} }
+  // 切れ端を取る（同じものを二度取らない・先の2つも同時に取りはじめる）
+  fetchV(i) { if (i >= this.n) return Promise.resolve(null); const k = this.p.x + ":" + i; this.q = this.q || {};
+    return this.q[i] || (this.q[i] = (SEGWARM[k] ? SEGWARM[k].then(b => { delete SEGWARM[k]; return b || this.get(i); }) : this.get(i)).then(b => { if (!b) delete this.q[i]; return b; })); }
   async get(i) {
     const us = this.p.us, a = this.off[i], len = this.c.l[i], z = a + len - 1;
     for (let k = 0; k < us.length; k++) {
@@ -2680,7 +2693,9 @@ class Seg {
     return null;
   }
   async append(i) {
-    const b = await this.get(i); if (this.gone) return false;
+    if (i > 0) { this.fetchV(i + 1); this.fetchV(i + 2); }
+    for (const k in this.q || {}) if (+k < i - 1 && +k !== 0) delete this.q[k];
+    const b = await this.fetchV(i); if (this.q) delete this.q[i]; if (this.gone) return false;
     if (!b) {
       if (this.bad) { this.stop(); return false; }   // どの置き場でも指紋が合わない：流さない
       this.net = (this.net || 0) + 1; if (this.net > 4) { this.bail("置き場から取れない"); return false; }
@@ -2698,6 +2713,7 @@ class Seg {
     el.removeEventListener("seeking", this.onSeek); el.removeEventListener("timeupdate", this.onTime); el.removeEventListener("waiting", this.onWait);
     try { URL.revokeObjectURL(this.url); } catch (e) {} this.whole = null; }
 }
+Seg_.prototype.get = Seg.prototype.get;
 class Chain {
   // 1つの再生器で続けて流す（スマホでも、押したあとの再生がそのまま続く）。次の部分は流れているあいだに先に取っておく
   constructor(el, parts, h) {
@@ -3321,7 +3337,7 @@ function dmClean(d) {
 // 切れ端の表（動画）：置き場が受け取ったままの中身のときだけ（整え直した置き場では使えない）。封をした輪のカードは使わない
 const segOf = (c, x, k) => c && !k && c.x0 === x ? {c: {m: c.m, l: c.l, t: c.t, h: c.h}} : {};
 const cleanSeg = c => { if (!c || typeof c !== "object") return null; const n = Array.isArray(c.l) ? c.l.length : 0;
-  if (n < 2 || n > 400 || !/^video\/mp4; ?codecs="[\w.,\s-]{1,80}"$/.test(c.m || "") || !Array.isArray(c.t) || !Array.isArray(c.h) || c.t.length !== n || c.h.length !== n) return null;
+  if (n < 2 || n > 400 || !/^(video|audio)\/mp4; ?codecs="[\w.,\s-]{1,80}"$/.test(c.m || "") || !Array.isArray(c.t) || !Array.isArray(c.h) || c.t.length !== n || c.h.length !== n) return null;
   if (!c.l.every(v => Number.isInteger(v) && v > 0 && v <= 20 * 1048576) || c.l.reduce((a, b) => a + b, 0) > 20 * 1048576) return null;
   if (!c.t.every(v => typeof v === "number" && isFinite(v) && v >= 0 && v <= 7200) || !c.h.every(v => /^[0-9a-f]{64}$/.test(v))) return null;
   return {m: c.m, l: c.l.slice(), t: c.t.slice(), h: c.h.slice()}; };
