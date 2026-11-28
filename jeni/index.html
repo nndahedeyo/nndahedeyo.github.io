@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-CO7GmMm0mDm/1ViLNm2mqk7H9B4CAY8hu3dKh/4dC+A=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-KVgmHP1CueYFbzZwPgGPL9TBwJe0aXalDgQdiHekWKM=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-WqTu/QTYBX56CYiE1wAwbn5Smewn8cDJWU02hPDLTcI=' 'sha256-lsHMvtjDBEQcCQisofP+EHkf5wwvUmn3Sy5gk6PTfEc=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
 // 公式の試験ベクトル（tests/sig.test.js）で正しさを確かめている。
 "use strict";
 (function (root) {
@@ -384,6 +384,8 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 .menu button[aria-pressed="true"]{background:var(--leaf);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .mcap{font-size:10px;line-height:1.2;color:var(--mute);opacity:.85;padding:0 2px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .mods{display:flex;gap:4px;align-self:end;margin-right:auto;min-width:0;flex-wrap:nowrap}.mods button{display:inline-flex;align-items:center;gap:3px;height:24px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--mute);padding:0 8px 0 6px;font:inherit;font-size:11px;white-space:nowrap}.mods svg.i{width:13px;height:13px}
+/* 比べるための見せ方（テスト版）：はじめは「見る・持つ・話す」だけ。しぼり・並び・作る・贈る・お知らせは隠す */
+body.lite .mods,body.lite .menu [data-f]:not([data-f="all"]):not([data-f="people"]),body.lite [data-make],body.lite [data-fx="gifts"],body.lite [data-fx="news"],body.lite .pcomm [data-giftp]{display:none!important}
 .mods button[aria-pressed="true"]{background:var(--leaf);border-color:transparent;color:#fff}.mods button[data-mod="fav"][aria-pressed="true"] svg.i{fill:currentColor}
 .dist{flex:none;font-weight:700;color:var(--leaf);font-size:11px;margin-right:2px;white-space:nowrap}
 .fv svg.i{fill:#e0a92e;stroke:#e0a92e}
@@ -1359,6 +1361,17 @@ function makeQR(text, forceMask) {
     const ext = (url.match(/\.[a-z0-9]{2,4}$/i) || [""])[0];
     return {u: url, x, m: mir, e: ext};
   }
+  // 置き場の見回り（作った人の端末で）：どこかに残っていれば、消えた置き場へ写し直す。どこにも残っていなければ 0 を返す（元のファイルから置き直してもらう）
+  async function keep(p, sign) {
+    const us = urlsOf(p), alive = [], gone = [];
+    for (const u of us) { try { const r = await fetch(u, {method: "HEAD"}); (r.ok ? alive : gone).push(u); } catch (e) { gone.push(u); } }
+    if (!alive.length) return {alive: 0, fixed: 0};
+    let fixed = 0; const now = Math.floor(Date.now() / 1000);
+    for (const u of gone) { const base = SERVERS.find(s => u.startsWith(s + "/")); if (!base || !p.x) continue;
+      try { const auth = "Nostr " + b64(JSON.stringify(await sign(24242, "jeni に置く", [["t", "upload"], ["x", p.x], ["expiration", String(now + 900)]])));
+        await put(base + "/mirror", JSON.stringify({url: alive[0]}), {"Authorization": auth, "Content-Type": "application/json"}); fixed++; } catch (e) {} }
+    return {alive: alive.length, fixed};
+  }
   // 同じ中身を、写しのある置き場からも取れるように
   const urlsOf = p => [p.u, ...((p.m || []).map(b => `${b}/${p.x}${p.e || ""}`))].filter(Boolean);
 
@@ -1370,7 +1383,7 @@ function makeQR(text, forceMask) {
     return null;
   }
 
-  root.JeniMedia = {LIM, PLAN, SERVERS, MB_URL, lib, prepare, imageOf, upload, urlsOf, linkOf, fmtLen, sha256, sealBlob, openBlob, openPart, fetchChecked};
+  root.JeniMedia = {LIM, PLAN, SERVERS, MB_URL, lib, prepare, imageOf, upload, urlsOf, linkOf, fmtLen, sha256, sealBlob, openBlob, openPart, fetchChecked, keep};
 })(typeof globalThis !== "undefined" ? globalThis : this);
 </script>
 <script></script>
@@ -1503,6 +1516,7 @@ const leftOf = c => c.supply == null ? Infinity : c.left;
 const cardNo = id => /^[0-9a-f]{64}$/.test(String(id)) ? String(id).slice(0, 8).toUpperCase() : String(id).replace(/^0+/, "").padStart(4, "0");
 const kindIcon = k => k === "other" ? "other" : k;
 let field = "all", opened = -1, playing = "", sel = null, keepScroll = false;
+let LITE = false;   // テスト版で比べる見せ方（はじめは3つだけ）
 
 function sub(c) {
   const by = whoTag(c.by), m = MEDIA[c.id] || {};
@@ -1564,7 +1578,8 @@ function home() {
   $("home").innerHTML = `
     ${LIVE ? `<div class="tbar"><span class="tag" title="出来事は署名して、複数の中継に置きます">試験運用</span><button type="button" class="reset" data-scan>QRを読む</button></div>` : `<div class="tbar"><span class="tag" title="ここでの出来事はこの端末の中だけで、どこにも送りません">テスト版（どこにも送らない）</span>
       <label>見ている人 <select id="who">${Object.values(P).map(x => `<option value="${x.pk}" ${x.pk === me ? "selected" : ""}>${esc(x.name)}${S.users[x.pk] && S.users[x.pk].member ? "" : "（まだ参加していない）"}</option>`).join("")}</select></label>
-      <button type="button" class="reset" data-reset>最初に戻す</button><button type="button" class="reset" data-firstrun>はじめての画面</button></div>`}
+      <button type="button" class="reset" data-reset>最初に戻す</button><button type="button" class="reset" data-firstrun>はじめての画面</button>
+      <label>見せ方 <select id="lite"><option value="">すべての機能</option><option value="1" ${LITE ? "selected" : ""}>はじめは3つ（見る・持つ・話す）</option></select></label></div>`}
     <section class="me" aria-label="プロフィール">
       <div class="me-top"><div class="av" ${PICS[me] ? `style="background:url('${PICS[me]}') center/cover"` : ""}>${PICS[me] ? "" : esc(nameOf(me).slice(0, 1))}</div>
         <div><div class="me-name">${esc(nameOf(me))}</div><div class="me-line">${u.member ? esc((S.users[me] && S.users[me].line) || p.line) : "まだ参加していません"}</div></div>
@@ -1873,7 +1888,17 @@ function refreshPage(id, justHeld = false) {
   el.replaceWith(nu); probeAll();
   if (justHeld) requestAnimationFrame(() => requestAnimationFrame(() => { const d = nu.querySelector(".jc2"); if (d) d.classList.add("held"); }));
 }
-const detail = (id, keep = false, justHeld = false) => { if ($("sheet").classList.contains("feed") && $("pg-" + id)) return refreshPage(id, justHeld); feed(id); };
+const detail = (id, keep = false, justHeld = false) => { mediaKeep(id); if ($("sheet").classList.contains("feed") && $("pg-" + id)) return refreshPage(id, justHeld); feed(id); };
+// 作った人が自分のカードを開いたとき、置き場を見回る：消えた写しは直し、どこにも無いものは「元のファイルから置き直して」と知らせる
+const KEPT = Object.create(null);   // カード → 見回った時刻（10分に1回まで）
+async function mediaKeep(id) {
+  const c = S.cards[id], m = MEDIA[id]; if (!LIVE || !c || c.by !== me || !m || Date.now() - (KEPT[id] || 0) < 600000) return; KEPT[id] = Date.now();
+  const ps = [...(m.parts || []), ...(m.pics || [])].filter(p => p && p.x); if (!ps.length) return;
+  let lost = 0, fixed = 0;
+  for (const p of ps) { try { const r = await JeniMedia.keep(p, LV.sign); if (!r.alive) lost++; fixed += r.fixed; } catch (e) {} }
+  if (fixed && !lost) toast("置き場の写しを直しました");
+  if (lost) { const pg = $("pg-" + id); if (pg && !pg.querySelector(".mlost")) pg.querySelector(".jc2").insertAdjacentHTML("afterend", `<p class="sub warnc mlost" style="margin:8px 0 0">写真・音・動画の一部が置き場から消えています。手元に残した元のファイルを選んで置き直してください。 <button type="button" class="pill" data-edit="${id}">置き直す</button></p>`); }
+}
 function doHold(id) {
   const c = S.cards[id], before = mine(c).length;
   if (c.price > U().bal) return toast("jeni が足りません");
@@ -1996,7 +2021,8 @@ function chatList() {
       return `<div class="who-row"><button type="button" class="who" data-person="${pk}" aria-label="${esc(nameOf(pk))} さんのカード">${avatar(pk)}</button>
       <button type="button" class="crow" data-chat="${pk}"><b>${esc(nameOf(pk))}</b><small class="${mc ? "warnc" : ""}">${l ? `${l.call ? (mc ? `不在着信${mc > 1 ? ` ${mc}件` : ""}` : callWord(l.call)) : esc(msgPreview(l))}・${when}` : "まだ話していません"}</small></button>
       ${unreadOf(pk) || mc ? `<span class="nb" aria-label="新しい会話・不在着信"></span>` : ""}</div>`; }).join("") || `<div class="who-row"><span>まだ話せる人がいません</span></div>`}</section>
-    <p class="fline">お互いに友達の人とだけ、2人で話したり電話したりできます（鍵つき）。電話は、会話の右上から。友達になるのは、その人のプロフィールカードから。</p>`);
+    ${LIVE && window.Notification && Notification.permission === "default" ? `<button type="button" class="pill" data-notify style="justify-self:start">ホーム画面のアイコンに数を出す</button>` : ""}
+    <p class="fline">お互いに友達の人とだけ、2人で話したり電話したりできます（鍵つき）。電話は、会話の右上から。電話が鳴るのは、相手が jeni を開いているときだけです。友達になるのは、その人のプロフィールカードから。</p>`);
 }
 // 贈る：jeni や持っているカードを、相手に直接届ける。取り消せないので、長押しで決める
 function giftList() {
@@ -2374,7 +2400,7 @@ function make() {
       ${JOB.on || JOB.err ? `<div class="job"><i id="m-jobbar" style="width:${JOB.pct}%"></i></div><p class="sub${JOB.err ? " warnc" : ""}" id="m-job" style="font-size:12px;margin:-4px 0 0">${JOB.on ? `${JOB.text} ${Math.round(JOB.pct)}%` : esc(JOB.err)}</p>` : ""}
       ${LIVE ? "" : `<div class="chips"><span class="sub">見本：</span><button type="button" data-msample="${k === "music" ? "media/rain.mp3" : "media/field.mp4"}">${k === "music" ? "雨の音" : "畑の動画"}</button></div>`}
       <label class="fl">またはリンク（YouTube・${k === "music" ? "音" : "動画"}のファイルの https）<input id="m-src" type="url" maxlength="300" value="${esc(/^https:/.test(MK.src || "") ? MK.src : "")}" placeholder="https://…" ${MK.media ? "disabled" : ""}></label>
-      <p class="sub" style="font-size:11px;margin:-4px 0 0">${k === "music" ? "音は MP3 の 256〜320kbps と同じくらいの音質（AAC 192kbps）にそろえ、長いものは分けて置きます" : "動画はスマホの画面できれいな画質に軽くし、長いものは分けて置きます（長いほど、軽くして送るのに時間がかかります。そのあいだ画面を開いたままに）"}（無料の置き場・続けて1本として流れます）。${MK.circle ? "" : "置いたものはリンクを知っている人ならだれでも見られるので、"}自分で作ったものか、権利のあるものだけにしてください。</p>` : ""}
+      <p class="sub" style="font-size:11px;margin:-4px 0 0">${k === "music" ? "音は MP3 の 256〜320kbps と同じくらいの音質（AAC 192kbps）にそろえ、長いものは分けて置きます" : "動画はスマホの画面できれいな画質に軽くし、長いものは分けて置きます（長いほど、軽くして送るのに時間がかかります。そのあいだ画面を開いたままに）"}（無料の置き場・続けて1本として流れます）。${MK.circle ? "" : "置いたものはリンクを知っている人ならだれでも見られるので、"}自分で作ったものか、権利のあるものだけにしてください。元のファイルは手元に残しておいてください（置き場から消えたときに置き直せます）。</p>` : ""}
     <label class="fl">題${sale ? "（なくてもよい）" : ""}<input id="m-title" maxlength="80" value="${esc(MK.title)}"></label>
     ${bodyL ? `<label class="fl">${bodyL}<textarea id="m-body" maxlength="2000">${esc(MK.body)}</textarea></label>` : ""}
     ${k === "project" ? `<label class="fl">求めているもの<input id="m-want" maxlength="200" value="${esc(MK.want || "")}" placeholder="例：在来種の写真、畑の場所"></label>` : ""}
@@ -2688,6 +2714,7 @@ document.addEventListener("change", e => {
     fr.readAsDataURL(e.target.files[0]);
   }
 });
+document.addEventListener("change", e => { if (e.target.id === "lite") { LITE = !!e.target.value; document.body.classList.toggle("lite", LITE); if (LITE && !["all", "people"].includes(field)) field = "all"; home(); } });
 document.addEventListener("input", e => { if (e.target.id === "pq") { PQ = e.target.value; pqApply(); }
   if (e.target.id === "c-text") { const t = e.target; t.style.height = "auto"; t.style.height = Math.min(160, t.scrollHeight) + "px"; } });
 // 会話：パソコンでは Enter で送る（Shift+Enter で改行）。スマホは送るボタン
@@ -2772,6 +2799,7 @@ document.addEventListener("click", e => {
   if ((b = q("[data-chat]"))) return chatSheet(b.dataset.chat);
   if ((b = q("[data-send]"))) { const pk = b.dataset.send, text = ($("c-text").value || "").trim(); if (!text) return;
     $("c-text").value = ""; $("c-text").style.height = ""; $("c-text").focus(); chatSend(pk, {text}).then(() => { if (CHATPK === pk) talkRender(pk, true); }); return; }
+  if (q("[data-notify]")) { Notification.requestPermission().then(p => { toast(p === "granted" ? "アイコンに数が出ます（アプリを開いたときに新しくなります）" : "端末の設定で知らせが止められています"); appBadge(); chatList(); }); return; }
   if (q("[data-cplus]")) { const pl = $("c-plus"); pl.hidden = !pl.hidden; if (!pl.hidden) pl.innerHTML = CPLUS(); return; }
   if (q("[data-ccard]")) { const pl = $("c-plus"), cs = Object.values(S.cards).filter(c => !c.gone && !c.hidden && (c.by === me || mine(c).length) && (!c.circle || (S.circles[c.circle] && S.circles[c.circle].members.includes(CHATPK))));
     pl.innerHTML = cs.length ? cs.slice(-30).reverse().map(c => `<button type="button" class="pill" data-csendcard="${c.id}">${icon(kindIcon(c.kind))} ${esc(c.title.slice(0, 18))}</button>`).join("") : `<span class="sub">送れるカードがありません（作ったカード・持っているカード）</span>`; return; }
@@ -3090,8 +3118,19 @@ function liveRefresh() {
     if (typing) return;
     if ($("sheet").hidden) home();
     else if ($("sheet").classList.contains("feed") && sel && $("pg-" + sel) && $("over").hidden) refreshPage(sel);
-    netBadge(); qrSync();
+    netBadge(); qrSync(); appBadge();
   }, 150);
+}
+// ホーム画面のアイコンに数を出す（新しい会話・不在着信・お知らせ）。アプリを閉じているあいだは数が変わらない（運営のサーバーがないため）。
+// アプリが裏にあるあいだに届いたものは、端末の知らせでも伝える（中身は出さない）
+let BADGE0 = -1;
+function appBadge() {
+  if (!LIVE || !me || !S.users[me]) return;
+  const n = unreadChat() + missedCalls() + news().filter(x => x.at > (NSEEN[me] || 0)).length;
+  try { if (navigator.setAppBadge) (n ? navigator.setAppBadge(n) : navigator.clearAppBadge()).catch(() => {}); } catch (e) {}
+  if (BADGE0 >= 0 && n > BADGE0 && document.hidden && window.Notification && Notification.permission === "granted" && navigator.serviceWorker)
+    navigator.serviceWorker.ready.then(r => r.showNotification("jeni", {body: missedCalls() ? "電話がありました" : "新しい知らせがあります", tag: "jeni", renotify: true, icon: "icon-192.png", badge: "icon-192.png"})).catch(() => {});
+  BADGE0 = n;
 }
 // つながり：つながらない場所でも使える。出したものはこの端末に控え、つながったら届ける
 function netBadge() { const t = document.querySelector(".tbar .tag"); if (t) { const on = LV.online() && navigator.onLine !== false, n = LV.pending; t.textContent = on ? (n ? `試験運用・送っています（${n}）` : "試験運用・つながっています") : n ? `つながっていません・まだ届いていないもの ${n}（つながったら届きます）` : (navigator.onLine === false ? "つながっていません（見る・出すはできます）" : "試験運用・つないでいます…"); t.classList.toggle("on", on); } }
@@ -3313,7 +3352,7 @@ function liveBoot() {
 }
 
 if (LIVE) liveBoot(); else { seed(); home(); }
-window.__jt = {MEDIA, PREF, startSheet: () => startSheet(), get S() { return S; }, get EV() { return EV; }, get CHAT() { return CHAT; }, get me() { return me; }, set me(v) { me = v; home(); }, P, emit, detail, home, closeSheet, MK, person: pk => personCard(pk), chatSheet: pk => chatSheet(pk), CALLS, get clock() { return clock; }};
+window.__jt = {MEDIA, PREF, startSheet: () => startSheet(), get S() { return S; }, get EV() { return EV; }, get CHAT() { return CHAT; }, get me() { return me; }, set me(v) { me = v; home(); }, P, emit, detail, home, closeSheet, MK, person: pk => personCard(pk), chatSheet: pk => chatSheet(pk), CALLS, KEPT, get clock() { return clock; }};
 </script>
 
 </body></html>
