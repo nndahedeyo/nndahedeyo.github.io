@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-CEiuVkxxdH//S8pdHOrmDNhZyCyAKhy7M3WD6tDsLX0=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-GWkc7rFlqKOmwCqGdBN/0MsbHsSWKN+MvydLdxCBYB4=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-GWkc7rFlqKOmwCqGdBN/0MsbHsSWKN+MvydLdxCBYB4=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-hgswQbeeg+z/oN5WcCjpFHNsGHownKCwWgjHjV7ZThg=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
 // 公式の試験ベクトル（tests/sig.test.js）で正しさを確かめている。
 "use strict";
 (function (root) {
@@ -1931,13 +1931,14 @@ async function mediaDiag(id) {
   openOver(`<h2 class="rh">置き場の様子</h2><p class="sub">確かめています…</p>`);
   const rows = [];
   for (const [i, p] of ps.entries()) for (const u of JeniMedia.urlsOf(p)) { const o = await JeniMedia.probe(u);
+    try { const r = await fetch(u, {headers: {Range: "bytes=0-1"}, cache: "no-store"}); o.rg = r.status === 206 ? "途中から取る：できる" : "途中から取る：できない（" + r.status + "）"; } catch (e) { o.rg = "途中から取る：確かめられない"; }
     if (p.x && [o.st, o.st2].some(x => x === 200 || x === 206) && (!o.len || o.len < 40 * 1048576)) { try { const r = await fetch(u); if (r.ok) { const h = hexOfBuf(await crypto.subtle.digest("SHA-256", await r.arrayBuffer())); o.fp = JeniMedia.hashOk(p, h) ? "指紋：合う" : "指紋：ちがう（" + h.slice(0, 8) + "）"; } } catch (e) { o.fp = "指紋：確かめられない"; } }
     rows.push({i, o, x: p.x}); }
   const st = o => [o.st, o.st2].filter(x => x !== undefined).join(" → ");
   const mb = n => n ? (n / 1048576).toFixed(1) + "MB" : "";
   const v = VDIAG[id];
   if (!$("over").hidden) openOver(`<h2 class="rh">置き場の様子</h2>
-    <div class="dg">${rows.map(r => `<div><b>${r.i + 1}</b> ${esc(r.o.host)}：${esc(st(r.o))} ${mb(r.o.len)} <small>${esc(r.o.type)}</small>${r.o.fp ? `<br><small>${esc(r.o.fp)}</small>` : ""}<br><small class="mono">${esc(String(r.o.u).slice(-24))}</small></div>`).join("") || "<div>置き場のファイルはありません</div>"}</div>
+    <div class="dg">${rows.map(r => `<div><b>${r.i + 1}</b> ${esc(r.o.host)}：${esc(st(r.o))} ${mb(r.o.len)} <small>${esc(r.o.type)}</small>${r.o.fp ? `<br><small>${esc(r.o.fp)}</small>` : ""}${r.o.rg ? `<br><small>${esc(r.o.rg)}</small>` : ""}<br><small class="mono">${esc(String(r.o.u).slice(-24))}</small></div>`).join("") || "<div>置き場のファイルはありません</div>"}</div>
     ${v ? `<p class="sub warnc">再生：${esc(v)}</p>` : ""}
     <p class="sub">200・206 は「ある」、404 は「無い」です。この画面を写して送ってもらえると、原因を確かめられます。</p>`);
 }
@@ -2593,7 +2594,7 @@ function rules() {
       ・QRで引き換える（入る・受ける）：持っている人が出し、作った人が読むQR。現物の受け取り・入場・体験に<br>決まると、両方の画面の小さなカードが同じように光ります。招待は一度きりのリンクで送ります（QRにもできます）。</p>
     <p class="rnote"><b>直す・取り下げる</b>　作った人は、あとから題・説明・日時・場所・画像を直したり、アルバムに写真を足したり、動画や音を入れ替えたりできます（値段・数・種類は直せません）。取り下げると、だれも持っていないカードは消え、持っている人がいるカードは受付を終えます（持っている人のものはそのまま）。自分の書いた会話は消せます。直した・消したことは記録に残ります。</p>
     <p class="rnote"><b>見えるもの・隠れるもの</b>　だれがだれに何 jeni 払ったかは、確かめ合うために記録に残り、だれでも見られます（番号と、その人が決めた名前で）。見せ方は3つ：「みんなに見せる」、「かくす（分け前あり）」＝画面に出さないだけで記録を調べれば分かる・投げ銭の分け前を受け取れる、「鍵をかける（分け前なし）」＝どのカードかは本人と作った人にしか分からない（数に限りのないカードだけ・分け前が届くと分かってしまうので受け取らない）。仲間の輪の中身（写真・音・動画も）は、輪の人にしか読めません。ただし、輪の人が自分の端末に保存したり、輪から外れた人がそれまでに見たものを持っていたりすることは防げません。2人だけの会話・通話も同じで、相手の手元に残ることは防げません。</p>
-    <p class="rnote"><b>贈る</b>　jeni や持っているカードを、参加している人に直接届けられます（残高の下の贈り物の印か、相手のプロフィールカードから・長押しで決める）。贈ると取り消せません。だれからだれへ何を贈ったかは記録に残ります。</p>
+    <p class="rnote"><b>贈る</b>　jeni や持っているカードを、参加している人に直接届けられます（残高の下の吹き出しで相手を選ぶか、相手のプロフィールカードから・長押しで決める）。贈ると取り消せません。だれからだれへ何を贈ったかは記録に残ります。</p>
     <p class="rnote"><b>配る量について</b>　配る量や配り方は、使われ方を見て変わることがあります。変わるときも全員に同じきまりが同じように当てはまり、前もって知らせます。jeni はお金と交換できず、値段は作った人が決めるので、配る量の大きさそのものに意味はありません。</p>
     <p class="rnote"><b>運営のサーバーはありません</b>　記録は、だれでも立てられる複数の中継（リレー）に置き、それぞれの端末にも写しを持ちます。1か所が止まっても、ほかに残ります。無料の中継は古い記録を消すことがあるので、記録の書き出しで守ります。また毎日、記録の「指紋」（中身は分からない64文字）をビットコインに刻み、日付をさかのぼった書き換えができないようにしています。</p>
     </details>`);
@@ -2611,11 +2612,19 @@ class Chain {
     this.total = parts.reduce((s, p) => s + (+p.d || 0), 0);
     const on = (t, f) => { el.addEventListener(t, f); this.ev.push([t, f]); };
     on("timeupdate", () => this.tick()); on("ended", () => this.adv()); on("error", () => el.getAttribute("src") && this.fail());
+    // 見張り：流れているはずなのに進まない（置き場が「途中から取る」に答えないと、iPhone では止まる）→ 取り終えた写しに切り替える
+    this.dog = setInterval(() => { if (this.gone) return clearInterval(this.dog); const c = el.currentTime;
+      if (!el.paused && !el.ended && c === this.lastT && el.readyState < 3) { if (++this.stall >= 3) { this.stall = 0; this.stuckNow(); } } else this.stall = 0; this.lastT = c; }, 1000);
     el.dataset.chain = "1";
     const k = parts[0] && !parts[0].k ? parts[0].us.indexOf(el.getAttribute("src")) : -1;
     if (k < 0 || el.error) this.load(0); else { el.dataset.u = k; if (LIVE && parts[0].x) this.check(0, parts[0].us[k]); }
   }
-  dispose() { for (const [t, f] of this.ev) this.el.removeEventListener(t, f); this.el.pause(); for (const k in this.cache) if (!this.parts[k].k) URL.revokeObjectURL(this.cache[k]); this.cache = {}; this.gone = true; }
+  stuckNow() { const j = this.i, p = this.parts[j]; if (!p || p.k) return; if (this.cache[j] && this.el.src !== this.cache[j]) return this.swap(j); if (this.loading && this.loading[j]) this.stuck = true; }
+  swap(j) {
+    const el = this.el, t = el.currentTime || 0; this.stuck = false; if (this.h.why) this.h.why("置き場から流すと止まるので、取り終えた写しから流しています");
+    el.src = this.cache[j]; el.addEventListener("loadedmetadata", () => { try { el.currentTime = t; } catch (e) {} el.play().catch(() => {}); }, {once: true}); el.play().catch(() => {});
+  }
+  dispose() { clearInterval(this.dog); for (const [t, f] of this.ev) this.el.removeEventListener(t, f); this.el.pause(); for (const k in this.cache) if (!this.parts[k].k) URL.revokeObjectURL(this.cache[k]); this.cache = {}; this.gone = true; }
   load(j, t = 0, run = false) {
     const el = this.el, p = this.parts[j]; this.i = j; el.dataset.u = 0;
     // 封をしたもの（輪のカード）は取って開いてから流す。公開のものはすぐ流しはじめ、裏で中身の指紋を確かめる（合わなければ止める）
@@ -2629,10 +2638,14 @@ class Chain {
     // 流している置き場の中身が、カードに書かれた指紋と同じかを確かめる。
     // 置き場によっては動画・音を整え直す（指紋が変わる）ので、動画・音でないもの（ページなど）にすり替わっているときだけ止める。指紋の違いは「置き場を確かめる」に残す
     const p = this.parts[j], key = j + " " + u; this.seen = this.seen || {}; if (this.seen[key]) return; this.seen[key] = 1;
-    let ok = null, got = "", type = ""; try { const r = await fetch(u); if (r.ok) { type = r.headers.get("content-type") || ""; got = hexOfBuf(await crypto.subtle.digest("SHA-256", await r.arrayBuffer())); ok = JeniMedia.hashOk(p, got); } } catch (e) {}
-    if (ok !== false || this.gone) return;
-    const host = (u.match(/^https:\/\/([^/]+)/) || [])[1] || "";
+    let ok = null, got = "", type = "", buf = null; this.loading = this.loading || {}; this.loading[j] = true;
+    try { const r = await fetch(u); if (r.ok) { type = r.headers.get("content-type") || ""; buf = await r.arrayBuffer(); got = hexOfBuf(await crypto.subtle.digest("SHA-256", buf)); ok = JeniMedia.hashOk(p, got); } } catch (e) {}
+    this.loading[j] = false; if (this.gone) return;
     const media = /^(video|audio)\/|^application\/octet-stream|^binary\//i.test(type) || !type;
+    // 取り終えた中身は手元の写しにしておく（置き場が途中から取れないときや、止まったときに使う）
+    if (buf && (ok || media) && !this.cache[j]) { this.cache[j] = URL.createObjectURL(new Blob([buf], {type: /^(video|audio)\//.test(type) ? type : (p.t || "video/mp4")})); if (this.i === j && (this.stuck || this.el.error)) this.swap(j); }
+    if (ok !== false) return;
+    const host = (u.match(/^https:\/\/([^/]+)/) || [])[1] || "";
     if (this.h.why) this.h.why((media ? "指紋がちがう（置き場が整え直した中身）" : "動画・音ではない中身にすり替わっている") + "：" + host + "・" + got.slice(0, 8) + " ≠ " + String(p.x).slice(0, 8));
     if (media || this.i !== j || this.el.getAttribute("src") !== u) return;
     this.el.pause(); this.el.removeAttribute("src"); try { this.el.load(); } catch (e) {} if (this.h.fail) this.h.fail();
@@ -2665,6 +2678,9 @@ class Chain {
   fail() {
     const el = this.el, j = this.i, us = this.parts[j].us, t = el.currentTime || 0;
     if (this.parts[j].k) { if (this.h.fail) this.h.fail(); return; }
+    // 置き場から流せないとき：取り終えた写しがあればそれで、取っている途中なら終わりしだい切り替える
+    if (LIVE && this.parts[j].x && this.cache[j] && el.src !== this.cache[j]) return this.swap(j);
+    if (LIVE && this.parts[j].x && this.loading && this.loading[j]) { this.stuck = true; return; }
     if (this.cache[j] && el.src === this.cache[j]) { URL.revokeObjectURL(this.cache[j]); delete this.cache[j]; el.dataset.u = 0; el.src = us[0]; }
     else { const k = +el.dataset.u + 1;
       if (k >= us.length) {   // どの置き場もだめ：一度だけ、はじめの置き場でやり直す（電波が一瞬切れたときなど）
