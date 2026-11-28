@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-WqTu/QTYBX56CYiE1wAwbn5Smewn8cDJWU02hPDLTcI=' 'sha256-lsHMvtjDBEQcCQisofP+EHkf5wwvUmn3Sy5gk6PTfEc=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-QIrrHujs0uygE1W8+6AWC3u5NaVyXFYrzDvbHbIDq8M=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-WqTu/QTYBX56CYiE1wAwbn5Smewn8cDJWU02hPDLTcI=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
 // 公式の試験ベクトル（tests/sig.test.js）で正しさを確かめている。
 "use strict";
 (function (root) {
@@ -368,7 +368,8 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 .menu{position:relative;flex:1;min-width:0;display:flex;gap:4px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none;-webkit-overflow-scrolling:touch;mask-image:linear-gradient(90deg,#000 88%,transparent);-webkit-mask-image:linear-gradient(90deg,#000 88%,transparent);padding-right:18px}
 .menu::-webkit-scrollbar{display:none}
 .menu button{flex:0 0 max(34px, calc((100% - 24px) / 6.5))}
-.menu-w .make{flex:0 0 auto;width:max(34px, calc((100% - 28px) / 7.5));aspect-ratio:1;border:0;border-radius:12px;background:var(--gold);color:var(--gold-ink);display:grid;place-items:center;padding:0}
+.menu-w .make{flex:0 0 auto;width:max(38px, calc((100% - 28px) / 7.5));aspect-ratio:1;border:0;border-radius:12px;background:var(--gold);color:var(--gold-ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:2px 0 3px}
+.menu-w .make span{font-size:10px;font-weight:700;line-height:1;margin-top:1px}.menu-w .make svg.i{width:58%;height:58%}
 .me-r{margin-left:auto;display:grid;justify-items:end;gap:4px}
 .me-line{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 @media (max-width:360px){.me-line{-webkit-line-clamp:1}.me-top{row-gap:0}.cb{width:24px!important;height:24px!important}.cb svg.i{width:15px;height:15px}.mods span{display:none}.mods button{padding:0 7px}.me{padding:12px;gap:4px}.pmark svg{width:42px;height:auto}.cb{width:26px;height:26px}.comm{gap:2px}.me-top .av{width:34px;height:34px}.me-name{font-size:15px}.bal{font-size:15px}}
@@ -384,8 +385,8 @@ button:focus-visible,.line:focus-visible,select:focus-visible,input:focus-visibl
 .menu button[aria-pressed="true"]{background:var(--leaf);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .mcap{font-size:10px;line-height:1.2;color:var(--mute);opacity:.85;padding:0 2px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .mods{display:flex;gap:4px;align-self:end;margin-right:auto;min-width:0;flex-wrap:nowrap}.mods button{display:inline-flex;align-items:center;gap:3px;height:24px;border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--mute);padding:0 8px 0 6px;font:inherit;font-size:11px;white-space:nowrap}.mods svg.i{width:13px;height:13px}
-/* 比べるための見せ方（テスト版）：はじめは「見る・持つ・話す」だけ。しぼり・並び・作る・贈る・お知らせは隠す */
-body.lite .mods,body.lite .menu [data-f]:not([data-f="all"]):not([data-f="people"]),body.lite [data-make],body.lite [data-fx="gifts"],body.lite [data-fx="news"],body.lite .pcomm [data-giftp]{display:none!important}
+/* 比べるための見せ方（テスト版）：はじめは「見る・持つ・作る・話す」だけ。しぼり・並び・お知らせは隠す */
+body.lite .mods,body.lite .menu [data-f]:not([data-f="all"]):not([data-f="people"]),body.lite [data-fx="gifts"],body.lite [data-fx="news"],body.lite .pcomm [data-giftp]{display:none!important}
 .mods button[aria-pressed="true"]{background:var(--leaf);border-color:transparent;color:#fff}.mods button[data-mod="fav"][aria-pressed="true"] svg.i{fill:currentColor}
 .dist{flex:none;font-weight:700;color:var(--leaf);font-size:11px;margin-right:2px;white-space:nowrap}
 .fv svg.i{fill:#e0a92e;stroke:#e0a92e}
@@ -615,9 +616,12 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 .chat .bub{max-width:80%;padding:7px 11px 5px;border-radius:16px 16px 16px 4px;background:var(--card);border:1px solid var(--line);font-size:14px;justify-self:start;overflow-wrap:anywhere;white-space:pre-wrap;line-height:1.55}
 .chat .bub.mymsg{justify-self:end;background:var(--leaf-soft);border-radius:16px 16px 4px 16px}
 .chat .bub time{display:block;font-size:10px;color:var(--mute);text-align:right;margin-top:1px;white-space:nowrap}
+.crop{position:relative;width:260px;height:260px;border-radius:56px;overflow:hidden;justify-self:center;background:#000;touch-action:none;cursor:grab;box-shadow:0 0 0 3px var(--leaf)}
+.crop img{position:absolute;left:0;top:0;max-width:none;user-select:none;-webkit-user-drag:none;pointer-events:none}
+.crop{pointer-events:auto}
 .chead{display:flex;align-items:center;gap:6px;padding-right:44px}.chead .rh{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .chead .cb{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--leaf);display:grid;place-items:center;flex:none}
-.chat .ccall{justify-self:center;display:flex;gap:6px;align-items:center;font-size:12px;color:var(--mute);margin:4px 0}.chat .ccall svg.i{width:14px;height:14px}
+.chat .ccall{justify-self:center;display:flex;gap:6px;align-items:center;font-size:12px;color:var(--mute);margin:4px 0}.chat .ccall svg.i{width:14px;height:14px}.chat .cgift{color:var(--gold)}
 .chat .cday{justify-self:center;font-size:11px;color:var(--mute);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:2px 10px;margin:8px 0 4px}
 .chat .cpics{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:4px;margin:2px 0}
 .chat .cpics img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;background:var(--line);display:block}
@@ -1579,7 +1583,7 @@ function home() {
     ${LIVE ? `<div class="tbar"><span class="tag" title="出来事は署名して、複数の中継に置きます">試験運用</span><button type="button" class="reset" data-scan>QRを読む</button></div>` : `<div class="tbar"><span class="tag" title="ここでの出来事はこの端末の中だけで、どこにも送りません">テスト版（どこにも送らない）</span>
       <label>見ている人 <select id="who">${Object.values(P).map(x => `<option value="${x.pk}" ${x.pk === me ? "selected" : ""}>${esc(x.name)}${S.users[x.pk] && S.users[x.pk].member ? "" : "（まだ参加していない）"}</option>`).join("")}</select></label>
       <button type="button" class="reset" data-reset>最初に戻す</button><button type="button" class="reset" data-firstrun>はじめての画面</button>
-      <label>見せ方 <select id="lite"><option value="">すべての機能</option><option value="1" ${LITE ? "selected" : ""}>はじめは3つ（見る・持つ・話す）</option></select></label></div>`}
+      <label>見せ方 <select id="lite"><option value="">すべての機能</option><option value="1" ${LITE ? "selected" : ""}>はじめは少なく</option></select></label></div>`}
     <section class="me" aria-label="プロフィール">
       <div class="me-top"><div class="av" ${PICS[me] ? `style="background:url('${PICS[me]}') center/cover"` : ""}>${PICS[me] ? "" : esc(nameOf(me).slice(0, 1))}</div>
         <div><div class="me-name">${esc(nameOf(me))}</div><div class="me-line">${u.member ? esc((S.users[me] && S.users[me].line) || p.line) : "まだ参加していません"}</div></div>
@@ -1587,7 +1591,7 @@ function home() {
           ${u.member ? `<div class="comm">${FX.map(f => { const n = f.dot(); return `<button type="button" class="cb" data-fx="${f.k}" aria-label="${f.l}${n ? "（新しい知らせあり）" : ""}" title="${f.l}">${icon(f.i)}${n ? `<b aria-hidden="true"></b>` : ""}</button>`; }).join("")}</div>` : ""}</div></div>
       <div class="me-mid"><div class="mods" role="group" aria-label="しぼり（いくつでも重ねられます）">${[["mine", "hold", "持っている"], ["fav", "fav", "お気に入り"], ["near", "near", "近く"]].map(([k, i, l]) => `<button type="button" data-mod="${k}" aria-pressed="${MOD[k]}">${icon(i)}<span>${l}</span></button>`).join("")}</div><button type="button" class="pmark" data-me aria-label="わたしのカード（QR）${LIVE && LV.me && !keySaved() ? "・鍵の控えがまだです" : ""}">${gmark(56, {halo: true})}${LIVE && LV.me && !keySaved() ? `<b class="kdot" aria-hidden="true"></b>` : ""}</button></div>
       <div class="mcap" aria-live="polite">${field === "people" ? `人・${peopleList().length}人` : `${FIELDS.find(f => f[0] === field)[1]}${MOD.mine ? "・持っている" : ""}${MOD.fav ? "・お気に入り" : ""}${MOD.near ? "・近い順" : ""}・${list.length}枚${field === "circle" ? "・輪の人だけ" : ""}`}</div>
-      <div class="menu-w"><nav class="menu" aria-label="表示するカード">${FIELDS.map(([k, l]) => `<button type="button" data-f="${k}" aria-pressed="${field === k}" aria-label="${l}" title="${l}">${icon(k)}</button>`).join("")}</nav><button type="button" class="make" data-make aria-label="カードを作る・その場で売る" title="カードを作る・その場で売る">${icon("plus")}</button></div>
+      <div class="menu-w"><nav class="menu" aria-label="表示するカード">${FIELDS.map(([k, l]) => `<button type="button" data-f="${k}" aria-pressed="${field === k}" aria-label="${l}" title="${l}">${icon(k)}</button>`).join("")}</nav><button type="button" class="make" data-make aria-label="カードを作る・その場で売る" title="カードを作る・その場で売る">${icon("plus")}<span>作る</span></button></div>
     </section>
     ${u.member ? "" : `<div class="notice">${gmark(28)}<span>まだ参加していません。${LIVE ? "招待のリンクを開くか、" : ""}<b>わたしのカード</b>のQRを、参加している人に読んでもらうと始められます。</span></div>`}
     <main class="list">${field === "people" ? peopleHtml() : list.length ? `<div class="psearch"><input id="pq" type="search" placeholder="カードを探す（題・作った人・場所）" aria-label="カードを探す" autocomplete="off" value="${esc(PQ)}"></div>` + list.map(c => `<article class="row" data-pn="${esc([c.title, typeof c.body === "string" && !/^1:[A-Za-z0-9+/=]+:/.test(c.body) ? c.body.slice(0, 300) : "", nameOf(c.by), c.when, c.place, KIND[c.kind]].filter(Boolean).join(" ").toLowerCase())}">
@@ -1971,8 +1975,7 @@ function personCard(pk) {
 }
 // 残高の下の働き：吹き出し（会話）・受話器（電話）。ウォレットをつないだら、ここに1つ足すだけ（例：{k: "wallet", i: "wallet", l: "ウォレット", dot: …, open: …}）
 const FX = [
-  {k: "chats", i: "talk", l: "話す・電話", dot: () => unreadChat() + missedCalls(), open: () => chatList()},
-  {k: "gifts", i: "gift", l: "贈る", dot: () => 0, open: () => giftList()},
+  {k: "chats", i: "talk", l: "話す・電話・贈る", dot: () => unreadChat() + missedCalls(), open: () => chatList()},
   {k: "news", i: "bell", l: "お知らせ", dot: () => news().filter(n => n.at > (NSEEN[me] || 0)).length, open: () => newsList()},
 ];
 const NSEEN = Object.create(null);
@@ -2007,22 +2010,24 @@ const missedFrom = pk => CALLS.filter(c => c.to === me && c.from === pk && c.mis
 const missedCalls = () => CALLS.filter(c => c.to === me && c.missed && c.at > callSeen(c.from)).length;
 const friendsOf = pk => { const u = S.users[pk] || {}; return (u.friends || []).filter(x => ((S.users[x] || {}).friends || []).includes(pk)); };
 // 話す・電話：ふつうのメッセンジャーのように、相手ごとの会話を新しい順に。電話は会話の中から（不在着信も会話の中に並ぶ）
+const giftsWith = pk => (S.sends || []).filter(x => (x.from === me && x.to === pk) || (x.from === pk && x.to === me));
 function lastOf(pk) {
   const m = (CHAT[pairKey(me, pk)] || []).slice(-1)[0], c = CALLS.filter(x => (x.from === me && x.to === pk) || (x.from === pk && x.to === me)).slice(-1)[0];
-  const cm = c && {call: c, at: c.at, ts: LIVE ? c.at : undefined};
+  const g = giftsWith(pk).slice(-1)[0], gm = g && {gift: g, at: g.at, ts: LIVE ? g.at : undefined};
+  let cm = c && {call: c, at: c.at, ts: LIVE ? c.at : undefined}; if (gm && (!cm || tsOf(gm) > tsOf(cm))) cm = gm;
   if (!m) return cm || null; if (!cm) return m; return tsOf(cm) > tsOf(m) ? cm : m;
 }
 const callWord = c => c.from === me ? "電話をかけました" : c.missed ? "不在着信" : "電話がありました";
 function chatList() {
   const lt = pk => { const x = lastOf(pk); return x ? tsOf(x) : 0; }, fs = friendsOf(me).slice().sort((a, b) => lt(b) - lt(a));
   openSheet(`<button type="button" class="back" data-close>${icon("back")}一覧へ</button>
-    <h2 class="rh" data-view="chats">話す・電話</h2>
+    <h2 class="rh" data-view="chats">話す・電話・贈る</h2>
     <section class="box">${fs.map(pk => { const l = lastOf(pk), mc = missedFrom(pk), when = l ? dayLabel(new Date(tsOf(l) * 1000)).replace("今日", hm(new Date(tsOf(l) * 1000))) : "";
       return `<div class="who-row"><button type="button" class="who" data-person="${pk}" aria-label="${esc(nameOf(pk))} さんのカード">${avatar(pk)}</button>
-      <button type="button" class="crow" data-chat="${pk}"><b>${esc(nameOf(pk))}</b><small class="${mc ? "warnc" : ""}">${l ? `${l.call ? (mc ? `不在着信${mc > 1 ? ` ${mc}件` : ""}` : callWord(l.call)) : esc(msgPreview(l))}・${when}` : "まだ話していません"}</small></button>
+      <button type="button" class="crow" data-chat="${pk}"><b>${esc(nameOf(pk))}</b><small class="${mc ? "warnc" : ""}">${l ? `${l.gift ? (l.gift.from === me ? "贈りました" : "贈り物が届きました") : l.call ? (mc ? `不在着信${mc > 1 ? ` ${mc}件` : ""}` : callWord(l.call)) : esc(msgPreview(l))}・${when}` : "まだ話していません"}</small></button>
       ${unreadOf(pk) || mc ? `<span class="nb" aria-label="新しい会話・不在着信"></span>` : ""}</div>`; }).join("") || `<div class="who-row"><span>まだ話せる人がいません</span></div>`}</section>
-    ${LIVE && window.Notification && Notification.permission === "default" ? `<button type="button" class="pill" data-notify style="justify-self:start">ホーム画面のアイコンに数を出す</button>` : ""}
-    <p class="fline">お互いに友達の人とだけ、2人で話したり電話したりできます（鍵つき）。電話は、会話の右上から。電話が鳴るのは、相手が jeni を開いているときだけです。友達になるのは、その人のプロフィールカードから。</p>`);
+    ${LIVE && window.Notification && Notification.permission === "default" ? `<button type="button" class="pill" data-notify style="justify-self:start">新しい知らせをホーム画面のアイコンに出す</button>` : ""}
+    <p class="fline">友達どうしで、話す・電話・贈る（鍵つき）。電話は相手が開いているときだけ鳴ります。</p>`);
 }
 // 贈る：jeni や持っているカードを、相手に直接届ける。取り消せないので、長押しで決める
 function giftList() {
@@ -2033,6 +2038,8 @@ function giftList() {
     <p class="fline">jeni や持っているカードを、相手に直接届けます（友達が先に並びます）。届いた贈り物は、お知らせに出ます。</p>`);
 }
 const giftable = pk => Object.values(S.cards).filter(c => !c.gone && !KEEP[c.kind] && c.by !== pk && mine(c).some(x => x.vis !== "lock") && (!c.circle || S.circles[c.circle].members.includes(pk)) && c.copies.filter(x => x.owner === pk && !x.used).length < (c.price ? RULE.capPaid : RULE.capFree));
+let GBACK = null;   // 会話から贈ったときは、贈ったあと会話へもどる
+const giftBack = () => { const pk = GBACK; GBACK = null; return pk ? `<button type="button" class="big" data-chat="${pk}">会話にもどる</button>` : `<button type="button" class="big" data-overclose>閉じる</button>`; };
 function giftTo(pk) {
   const bal = U().bal, cs = giftable(pk);
   openOver(`<h2 class="rh">${esc(nameOf(pk))} さんへ贈る</h2>
@@ -2040,7 +2047,7 @@ function giftTo(pk) {
       <div class="chips">${[10, 50, 100].filter(n => n <= bal).map(n => `<button type="button" data-gamt="${n}">${n}</button>`).join("")}</div>
       <div class="acts2">${lpBtn("gsend", pk, `${coin()}jeni を贈る<small>長押し</small>`, "go")}</div></section>
     <section class="box"><h3>持っているカード</h3>${cs.map(c => `<div class="who-row"><span>${icon(kindIcon(c.kind))} ${esc(c.title)}</span>${lpBtn("gcard", c.id + ":" + pk, `贈る<small>長押し</small>`)}</div>`).join("") || `<p class="sub">贈れるカードがありません</p>`}</section>
-    <p class="fline">贈ると取り消せません。相手の名前を確かめてから、長押ししてください。だれからだれへ何を贈ったかは、記録に残ります（鍵をかけて持ったカードは贈れません）。</p>`);
+    <p class="fline">贈ると取り消せません。相手を確かめて長押しを。</p>`);
 }
 // 2人の会話：ふつうのメッセンジャーのように（日付の区切り・時刻・写真・ファイル・カード）
 let CHATPK = null; const CURL = Object.create(null);
@@ -2055,10 +2062,13 @@ const sizeOf = n => n >= 1048576 ? (n / 1048576).toFixed(1) + "MB" : Math.max(1,
 const msgPreview = m => m.text || (m.pics ? `写真${m.pics.length > 1 ? " " + m.pics.length + "枚" : ""}` : m.file ? "ファイル" : m.card ? "カード" : "");
 function talkHtml(pk) {
   const msgs = CHAT[pairKey(me, pk)] || []; let out = "", day = "";
-  const calls = CALLS.filter(x => (x.from === me && x.to === pk) || (x.from === pk && x.to === me)).map(c => ({call: c, at: c.at, ts: LIVE ? c.at : undefined}));
+  const calls = CALLS.filter(x => (x.from === me && x.to === pk) || (x.from === pk && x.to === me)).map(c => ({call: c, at: c.at, ts: LIVE ? c.at : undefined}))
+    .concat(giftsWith(pk).map(g => ({gift: g, at: g.at, ts: LIVE ? g.at : undefined})));
   const items = msgs.map((m, i) => ({m, i})).concat(calls.map(c => ({m: c, i: -1}))).sort((a, b) => tsOf(a.m) - tsOf(b.m));
   for (const it of items) { const m = it.m, i = it.i, d = new Date(tsOf(m) * 1000), dk = d.toDateString();
     if (dk !== day) { out += `<div class="cday">${dayLabel(d)}</div>`; day = dk; }
+    if (m.gift) { const g = m.gift, c = g.card && S.cards[g.card], what = g.card ? `「${esc(c ? c.title : "カード")}」` : `${g.amount} jeni `;
+      out += `<div class="ccall cgift">${icon("gift")}${g.from === me ? `${what}を贈りました` : `${what}が届きました`}・${hm(d)}</div>`; continue; }
     if (m.call) { out += `<div class="ccall${m.call.missed && m.call.to === me ? " warnc" : ""}">${icon("phone")}${callWord(m.call)}・${hm(d)}</div>`; continue; }
     const c = m.card && S.cards[m.card];
     const body = [m.pics ? `<div class="cpics">${m.pics.map((p, j) => `<img alt="写真" data-cimg="${i}.${j}" ${!p.k && CURL[p.u] !== undefined ? `src="${CURL[p.u] || p.u}"` : !p.k ? `src="${esc(p.u)}"` : CURL[p.u] ? `src="${CURL[p.u]}"` : ""}>`).join("")}</div>` : "",
@@ -2080,7 +2090,7 @@ function talkRender(pk, stick) {
   const t = $("c-talk"); if (!t) return; const bottom = stick || t.scrollHeight - t.scrollTop - t.clientHeight < 80;
   t.innerHTML = talkHtml(pk); talkOpen(); if (bottom) t.scrollTop = t.scrollHeight;
 }
-const CPLUS = () => `<label class="pill">${icon("picture")} 写真<input type="file" id="c-pic" accept="image/*" multiple></label><label class="pill">${icon("data")} ファイル<input type="file" id="c-file"></label><button type="button" class="pill" data-ccard>${icon("hold")} カード</button>`;
+const CPLUS = () => `<label class="pill">${icon("picture")} 写真<input type="file" id="c-pic" accept="image/*" multiple></label><label class="pill">${icon("data")} ファイル<input type="file" id="c-file"></label><button type="button" class="pill" data-ccard>${icon("hold")} カード</button><button type="button" class="pill" data-cgift>${icon("gift")} 贈る</button>`;
 function chatSheet(pk) {
   READ[me + ":" + pk] = clock; CSEEN[me + ":" + pk] = Math.max(clock, ...CALLS.filter(c => c.from === pk).map(c => c.at)); CHATPK = pk;
   openOver(`<div class="chead"><h2 class="rh">${esc(nameOf(pk))} さん</h2><button type="button" class="cb" data-call="${pk}" aria-label="${esc(nameOf(pk))} さんに電話">${icon("phone")}</button><button type="button" class="cb" data-vcall="${pk}" aria-label="${esc(nameOf(pk))} さんとビデオ通話">${icon("video")}</button></div><p class="sub" style="font-size:11px;margin:-6px 0 6px">${icon("lock")} 2人だけが読めます${LIVE ? "" : "（見本：どこにも送りません）"}</p>
@@ -2142,7 +2152,7 @@ function redeemSheet(id) {
   emit(me, {t: "redeem", card: id, lock: sha256hex(code), until: clock + 300});
   RD = {id, code, holder: me};
   const evt = c.kind === "event" || c.kind === "service";
-  openOver(`<h2 class="rh">QRで${c.kind === "event" ? "入る" : c.kind === "service" ? "受ける" : "引き換える"}</h2><p class="sub">${evt ? "受付（作った人）" : "お店（作った人）"}に、この QR を読んでもらいます。一度きりで、すこしのあいだだけ使えます。</p>
+  openOver(`<h2 class="rh">QRで${c.kind === "event" ? "入る" : c.kind === "service" ? "受ける" : "引き換える"}</h2><p class="sub">${evt ? "受付" : "お店"}に読んでもらいます（一度きり）</p>
     <div class="qrbox"><div class="qrwrap">${qrSvg(`${BASE}#used=${id}.${code}`, "q")}</div><b>${esc(c.title)}</b></div>
     ${LIVE ? `<p class="sub" style="text-align:center;font-size:12px">読めないときの番号：<b style="letter-spacing:.08em">${code}</b></p>` : `<button type="button" class="pill go" data-shopread="${id}">見本：${esc(nameOf(c.by))} さん（${evt ? "受付" : "お店"}）として読む</button>`}`);
 }
@@ -2209,15 +2219,15 @@ function meCard(edit = false) {
           <div class="how">${u.member ? "読んだ人は、あなたを友達にできます" : "参加している人にこのQRを読んでもらうと、参加できます"}</div>
           <div class="wal" aria-label="ウォレット（開発中）"><div class="wh">${icon("wallet")}ウォレット<span>開発中</span></div><div class="wb"><button type="button" data-wallet>${icon("down")}受け取る</button><button type="button" data-wallet>${icon("up")}送る</button></div></div></div></div>
     </div></div>
-    <p class="fline">印を押すと裏のQR。${u.member ? "まだ参加していない人を認めるときは、その人のQRをあなたが読みます（あなたが認めてあげられるのは" + RULE.vmax(u) + "人まで）。" : ""}お店などで読まれても、jeni もカードも動きません。</p>
+    <p class="fline">印を押すと裏のQR。読まれても jeni は動きません。${u.member ? "認めてあげられるのは" + RULE.vmax(u) + "人まで。" : ""}</p>
     ${u.member && !edit ? `<div class="row2"><button type="button" class="big ghost" data-editme>編集する</button><button type="button" class="big ghost" data-invite ${u.vouched.length + u.invites.filter(x => !x.used && x.until >= clock).length >= RULE.vmax(u) ? "disabled" : ""}>招待する（あと${Math.max(0, RULE.vmax(u) - u.vouched.length - u.invites.filter(x => !x.used && x.until >= clock).length)}人）</button></div>` : ""}
     ${u.member ? `<section class="box"><h3>記録の控え</h3>
       <div class="who-row"><span>あなたの記録 ${EV.filter(e => e.pubkey === me).length}件・写真など ${Object.values(S.cards).filter(c => c.by === me && MEDIA[c.id] && (MEDIA[c.id].img || MEDIA[c.id].src)).length}件</span><button type="button" class="pill" data-export>書き出す</button></div>
       ${LIVE ? `<div class="who-row"><span>ビットコインに刻んだ日 ${STAMPS ? Object.keys(STAMPS).length + "日分" : "（読み込み中・まだなし）"}</span></div>` : `<div class="who-row"><span>刻んだ要約 ${ANCHORS.length}日分${ANCHORS.length ? `（最後：${ANCHORS[ANCHORS.length - 1].root.slice(0, 8)}…・${ANCHORS[ANCHORS.length - 1].ids.length}件）` : ""}</span><button type="button" class="pill" data-anchor>いま刻む（見本）</button></div>`}
-      <p class="sub" style="font-size:11px;margin:4px 0 0">書き出すと、記録と写真などを端末に保存できます（無料の置き場が消しても、自分で戻せるように）。毎日1回、ビットコインに刻みます。記録の中身（名前・カード・会話）はビットコインには書きません。刻むのは、その日までの記録すべての番号をまとめて計算した「指紋」のような64文字1つだけです。指紋から中身は分かりませんが、記録が1文字でも変わると指紋が合わなくなるので、「この記録はこの日にはもうあった」と、だれでも確かめられます。${LIVE ? "刻むのは GitHub の決まった仕事で、OpenTimestamps という無料の仕組みを通します。" : ""}</p></section>
+      <p class="sub" style="font-size:11px;margin:4px 0 0">書き出すと、記録と写真を端末に保存できます。毎日、記録の指紋だけをビットコインに刻みます（中身は書きません）。</p></section>
     ${(() => { const cs = Object.values(S.circles).filter(ci => ci.members.includes(me)); return cs.length ? `<section class="box"><h3>入っている仲間の輪</h3>${cs.map(ci => `<div class="who-row"><span>${esc(ci.name)}（${ci.members.length}人）${ci.by === me ? "・作った輪" : ""}</span>${ci.by === me ? "" : `<button type="button" class="pill" data-cleave="${ci.id}">抜ける</button>`}</div>${ci.by === me ? ci.members.filter(x => x !== me).map(x => `<div class="who-row" style="padding-left:12px">${whoTag(x)}<button type="button" class="link" data-cremove="${ci.id}:${x}">外す</button></div>`).join("") : ""}`).join("")}</section>` : ""; })()}
 ` : ""}
-    ${LIVE ? `<section class="box"><h3>${icon("lock")} あなたの鍵</h3>${pkOn() ? `<p class="sub" style="margin:0 0 6px;font-size:12px;color:var(--leaf);font-weight:700">パスキーで守っています</p>` : keySaved() ? "" : `<p class="sub warnc" style="margin:0 0 6px;font-size:12px">まだ鍵を守っていません。</p>`}<p class="sub" style="margin:0;font-size:12px;line-height:1.7">鍵はこの端末の中だけにあります。端末をなくしたり、ブラウザの記録を消したりすると、控えがない限り戻せません。jeni の人が鍵をたずねることはありません。</p>
+    ${LIVE ? `<section class="box"><h3>${icon("lock")} あなたの鍵</h3>${pkOn() ? `<p class="sub" style="margin:0 0 6px;font-size:12px;color:var(--leaf);font-weight:700">パスキーで守っています</p>` : keySaved() ? "" : `<p class="sub warnc" style="margin:0 0 6px;font-size:12px">まだ鍵を守っていません。</p>`}<p class="sub" style="margin:0;font-size:12px;line-height:1.7">鍵はこの端末だけ。なくすと戻せないので、守っておきます。</p>
       <div class="row2"><button type="button" class="pill${keySaved() ? "" : " go"}" data-keyexp>鍵を守る</button><button type="button" class="pill" data-scan>QRを読む</button></div>
       <button type="button" class="link" data-logout style="justify-self:start;color:var(--mute);font-size:12px;margin-top:6px">この端末から出る</button></section>` : ""}
     ${u.member && edit ? `<section class="box form"><label class="fl">名前<input id="p-name" maxlength="40" value="${esc(nameOf(me))}"></label>
@@ -2226,7 +2236,7 @@ function meCard(edit = false) {
       <fieldset class="visopt"><legend>カードを持ったときの見せ方</legend>${["show", "hide", "lock"].map(v => `<label><input type="radio" name="p-vis" value="${v}" ${(PREF[me] || "show") === v ? "checked" : ""}><b>${VIS[v]}</b><small>${VISD[v]}</small></label>`).join("")}</fieldset>
       <p class="sub" style="font-size:11px;margin:-2px 0 0">鍵は、数に限りのないカードだけ。数に限りのあるカード・常連などは「かくす」になります。</p>
       <button type="button" class="big" data-saveme>保存する</button></section>` : ""}
-    ${u.member ? "" : LIVE ? `<section class="box"><h3>参加するには</h3><p class="sub" style="margin:0">招待のリンクを開くか、参加している人に、このカードの裏のQRを読んでもらいます。</p>
+    ${u.member ? "" : LIVE ? `<section class="box"><h3>参加するには</h3><p class="sub" style="margin:0">招待のリンクを開くか、裏のQRを参加している人に読んでもらいます。</p>
       <details class="more"><summary>前に使っていた人（別の場所で参加した鍵に戻す）</summary>
         <p class="sub warnc" style="font-size:12px;margin:0">戻すと、いまのこの名前（まだ参加していない方）は使わなくなります。</p>
         <button type="button" class="big ghost" data-pkrestore>Face ID で戻す</button><label class="fl">控えた鍵（64文字）<input id="st-key" autocomplete="off" spellcheck="false"></label><button type="button" class="pill go" data-startkey>この鍵で戻す</button></details></section>` : `<section class="box"><h3>見本：参加している人に読んでもらう</h3>${vouchers.map(x => `<div class="who-row"><span>${esc(nameOf(x.pk))}（あと${RULE.vmax(x) - x.vouched.length}人認めてあげられる）</span><button type="button" class="pill go" data-vouchby="${x.pk}">読んでもらう</button></div>`).join("") || `<div class="who-row"><span>認められる人がいません</span></div>`}</section>`}`);
@@ -2239,7 +2249,7 @@ function inviteSheet() {
   if (!U().invites.some(x => x.id === e.id)) return toast("招待できません（あなたが認められるのは" + RULE.vmax(U()) + "人まで）");
   INV[e.id] = code;
   const link = `${BASE}#join=${e.id}..${code}`;
-  openOver(`<h2 class="rh">招待する</h2><p class="sub">このリンクかQRを、身内に送ってください（7日間・1人だけ）。開いた人の端末で、その人の鍵が作られ、参加できます。リンクを知った人ならだれでも使えるので、ほかの所には貼らないでください。</p>
+  openOver(`<h2 class="rh">招待する</h2><p class="sub">身内にだけ送ってください（7日間・1人）。</p>
     <div class="qrbox">${qrSvg(link)}</div><p class="sub" style="word-break:break-all;font-size:11px">${esc(link)}</p>
     <button type="button" class="pill" data-copy="${esc(link)}">リンクをコピー</button>
     ${LIVE ? "" : `<button type="button" class="link" data-joinas="${e.id}">見本：まだ参加していない「ゆず」として開く</button>`}`);
@@ -2400,7 +2410,7 @@ function make() {
       ${JOB.on || JOB.err ? `<div class="job"><i id="m-jobbar" style="width:${JOB.pct}%"></i></div><p class="sub${JOB.err ? " warnc" : ""}" id="m-job" style="font-size:12px;margin:-4px 0 0">${JOB.on ? `${JOB.text} ${Math.round(JOB.pct)}%` : esc(JOB.err)}</p>` : ""}
       ${LIVE ? "" : `<div class="chips"><span class="sub">見本：</span><button type="button" data-msample="${k === "music" ? "media/rain.mp3" : "media/field.mp4"}">${k === "music" ? "雨の音" : "畑の動画"}</button></div>`}
       <label class="fl">またはリンク（YouTube・${k === "music" ? "音" : "動画"}のファイルの https）<input id="m-src" type="url" maxlength="300" value="${esc(/^https:/.test(MK.src || "") ? MK.src : "")}" placeholder="https://…" ${MK.media ? "disabled" : ""}></label>
-      <p class="sub" style="font-size:11px;margin:-4px 0 0">${k === "music" ? "音は MP3 の 256〜320kbps と同じくらいの音質（AAC 192kbps）にそろえ、長いものは分けて置きます" : "動画はスマホの画面できれいな画質に軽くし、長いものは分けて置きます（長いほど、軽くして送るのに時間がかかります。そのあいだ画面を開いたままに）"}（無料の置き場・続けて1本として流れます）。${MK.circle ? "" : "置いたものはリンクを知っている人ならだれでも見られるので、"}自分で作ったものか、権利のあるものだけにしてください。元のファイルは手元に残しておいてください（置き場から消えたときに置き直せます）。</p>` : ""}
+      <p class="sub" style="font-size:11px;margin:-4px 0 0">${k === "music" ? "音はよい音質にそろえて置きます" : "動画は軽くして置きます（長いほど時間がかかるので、開いたままに）"}。${MK.circle ? "" : "リンクを知る人はだれでも見られます。"}自分で作ったか、権利のあるものだけに。元のファイルは手元に残してください。</p>` : ""}
     <label class="fl">題${sale ? "（なくてもよい）" : ""}<input id="m-title" maxlength="80" value="${esc(MK.title)}"></label>
     ${bodyL ? `<label class="fl">${bodyL}<textarea id="m-body" maxlength="2000">${esc(MK.body)}</textarea></label>` : ""}
     ${k === "project" ? `<label class="fl">求めているもの<input id="m-want" maxlength="200" value="${esc(MK.want || "")}" placeholder="例：在来種の写真、畑の場所"></label>` : ""}
@@ -2472,8 +2482,8 @@ function saleQR() {
     <div class="qrbox"><div class="qrwrap">${qrSvg(`${BASE}#pay=${s.id}.${s.code}`, "q")}
       <svg class="ring" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><rect x="1.5" y="1.5" width="97" height="97" rx="6" pathLength="1" stroke-dasharray="1" stroke-dashoffset="0" id="ring"/></svg></div>
       <div style="text-align:center"><b>${esc(c.title || "その場のカード")}</b><div style="color:var(--gold);font-weight:700">${coin()} ${c.price} jeni</div></div></div>
-    <p class="sub" style="font-size:12px">この QR は一度きりで、まわりの金の線がなくなると使えなくなります。写真に撮られても、あとから使い回せません。</p>
-    ${LIVE ? `<p class="sub" style="font-size:12px">買う人は、jeni の「QRを読む」か、スマホのカメラで読みます。払われると、ここに知らせが出ます。</p>` : `<section class="box"><h3>見本：買う人として読む</h3>${Object.values(S.users).filter(x => x.member && x.pk !== me).map(x => `<div class="who-row"><span>${esc(nameOf(x.pk))}（${x.bal.toLocaleString("ja-JP")} jeni）</span><button type="button" class="pill go" data-buyas="${x.pk}">読む</button></div>`).join("")}</section>`}`);
+    <p class="sub" style="font-size:12px">一度きり。金の線が消えると使えません</p>
+    ${LIVE ? "" : `<section class="box"><h3>見本：買う人として読む</h3>${Object.values(S.users).filter(x => x.member && x.pk !== me).map(x => `<div class="who-row"><span>${esc(nameOf(x.pk))}（${x.bal.toLocaleString("ja-JP")} jeni）</span><button type="button" class="pill go" data-buyas="${x.pk}">読む</button></div>`).join("")}</section>`}`);
   clearInterval(saleTimer);
   const total = 5 * 60 * 1000;
   saleTimer = setInterval(() => {
@@ -2509,7 +2519,7 @@ function newCircle() {
   const others = Object.values(S.users).filter(x => x.member && x.pk !== me);
   openSheet(`<button type="button" class="back" data-mk="${MK.mode || "make"}">${icon("back")}作る画面へ</button>
     <h2 class="rh">仲間の輪をつくる</h2>
-    <p class="sub">輪の中に出したカードは、輪の人にしか見えません。本物では、中身を輪の鍵で封をしてから置くので、外からは読めない文字の固まりにしか見えません。</p>
+    <p class="sub">輪の中のカードは、輪の人だけが読めます（鍵つき）。</p>
     <label class="fl">輪の名前<input id="c-name" maxlength="40" placeholder="例：週末の畑"></label>
     <section class="box"><h3>入ってもらう人</h3>${others.map(x => `<label class="opt"><input type="checkbox" value="${x.pk}" data-cm><b>${esc(nameOf(x.pk))}</b></label>`).join("")}</section>
     <button type="button" class="big" data-mkcircle>輪をつくる</button>`);
@@ -2799,7 +2809,9 @@ document.addEventListener("click", e => {
   if ((b = q("[data-chat]"))) return chatSheet(b.dataset.chat);
   if ((b = q("[data-send]"))) { const pk = b.dataset.send, text = ($("c-text").value || "").trim(); if (!text) return;
     $("c-text").value = ""; $("c-text").style.height = ""; $("c-text").focus(); chatSend(pk, {text}).then(() => { if (CHATPK === pk) talkRender(pk, true); }); return; }
-  if (q("[data-notify]")) { Notification.requestPermission().then(p => { toast(p === "granted" ? "アイコンに数が出ます（アプリを開いたときに新しくなります）" : "端末の設定で知らせが止められています"); appBadge(); chatList(); }); return; }
+  if (q("[data-cropok]")) return cropSave();
+  if (q("[data-notify]")) { Notification.requestPermission().then(p => { toast(p === "granted" ? "新しい知らせがあると、アイコンに印が出ます" : "端末の設定で知らせが止められています"); appBadge(); chatList(); }); return; }
+  if (q("[data-cgift]") && CHATPK) { GBACK = CHATPK; return giftTo(CHATPK); }
   if (q("[data-cplus]")) { const pl = $("c-plus"); pl.hidden = !pl.hidden; if (!pl.hidden) pl.innerHTML = CPLUS(); return; }
   if (q("[data-ccard]")) { const pl = $("c-plus"), cs = Object.values(S.cards).filter(c => !c.gone && !c.hidden && (c.by === me || mine(c).length) && (!c.circle || (S.circles[c.circle] && S.circles[c.circle].members.includes(CHATPK))));
     pl.innerHTML = cs.length ? cs.slice(-30).reverse().map(c => `<button type="button" class="pill" data-csendcard="${c.id}">${icon(kindIcon(c.kind))} ${esc(c.title.slice(0, 18))}</button>`).join("") : `<span class="sub">送れるカードがありません（作ったカード・持っているカード）</span>`; return; }
@@ -2942,8 +2954,7 @@ function qrShowSheet(id, prev = null) {
   const c = S.cards[id], hold = canHoldQR(c), hl = KEEP[c.kind] ? KEEP[c.kind][1] : `持つ（${c.price ? c.price + " jeni" : "無料"}）`;
   openOver(`<h2 class="rh">QRで受け取る</h2>
     <div class="qwatch" data-qrwatch="${id}" data-n="${prev ? prev.n : qCount(c)}" data-t="${prev ? prev.t : c.tipped}">${qHead(c)}<p class="qdone" id="qr-got" role="status" aria-live="polite"></p></div>
-    <div class="qrbox"><div class="qrwrap">${qrSvg(`${BASE}#pay=${id}`, "q")}</div><small>読んだ人の画面に：${hold ? `${hl}・` : ""}投げ銭</small></div>
-    <p class="sub" style="font-size:12px">読んだ人が長押しすると、jeni があなたに届き、上の小さなカードが光ります。路上ライブ・展示・ポスター・受付・お店のレジ横などに。印刷して貼っても使えます。読んだだけで jeni は動きません。</p>
+    <div class="qrbox"><div class="qrwrap">${qrSvg(`${BASE}#pay=${id}`, "q")}</div><small>読んだ人が長押しすると届きます（${hold ? `${hl}・` : ""}投げ銭）<br>読んだだけで jeni は動きません</small></div>
     ${LIVE ? "" : `<section class="box"><h3>見本：読む人として</h3>${Object.values(S.users).filter(x => x.member && x.pk !== me).slice(0, 3).map(x => `<div class="who-row">${whoTag(x.pk)}<button type="button" class="pill go" data-qas="${x.pk}" data-qid="${id}">読む</button></div>`).join("")}</section>`}`);
 }
 function quickSheet(id) {
@@ -2963,10 +2974,10 @@ function lpDo(act, id) {
     if (!Number.isInteger(n) || n < 1) return toast("贈る jeni の数を入れてください"); if (n > bal) return toast("jeni が足りません");
     const before = (S.sends || []).length; emit(me, {t: "send", to: id, amount: n});
     if ((S.sends || []).length === before) return toast("贈れませんでした（きまりに合いません）");
-    return openOver(`<div class="done">${coin()}<h2 class="rh">${n} jeni を贈りました</h2><p class="sub">${esc(nameOf(id))} さんへ</p></div><button type="button" class="big" data-overclose>閉じる</button>`); }
+    return openOver(`<div class="done">${coin()}<h2 class="rh">${n} jeni を贈りました</h2><p class="sub">${esc(nameOf(id))} さんへ</p></div>${giftBack()}`); }
   if (act === "gcard") { const [cid, pk] = id.split(":"), c = S.cards[cid]; emit(me, {t: "gift", card: cid, to: pk});
     if (!S.cards[cid].copies.some(x => x.owner === pk)) return toast("贈れませんでした（きまりに合いません）");
-    return openOver(`<div class="done">${icon("gift")}<h2 class="rh">贈りました</h2><p class="sub">「${esc(c.title)}」を ${esc(nameOf(pk))} さんへ</p></div><button type="button" class="big" data-overclose>閉じる</button>`); }
+    return openOver(`<div class="done">${icon("gift")}<h2 class="rh">贈りました</h2><p class="sub">「${esc(c.title)}」を ${esc(nameOf(pk))} さんへ</p></div>${giftBack()}`); }
   if (act === "qtip") { const n = tipAmt(id); if (n > U().bal) return toast("jeni が足りません"); const t0 = S.cards[id].tipped; emit(me, {t: "tip", card: id, amount: n});
     if (S.cards[id].tipped === t0) return toast("投げ銭できませんでした（きまりに合いません）");
     return qDone(`${n} jeni を贈りました・${esc(nameOf(S.cards[id].by))} さんへ`, id, false); }
@@ -3011,12 +3022,34 @@ document.addEventListener("change", e => {
     const k = Math.min(1, 900 / im.width), cv = document.createElement("canvas"); cv.width = Math.round(im.width * k); cv.height = Math.round(im.height * k); cv.getContext("2d").drawImage(im, 0, 0, cv.width, cv.height);
     BGS[me] = cv.toDataURL("image/jpeg", .85); if (LIVE) shrink(BGS[me], 640).then(bg => { LV.publish(LV.K.media, {profile: true, bg}); liveRefresh(); }); toast("カードの背景を変えました"); meCard(true); }; im.src = fr.result; }; fr.readAsDataURL(e.target.files[0]); return; }
   if (e.target.id !== "p-pic" || !e.target.files[0]) return;
-  const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => {
-    const k = 240 / Math.min(im.width, im.height), cv = document.createElement("canvas"); cv.width = cv.height = 240;
-    cv.getContext("2d").drawImage(im, (240 - im.width * k) / 2, (240 - im.height * k) / 2, im.width * k, im.height * k);
-    PICS[me] = cv.toDataURL("image/jpeg", .85); if (LIVE) shrink(PICS[me], 160, .8).then(pic => { LV.publish(LV.K.media, {profile: true, pic}); liveRefresh(); }); toast("アイコンを変えました"); meCard(true); }; im.src = fr.result; };
+  const fr = new FileReader(); fr.onload = () => { const im = new Image(); im.onload = () => cropSheet(im); im.src = fr.result; };
   fr.readAsDataURL(e.target.files[0]);
 });
+// プロフィールアイコン：画像のどこを見せるかを、指で動かして・広げて決める
+const CROP = {F: 260};
+function cropSheet(im) {
+  Object.assign(CROP, {im, z: 1}); const k0 = CROP.F / Math.min(im.width, im.height); CROP.x = (CROP.F - im.width * k0) / 2; CROP.y = (CROP.F - im.height * k0) / 2;
+  openOver(`<h2 class="rh">アイコンの位置</h2><p class="sub" style="margin:0">指で動かして、見せたい所を枠に合わせます</p>
+    <div class="crop" id="crop"><img id="crop-img" src="${im.src}" alt="" draggable="false"></div>
+    <label class="fl">大きさ<input type="range" id="crop-z" min="1" max="4" step="0.01" value="1"></label>
+    <button type="button" class="big" data-cropok>このアイコンにする</button>`);
+  cropDraw();
+}
+function cropClamp() { const {im, F, z} = CROP, k = F / Math.min(im.width, im.height) * z, w = im.width * k, h = im.height * k;
+  CROP.x = Math.min(0, Math.max(F - w, CROP.x)); CROP.y = Math.min(0, Math.max(F - h, CROP.y)); return k; }
+function cropDraw() { const el = $("crop-img"); if (!el) return; const k = cropClamp(); Object.assign(el.style, {width: CROP.im.width * k + "px", height: CROP.im.height * k + "px", transform: `translate(${CROP.x}px,${CROP.y}px)`}); }
+function cropZoom(z) { const {F} = CROP, k1 = cropClamp(), cx = (F / 2 - CROP.x) / k1, cy = (F / 2 - CROP.y) / k1; CROP.z = z; const k2 = F / Math.min(CROP.im.width, CROP.im.height) * z; CROP.x = F / 2 - cx * k2; CROP.y = F / 2 - cy * k2; cropDraw(); }
+let CDRAG = null;
+document.addEventListener("pointerdown", e => { if (!e.target.closest || !e.target.closest("#crop")) return; CDRAG = {x: e.clientX, y: e.clientY, ox: CROP.x, oy: CROP.y}; try { e.target.setPointerCapture(e.pointerId); } catch (x) {} e.preventDefault(); });
+document.addEventListener("pointermove", e => { if (!CDRAG) return; CROP.x = CDRAG.ox + e.clientX - CDRAG.x; CROP.y = CDRAG.oy + e.clientY - CDRAG.y; cropDraw(); });
+document.addEventListener("pointerup", () => { CDRAG = null; });
+document.addEventListener("input", e => { if (e.target.id === "crop-z") cropZoom(+e.target.value); });
+function cropSave() {
+  const {im, F} = CROP, k = cropClamp(), s = 240 / F, cv = document.createElement("canvas"); cv.width = cv.height = 240;
+  cv.getContext("2d").drawImage(im, CROP.x * s, CROP.y * s, im.width * k * s, im.height * k * s);
+  PICS[me] = cv.toDataURL("image/jpeg", .85); if (LIVE) shrink(PICS[me], 160, .8).then(pic => { LV.publish(LV.K.media, {profile: true, pic}); liveRefresh(); });
+  closeOver(); toast("アイコンを変えました"); meCard(true);
+}
 document.addEventListener("keydown", e => {
   if (e.key === "Escape" && !$("over").hidden) return closeOver();
   if (e.key === "Escape" && !$("sheet").hidden) closeSheet();
@@ -3121,13 +3154,13 @@ function liveRefresh() {
     netBadge(); qrSync(); appBadge();
   }, 150);
 }
-// ホーム画面のアイコンに数を出す（新しい会話・不在着信・お知らせ）。アプリを閉じているあいだは数が変わらない（運営のサーバーがないため）。
+// ホーム画面のアイコンに印を出す（新しい会話・不在着信・お知らせがあるときだけ。数は出さない）。アプリを閉じているあいだは数が変わらない（運営のサーバーがないため）。
 // アプリが裏にあるあいだに届いたものは、端末の知らせでも伝える（中身は出さない）
 let BADGE0 = -1;
 function appBadge() {
   if (!LIVE || !me || !S.users[me]) return;
   const n = unreadChat() + missedCalls() + news().filter(x => x.at > (NSEEN[me] || 0)).length;
-  try { if (navigator.setAppBadge) (n ? navigator.setAppBadge(n) : navigator.clearAppBadge()).catch(() => {}); } catch (e) {}
+  try { if (navigator.setAppBadge) (n ? navigator.setAppBadge() : navigator.clearAppBadge()).catch(() => {}); } catch (e) {}
   if (BADGE0 >= 0 && n > BADGE0 && document.hidden && window.Notification && Notification.permission === "granted" && navigator.serviceWorker)
     navigator.serviceWorker.ready.then(r => r.showNotification("jeni", {body: missedCalls() ? "電話がありました" : "新しい知らせがあります", tag: "jeni", renotify: true, icon: "icon-192.png", badge: "icon-192.png"})).catch(() => {});
   BADGE0 = n;
