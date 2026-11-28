@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-GWkc7rFlqKOmwCqGdBN/0MsbHsSWKN+MvydLdxCBYB4=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-hgswQbeeg+z/oN5WcCjpFHNsGHownKCwWgjHjV7ZThg=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7GdljMCiyJKN70c09Vuw/ACK2CSQ7rUSoQU68s7jHmY=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-GWkc7rFlqKOmwCqGdBN/0MsbHsSWKN+MvydLdxCBYB4=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
 // 公式の試験ベクトル（tests/sig.test.js）で正しさを確かめている。
 "use strict";
 (function (root) {
@@ -2617,9 +2617,10 @@ class Chain {
       if (!el.paused && !el.ended && c === this.lastT && el.readyState < 3) { if (++this.stall >= 3) { this.stall = 0; this.stuckNow(); } } else this.stall = 0; this.lastT = c; }, 1000);
     el.dataset.chain = "1";
     const k = parts[0] && !parts[0].k ? parts[0].us.indexOf(el.getAttribute("src")) : -1;
-    if (k < 0 || el.error) this.load(0); else { el.dataset.u = k; if (LIVE && parts[0].x) this.check(0, parts[0].us[k]); }
+    if (k < 0 || el.error) this.load(0); else el.dataset.u = k;
   }
-  stuckNow() { const j = this.i, p = this.parts[j]; if (!p || p.k) return; if (this.cache[j] && this.el.src !== this.cache[j]) return this.swap(j); if (this.loading && this.loading[j]) this.stuck = true; }
+  // 置き場から流せない・止まったときだけ、ファイルを丸ごと取って手元の写しから流す（ふだんは置き場からそのまま流し、余計に取らない）
+  stuckNow() { const j = this.i, p = this.parts[j]; if (!p || p.k || !p.x) return; if (this.cache[j] && this.el.src !== this.cache[j]) return this.swap(j); this.stuck = true; if (!(this.loading && this.loading[j])) this.check(j, this.el.getAttribute("src") || p.us[0]); }
   swap(j) {
     const el = this.el, t = el.currentTime || 0; this.stuck = false; if (this.h.why) this.h.why("置き場から流すと止まるので、取り終えた写しから流しています");
     el.src = this.cache[j]; el.addEventListener("loadedmetadata", () => { try { el.currentTime = t; } catch (e) {} el.play().catch(() => {}); }, {once: true}); el.play().catch(() => {});
@@ -2631,7 +2632,6 @@ class Chain {
     // （先に全部を取ってから流すと、iPhone では押してから時間がたつため再生が止められ、長い動画は待たされる）
     if (p.k && !this.cache[j]) { this.wait = true; this.prefetch(j).then(() => { if (this.gone || this.i !== j) return; this.wait = false; if (!this.cache[j]) { if (this.h.fail) this.h.fail(); return; } this.load(j, t, run || this.want); }); return; }
     el.src = this.cache[j] || p.us[0];
-    if (LIVE && p.x && !this.cache[j]) this.check(j, p.us[0]);
     if (t || run) { const go = () => { try { if (t) el.currentTime = t; } catch (e) {} if (run) el.play().catch(() => {}); }; if (el.readyState >= 1) go(); else el.addEventListener("loadedmetadata", go, {once: true}); }
   }
   async check(j, u) {
@@ -2639,7 +2639,8 @@ class Chain {
     // 置き場によっては動画・音を整え直す（指紋が変わる）ので、動画・音でないもの（ページなど）にすり替わっているときだけ止める。指紋の違いは「置き場を確かめる」に残す
     const p = this.parts[j], key = j + " " + u; this.seen = this.seen || {}; if (this.seen[key]) return; this.seen[key] = 1;
     let ok = null, got = "", type = "", buf = null; this.loading = this.loading || {}; this.loading[j] = true;
-    try { const r = await fetch(u); if (r.ok) { type = r.headers.get("content-type") || ""; buf = await r.arrayBuffer(); got = hexOfBuf(await crypto.subtle.digest("SHA-256", buf)); ok = JeniMedia.hashOk(p, got); } } catch (e) {}
+    try { let r = await fetch(u).catch(() => null); if (!r || !r.ok) for (const v of p.us) { if (v === u) continue; r = await fetch(v).catch(() => null); if (r && r.ok) break; }
+      if (r && r.ok) { type = r.headers.get("content-type") || ""; buf = await r.arrayBuffer(); got = hexOfBuf(await crypto.subtle.digest("SHA-256", buf)); ok = JeniMedia.hashOk(p, got); } } catch (e) {}
     this.loading[j] = false; if (this.gone) return;
     const media = /^(video|audio)\/|^application\/octet-stream|^binary\//i.test(type) || !type;
     // 取り終えた中身は手元の写しにしておく（置き場が途中から取れないときや、止まったときに使う）
@@ -2679,14 +2680,13 @@ class Chain {
     const el = this.el, j = this.i, us = this.parts[j].us, t = el.currentTime || 0;
     if (this.parts[j].k) { if (this.h.fail) this.h.fail(); return; }
     // 置き場から流せないとき：取り終えた写しがあればそれで、取っている途中なら終わりしだい切り替える
-    if (LIVE && this.parts[j].x && this.cache[j] && el.src !== this.cache[j]) return this.swap(j);
-    if (LIVE && this.parts[j].x && this.loading && this.loading[j]) { this.stuck = true; return; }
+    if (LIVE && this.parts[j].x) { if (this.cache[j] && el.src !== this.cache[j]) return this.swap(j); this.tried = this.tried || {}; if (!this.tried[j]) { this.tried[j] = 1; this.stuckNow(); return; } }
     if (this.cache[j] && el.src === this.cache[j]) { URL.revokeObjectURL(this.cache[j]); delete this.cache[j]; el.dataset.u = 0; el.src = us[0]; }
     else { const k = +el.dataset.u + 1;
       if (k >= us.length) {   // どの置き場もだめ：一度だけ、はじめの置き場でやり直す（電波が一瞬切れたときなど）
         this.retry = this.retry || {}; if (this.retry[j]) { if (this.h.why) this.h.why("置き場から取れない（" + (el.error ? "エラー " + el.error.code : "つながらない") + "）"); if (this.h.fail) this.h.fail(); return; }
         this.retry[j] = 1; el.dataset.u = 0; el.src = us[0];
-      } else { el.dataset.u = k; el.src = us[k]; if (LIVE && this.parts[j].x) this.check(j, us[k]); } }
+      } else { el.dataset.u = k; el.src = us[k]; } }
     el.addEventListener("loadedmetadata", () => { try { el.currentTime = t; } catch (e) {} el.play().catch(() => {}); }, {once: true});
   }
 }
