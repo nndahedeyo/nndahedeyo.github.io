@@ -1,4 +1,4 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-59UzHh2ba3YxsL8zDwC08sC/iYXsa9Yh09LDrUakezw=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-WqTu/QTYBX56CYiE1wAwbn5Smewn8cDJWU02hPDLTcI=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-7EOXfew6uginCYUNSblN3Z+fftOx3mXUgylGWTZBXNs=' 'sha256-7XAKDcCq2lVHx4SPPKt/mJS0SQzjKx6CTArxkMOx2Kk=' 'sha256-D3ysCesA8dOlEFRWM98Bx8nb1QorBP5b3te0WBtY8Vk=' 'sha256-Fn5WuiKCiCWe+vLvLjVy2ApQAmiQLWhbYh2pBmXbS9s=' 'sha256-IvxkWJ2CrWsiWHSH+wxH8uepN8Ptv1maO8POJlRIlpM=' 'sha256-MMrBP2sVVcpnbzTlH6iVodgDuwadvdDWmEvTfHCW1wE=' 'sha256-Sw9sbYXc/rvvzQJhmC/POfgJDVeyXkvrOc1n98r/6ks=' 'sha256-uUH6IaHK4jn1hQ10Tf3JG4AWAJ5bhfqlUSvSptAw6Eo=' https://cdn.jsdelivr.net 'wasm-unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' https: data: blob:; media-src 'self' https: blob: data:; connect-src 'self' https: wss:; frame-src https://www.youtube-nocookie.com https://player.vimeo.com; font-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; manifest-src 'self'"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>jeni 試験運用</title><meta name="robots" content="noindex"><link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png"><link rel="icon" href="icon-192.png"><meta name="theme-color" content="#efe9dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="jeni"><meta name="apple-mobile-web-app-status-bar-style" content="default"><style>:root{padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}[hidden]{display:none!important}img{max-width:100%}</style><script>window.JENI_LIVE = true; if (window.top !== window.self) { document.documentElement.style.display = "none"; try { window.top.location = window.location.href; } catch (e) {} throw new Error("framed"); }</script><script>// 署名（BIP340 Schnorr / secp256k1）と Nostr のイベント。外部の部品を使わずに書いている。
 // 公式の試験ベクトル（tests/sig.test.js）で正しさを確かめている。
 "use strict";
 (function (root) {
@@ -545,6 +545,7 @@ button.link{border:0;background:none;color:var(--leaf);text-decoration:underline
 .jc2 .cview{position:absolute;inset:0 30% 30% 0;border:0;background:none;padding:0}
 .jc2 .cbar{position:absolute;left:0;right:0;bottom:0;height:.9cqw;background:rgba(255,255,255,.15);transition:height .2s,opacity .25s}
 /* 再生中は、ふつうの動画アプリのように：絵だけを見せ、押すと操作（止める・線・時間）が出て、少しすると消える */
+.jc2 .face{touch-action:manipulation}
 .jc2 .face :is(.cplay,.jno,.cfav,.ctalk,.txt,.excerpt,.gfield,.ctime){transition:opacity .25s}
 .jc2 .face.pl :is(.jno,.cfav,.ctalk,.excerpt,.gfield,.mark){opacity:0!important;pointer-events:none!important}
 .jc2 .face.pl:not(.ui) :is(.cplay,.txt,.cbar){opacity:0;pointer-events:none}
@@ -1324,10 +1325,14 @@ function makeQR(text, forceMask) {
   // 公開の置き場のもの：取ってきた中身の指紋（SHA-256）が、作った人が署名して出した指紋と同じときだけ使う（置き場で差し替えられていたら使わない）
   async function fetchChecked(p) {
     for (const u of urlsOf(p)) { try { const r = await fetch(u); if (!r.ok) continue; const buf = await r.arrayBuffer();
-      if (p.x && hexOf(await crypto.subtle.digest("SHA-256", buf)) !== p.x) continue;
+      if (p.x && !hashOk(p, hexOf(await crypto.subtle.digest("SHA-256", buf)))) continue;
       return URL.createObjectURL(new Blob([buf], {type: r.headers.get("content-type") || p.t || ""})); } catch (e) {} }
     throw new Error("中身が確かめられませんでした");
   }
+  // 置き場によっては、受け取ったときに中身を整え直す（写真の情報を消す・動画を詰め直す）ので、指紋が変わる。
+  // カードに書いた指紋か、作った人が署名したカードの置き場の住所に入っている指紋（Blossom の住所は /<指紋>）のどちらかと合えばよい
+  const hashOk = (p, h) => !!h && (h === p.x || h === pathHash(p.u));
+  const pathHash = u => { const m = /\/([0-9a-f]{64})(?:\.[a-z0-9]{2,5})?$/i.exec(String(u || "").split(/[?#]/)[0]); return m ? m[1].toLowerCase() : ""; };
   const hexOf = b => Array.from(new Uint8Array(b), x => x.toString(16).padStart(2, "0")).join("");
   async function openPart(p) {
     if (OPENED[p.x || p.u]) return OPENED[p.x || p.u];
@@ -1349,8 +1354,8 @@ function makeQR(text, forceMask) {
   }
   // sign(kind, content, tags) → 署名した出来事（その人の鍵で）
   async function upload(blob, sign, onp = () => {}) {
-    const x = await sha256(blob), now = Math.floor(Date.now() / 1000);
-    const auth = async t => "Nostr " + b64(JSON.stringify(await sign(24242, "jeni に置く", [["t", t], ["x", x], ["expiration", String(now + 900)]])));
+    let x = await sha256(blob); const now = Math.floor(Date.now() / 1000);
+    const auth = async (t, h = x) => "Nostr " + b64(JSON.stringify(await sign(24242, "jeni に置く", [["t", t], ["x", h], ["expiration", String(now + 900)]])));
     let got = null, used = null, err = null;
     for (const s of SERVERS) {
       try { got = await put(s + "/upload", blob, {"Authorization": await auth("upload"), "Content-Type": blob.type || "application/octet-stream", "X-SHA-256": x}, onp); used = s; break; }
@@ -1358,9 +1363,11 @@ function makeQR(text, forceMask) {
     }
     if (!got) throw err || new Error("置けませんでした");
     const url = got.url || `${used}/${x}`;
+    // 置き場が中身を整え直したときは、置き場の指紋（住所に入っているもの）を正とする
+    { const h = /^[0-9a-f]{64}$/.test(got.sha256 || "") ? got.sha256 : pathHash(url); if (h && h !== x) x = h; }
     const mir = [];
     for (const s of SERVERS) if (s !== used) {
-      try { await put(s + "/mirror", JSON.stringify({url}), {"Authorization": await auth("upload"), "Content-Type": "application/json"}); mir.push(s); } catch (e) {}
+      try { await put(s + "/mirror", JSON.stringify({url}), {"Authorization": await auth("upload", x), "Content-Type": "application/json"}); mir.push(s); } catch (e) {}
     }
     const ext = (url.match(/\.[a-z0-9]{2,4}$/i) || [""])[0];
     return {u: url, x, m: mir, e: ext};
@@ -1387,7 +1394,7 @@ function makeQR(text, forceMask) {
     return null;
   }
 
-  root.JeniMedia = {LIM, PLAN, SERVERS, MB_URL, lib, prepare, imageOf, upload, urlsOf, linkOf, fmtLen, sha256, sealBlob, openBlob, openPart, fetchChecked, keep};
+  root.JeniMedia = {hashOk, pathHash, LIM, PLAN, SERVERS, MB_URL, lib, prepare, imageOf, upload, urlsOf, linkOf, fmtLen, sha256, sealBlob, openBlob, openPart, fetchChecked, keep};
 })(typeof globalThis !== "undefined" ? globalThis : this);
 </script>
 <script></script>
@@ -2591,7 +2598,7 @@ class Chain {
   async check(j, u) {
     // 流している置き場の中身が、カードに書かれた指紋と同じかを確かめる。違えば止めて、その置き場は使わない
     const p = this.parts[j], key = j + " " + u; this.seen = this.seen || {}; if (this.seen[key]) return; this.seen[key] = 1;
-    let ok = null; try { const r = await fetch(u); if (r.ok) ok = hexOfBuf(await crypto.subtle.digest("SHA-256", await r.arrayBuffer())) === p.x; } catch (e) {}
+    let ok = null; try { const r = await fetch(u); if (r.ok) ok = JeniMedia.hashOk(p, hexOfBuf(await crypto.subtle.digest("SHA-256", await r.arrayBuffer()))); } catch (e) {}
     if (ok !== false || this.gone || this.i !== j || this.el.getAttribute("src") !== u) return;
     this.el.pause(); this.el.removeAttribute("src"); try { this.el.load(); } catch (e) {} if (this.h.fail) this.h.fail();
   }
@@ -2750,7 +2757,19 @@ document.addEventListener("pointerdown", e => { const b = e.target.closest && e.
 document.addEventListener("pointermove", e => { if (SEEK) seekPreview(e); });
 document.addEventListener("pointerup", () => { SEEK = null; });
 document.addEventListener("pointercancel", () => { SEEK = null; });
+// 全画面：カードをすばやく2回たたくと入る・もう一度2回たたくと戻る（右上の「全画面」「もどす」でも）
+let DTAP = null, DTAP_T = 0;
+function immToggle() {
+  const on = !$("sheet").classList.contains("imm"), b = document.querySelector("#sheet [data-imm]"); $("sheet").classList.toggle("imm", on);
+  if (b) { b.setAttribute("aria-pressed", on); b.textContent = on ? "もどす" : "全画面"; }
+  try { if (on && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {}); else if (!on && document.fullscreenElement) document.exitFullscreen(); } catch (x) {}
+}
 document.addEventListener("click", e => {
+  { const f = e.target.closest && e.target.closest("#sheet .jc2 .face"); if (f && document.querySelector("#sheet [data-imm]") && !e.target.closest("button:not(.cview),[data-seek],a,iframe,input,[data-flip],.gfield")) {
+      const now = Date.now(), L = DTAP; DTAP = {t: now, x: e.clientX, y: e.clientY};
+      if (L && now - L.t < 400 && Math.abs(e.clientX - L.x) < 40 && Math.abs(e.clientY - L.y) < 40) { DTAP = null; clearTimeout(DTAP_T); const pg = f.closest(".pg"); immToggle(); if (pg) pg.scrollIntoView({block: "start"}); return; }
+      // カード全体で「大きく見る」ものは、2回目を少しだけ待ってから開く
+      const cv = e.target.closest(".cview"); if (cv) { clearTimeout(DTAP_T); DTAP_T = setTimeout(() => cplay(cv.dataset.cplay), 320); return; } } }
   { const pf = e.target.closest && e.target.closest(".jc2 .face.pl"); if (pf && !e.target.closest("button,[data-seek],a,iframe,input")) { if (pf.classList.contains("ui")) { pf.classList.remove("ui"); clearTimeout(pf._ui); } else faceUI(pf); return; } }
   { const pf = e.target.closest && e.target.closest(".jc2 .face.pl.ui"); if (pf) faceUI(pf); }
   { const pg = e.target.closest && e.target.closest(".pg"); if (pg) sel = pg.dataset.pg; }
@@ -2870,8 +2889,7 @@ document.addEventListener("click", e => {
   if ((b = q("[data-attachask]"))) return attachAsk(b.dataset.attachask);
   if ((b = q("[data-attach]"))) { const pid = sel; emit(me, {t: "attach", project: pid, card: b.dataset.attach}); closeOver(); refreshPage(pid); return toast("つなぎました"); }
   if ((b = q("[data-vis]"))) { const c = S.cards[b.dataset.vis], v = mine(c)[0].vis === "hide" ? "show" : "hide"; emit(me, {t: "vis", card: c.id, vis: v}); refreshPage(c.id); return toast(`見せ方：${VIS[v]}`); }
-  if (q("[data-imm]")) { const on = !$("sheet").classList.contains("imm"); $("sheet").classList.toggle("imm", on); q("[data-imm]").setAttribute("aria-pressed", on); q("[data-imm]").textContent = on ? "もどす" : "全画面";
-    try { if (on && document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => {}); else if (!on && document.fullscreenElement) document.exitFullscreen(); } catch (x) {} return; }
+  if (q("[data-imm]")) return immToggle();
   if (q("[data-editme]")) return meCard(true);
   if (q("[data-invite]")) return inviteSheet();
   if ((b = q("[data-qas]"))) { const id = b.dataset.qid, c = S.cards[id]; QRBACK = {me, id, n: qCount(c), t: c.tipped}; me = b.dataset.qas; closeOver(); closeSheet(); return quickSheet(id); }
